@@ -5,6 +5,9 @@ $destinationFolder = "C:\Temp"
 $LocalWVDpath = "C:\Temp\wvd\"
 
 
+$stopwatch = [System.Diagnostics.Stopwatch]::StartNew()
+Write-Host "*** Starting AIB Customization - Install PostgreSQL ODBC ***"
+
 # Create the destination folder if it doesn't exist
 if (-not (Test-Path -Path $destinationFolder)) {
     Write-Host "AVD AIB Customization - Install PostgreSQL ODBC : Creating temp directory."
@@ -44,6 +47,10 @@ Write-Host "AVD AIB Customization - Install PostgreSQL ODBC : Expanded PostgreSQ
 # Install the PostgreSQL ODBC package
 Write-Host "AVD AIB Customization - Install PostgreSQL ODBC : Installing the PostgreSQL ODBC..."
 Start-Process -FilePath "msiexec.exe" -ArgumentList "/package $(Join-Path $LocalWVDpath "pgsqlodbc\psqlodbc_x64.msi") /qb /norestart" -Wait -PassThru | Out-Null
+
+$stopwatch.Stop()
+$elapsedTime = $stopwatch.Elapsed
+Write-Host "*** AIB Customization - Install PostgreSQL ODBC - Time taken: $elapsedTime ***"
 
 # Check the exit code of the installation and cleanup
 if ($LASTEXITCODE -eq 0) {

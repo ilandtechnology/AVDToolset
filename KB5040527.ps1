@@ -5,6 +5,9 @@ $destinationFolder = "C:\Temp"
 $LocalWVDpath = "C:\Temp\wvd\"
 
 
+$stopwatch = [System.Diagnostics.Stopwatch]::StartNew()
+Write-Host "*** Starting AIB Customization - Install KB5040527 ***"
+
 # Create the destination folder if it doesn't exist
 if (-not (Test-Path -Path $destinationFolder)) {
     Write-Host "AVD AIB Customization - Install KB5040527 : Creating temp directory."
@@ -36,6 +39,10 @@ if (Test-Path -Path $(Join-Path $LocalWVDpath $packageFile)) {
 # Install the update
 Write-Host "AVD AIB Customization - Install KB5040527 : Installing the KB5040527..."
 Start-Process -FilePath "wusa.exe" -ArgumentList "$(Join-Path $LocalWVDpath $packageFile) /quiet /norestart" -Wait | Out-Null
+
+$stopwatch.Stop()
+$elapsedTime = $stopwatch.Elapsed
+Write-Host "*** AIB Customization - Install KB5040527 - Time taken: $elapsedTime ***"
 
 # Check the exit code of the installation and cleanup
 if ($LASTEXITCODE -eq 0) {
