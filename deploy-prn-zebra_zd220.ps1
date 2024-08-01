@@ -40,13 +40,14 @@ if (Test-Path -Path $(Join-Path $LocalWVDpath $packageFile)) {
 Write-Host "AVD AIB Customization - Install Zebra ZD220 Driver : Expanding Zebra ZD220 Driver package."
 Expand-Archive `
     -LiteralPath "C:\temp\wvd\$packageFile" `
-    -DestinationPath "$LocalWVDpath\zebra_zd220" `
+    -DestinationPath "$LocalWVDpath" `
     -Force
 Write-Host "AVD AIB Customization - Install Zebra ZD220 Driver : Expanded Zebra ZD220 Driver package."
 
 # Install the Zebra ZD220 Driver package
 Write-Host "AVD AIB Customization - Install Zebra ZD220 Driver : Installing the Zebra ZD220 Driver..."
-Start-Process -FilePath "pnputil.exe" -ArgumentList "/a $(Join-Path $LocalWVDpath '\zebra_zd220\ZBRN.inf')" -Wait -PassThru | Out-Null
+Start-Process -FilePath "pnputil.exe" -ArgumentList "/a $(Join-Path $LocalWVDpath '\ZEBRA\ZBRN.inf')" -Wait -PassThru | Out-Null
+Add-PrinterDriver -Name "ZDesigner ZD220-203dpi ZPL"
 
 $stopwatch.Stop()
 $elapsedTime = $stopwatch.Elapsed

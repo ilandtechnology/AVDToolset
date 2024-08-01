@@ -40,13 +40,14 @@ if (Test-Path -Path $(Join-Path $LocalWVDpath $packageFile)) {
 Write-Host "AVD AIB Customization - Install Epson TM-T20X Driver : Expanding Epson TM-T20X Driver package."
 Expand-Archive `
     -LiteralPath "C:\temp\wvd\$packageFile" `
-    -DestinationPath "$LocalWVDpath\epson_tm-t20x" `
+    -DestinationPath "$LocalWVDpath" `
     -Force
 Write-Host "AVD AIB Customization - Install Epson TM-T20X Driver : Expanded Epson TM-T20X Driver package."
 
 # Install the Epson TM-T20X Driver package
 Write-Host "AVD AIB Customization - Install Epson TM-T20X Driver : Installing the Epson TM-T20X Driver..."
-Start-Process -FilePath "pnputil.exe" -ArgumentList "/a $(Join-Path $LocalWVDpath '\epson_tm-t20x\EA6INSTMT.INF')" -Wait -PassThru | Out-Null
+Start-Process -FilePath "pnputil.exe" -ArgumentList "/a $(Join-Path $LocalWVDpath '\EPSON\EA6INSTMT.INF')" -Wait -PassThru | Out-Null
+Add-PrinterDriver -Name "EPSON TM-T(203dpi) Receipt6"
 
 $stopwatch.Stop()
 $elapsedTime = $stopwatch.Elapsed

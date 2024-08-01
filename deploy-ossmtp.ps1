@@ -36,17 +36,9 @@ if (Test-Path -Path $(Join-Path $LocalWVDpath $packageFile)) {
     exit 1
 }
 
-# Prepare the destination folder
-Write-Host "AVD AIB Customization - Install OstroSoft SMTP Component : Expanding OstroSoft SMTP Component package."
-Expand-Archive `
-    -LiteralPath "C:\temp\wvd\$packageFile" `
-    -DestinationPath "$LocalWVDpath\ossmtp" `
-    -Force
-Write-Host "AVD AIB Customization - Install OstroSoft SMTP Component : Expanded OstroSoft SMTP Component package."
-
 # Install the OstroSoft SMTP Component package
 Write-Host "AVD AIB Customization - Install OstroSoft SMTP Component : Installing the OstroSoft SMTP Component..."
-Start-Process -FilePath "msiexec.exe" -ArgumentList "/package $(Join-Path $LocalWVDpath "ossmtp\ossmtp.msi") /qb /norestart" -Wait -PassThru | Out-Null
+Start-Process -FilePath "msiexec.exe" -ArgumentList "/package $(Join-Path $LocalWVDpath "ossmtp.msi") /qb /norestart" -Wait -PassThru | Out-Null
 
 $stopwatch.Stop()
 $elapsedTime = $stopwatch.Elapsed

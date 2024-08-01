@@ -36,17 +36,9 @@ if (Test-Path -Path $(Join-Path $LocalWVDpath $packageFile)) {
     exit 1
 }
 
-# Prepare the destination folder
-Write-Host "AVD AIB Customization - Install Cristal Reports XI : Expanding Cristal Reports XI package."
-Expand-Archive `
-    -LiteralPath "C:\temp\wvd\$packageFile" `
-    -DestinationPath "$LocalWVDpath\cristalreports" `
-    -Force
-Write-Host "AVD AIB Customization - Install Cristal Reports XI : Expanded Cristal Reports XI package."
-
 # Install the Cristal Reports XI package
 Write-Host "AVD AIB Customization - Install Cristal Reports XI : Installing the Cristal Reports XI..."
-Start-Process -FilePath "msiexec.exe" -ArgumentList "/package $(Join-Path $LocalWVDpath "cristalreports\crystalreports_xi-sss.msi") /qb /norestart" -Wait -PassThru | Out-Null
+Start-Process -FilePath "msiexec.exe" -ArgumentList "/package $(Join-Path $LocalWVDpath "crystalreports_xi-sss.msi") /qb /norestart" -Wait -PassThru | Out-Null
 
 $stopwatch.Stop()
 $elapsedTime = $stopwatch.Elapsed

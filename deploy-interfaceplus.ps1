@@ -36,17 +36,9 @@ if (Test-Path -Path $(Join-Path $LocalWVDpath $packageFile)) {
     exit 1
 }
 
-# Prepare the destination folder
-Write-Host "AVD AIB Customization - Install Interface Plus : Expanding Interface Plus package."
-Expand-Archive `
-    -LiteralPath "C:\temp\wvd\$packageFile" `
-    -DestinationPath "$LocalWVDpath\interfaceplus" `
-    -Force
-Write-Host "AVD AIB Customization - Install Interface Plus : Expanded Interface Plus package."
-
 # Install the Interface Plus package
 Write-Host "AVD AIB Customization - Install Interface Plus : Installing the Interface Plus..."
-Start-Process -FilePath "msiexec.exe" -ArgumentList "/package $(Join-Path $LocalWVDpath "interfaceplus\interfaceplus.msi") /qb /norestart" -Wait -PassThru | Out-Null
+Start-Process -FilePath "msiexec.exe" -ArgumentList "/package $(Join-Path $LocalWVDpath "interfaceplus.msi") /qb /norestart" -Wait -PassThru | Out-Null
 
 $stopwatch.Stop()
 $elapsedTime = $stopwatch.Elapsed
