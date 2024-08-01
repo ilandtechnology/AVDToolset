@@ -144,8 +144,12 @@ try {
   else {
      Write-Host "*** AVD AIB CUSTOMIZER PHASE : Set default language - Language pack for $LanguageTag is installed already***"
   }
+  if($null -ne $GeoID) {
+    Set-WinHomeLocation -GeoID $GeoID
+    Write-Host "*** AVD AIB CUSTOMIZER PHASE: Set default Language - $Language with $LanguageTag has been set as the default region***"
+  }
 
-  Set-systempreferreduilanguage -Language $LanguageTag
+  Set-SystemPreferredUILanguage -Language $LanguageTag
   Set-WinSystemLocale -SystemLocale $LanguageTag
   Set-Culture -CultureInfo $LanguageTag
   Set-WinUILanguageOverride -Language $LanguageTag
@@ -163,10 +167,6 @@ try {
 
   Write-Host "*** AVD AIB CUSTOMIZER PHASE: Set default Language - $Language with $LanguageTag has been set as the default System Preferred UI Language***"
 
-  if($null -ne $GeoID) {
-    Set-WinHomeLocation -GeoID $GeoID
-    Write-Host "*** AVD AIB CUSTOMIZER PHASE: Set default Language - $Language with $LanguageTag has been set as the default region***"
-  }
 }
 catch {
     Write-Host "*** AVD AIB CUSTOMIZER PHASE: Set default Language - Exception occurred***"
