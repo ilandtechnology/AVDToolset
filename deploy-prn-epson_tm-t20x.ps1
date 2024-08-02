@@ -51,7 +51,6 @@ Add-PrinterDriver -Name "EPSON TM-T(203dpi) Receipt6"
 
 $stopwatch.Stop()
 $elapsedTime = $stopwatch.Elapsed
-Write-Host "*** AIB Customization - Install Epson TM-T20X Driver - Time taken: $elapsedTime ***"
 
 # Check the exit code of the installation and cleanup
 if ($LASTEXITCODE -eq 0) {
@@ -60,11 +59,13 @@ if ($LASTEXITCODE -eq 0) {
         Remove-Item -Path $LocalWVDpath -Force -Recurse -ErrorAction Continue | Out-Null
     }
     Write-Host "AVD AIB Customization - Install Epson TM-T20X Driver : Installed successfully."
+    Write-Host "*** AIB Customization - Install Epson TM-T20X Driver - Time taken: $elapsedTime ***"
 } else {
     #Cleanup
     if ((Test-Path -Path $LocalWVDpath -ErrorAction SilentlyContinue)) {
         Remove-Item -Path $LocalWVDpath -Force -Recurse -ErrorAction Continue | Out-Null
     }
     Write-Host "AVD AIB Customization - Install Epson TM-T20X Driver : Installation failed with exit code $LASTEXITCODE."
+    Write-Host "*** AIB Customization - Install Epson TM-T20X Driver - Time taken: $elapsedTime ***"
     exit $LASTEXITCODE
 }

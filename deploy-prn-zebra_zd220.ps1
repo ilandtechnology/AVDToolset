@@ -51,7 +51,6 @@ Add-PrinterDriver -Name "ZDesigner ZD220-203dpi ZPL"
 
 $stopwatch.Stop()
 $elapsedTime = $stopwatch.Elapsed
-Write-Host "*** AIB Customization - Install Zebra ZD220 Driver - Time taken: $elapsedTime ***"
 
 # Check the exit code of the installation and cleanup
 if ($LASTEXITCODE -eq 0) {
@@ -60,11 +59,13 @@ if ($LASTEXITCODE -eq 0) {
         Remove-Item -Path $LocalWVDpath -Force -Recurse -ErrorAction Continue | Out-Null
     }
     Write-Host "AVD AIB Customization - Install Zebra ZD220 Driver : Installed successfully."
+    Write-Host "*** AIB Customization - Install Zebra ZD220 Driver - Time taken: $elapsedTime ***"
 } else {
     #Cleanup
     if ((Test-Path -Path $LocalWVDpath -ErrorAction SilentlyContinue)) {
         Remove-Item -Path $LocalWVDpath -Force -Recurse -ErrorAction Continue | Out-Null
     }
     Write-Host "AVD AIB Customization - Install Zebra ZD220 Driver : Installation failed with exit code $LASTEXITCODE."
+    Write-Host "*** AIB Customization - Install Zebra ZD220 Driver - Time taken: $elapsedTime ***"
     exit $LASTEXITCODE
 }
