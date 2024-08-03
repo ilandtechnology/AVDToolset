@@ -1,0 +1,329 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "imageTemplates_AVDWin11ImageGen2v1_name": {
+            "defaultValue": "AVDWin11ImageGen2v1",
+            "type": "String"
+        },
+        "galleries_avdimagegallery_externalid": {
+            "defaultValue": "/subscriptions/f0d9e471-1f50-415d-97c1-856e26753202/resourceGroups/rg-avd-prd-002/providers/microsoft.compute/galleries/avdimagegallery",
+            "type": "String"
+        },
+        "virtualNetworks_vnet_prd_wus2_001_externalid": {
+            "defaultValue": "/subscriptions/f0d9e471-1f50-415d-97c1-856e26753202/resourceGroups/rg-shared-prd-001/providers/Microsoft.Network/virtualNetworks/vnet-prd-wus2-001",
+            "type": "String"
+        }
+    },
+    "variables": {},
+    "resources": [
+        {
+            "type": "Microsoft.VirtualMachineImages/imageTemplates",
+            "apiVersion": "2024-02-01",
+            "name": "[parameters('imageTemplates_AVDWin11ImageGen2v1_name')]",
+            "location": "westus2",
+            "tags": {
+                "AVD_IMAGE_TEMPLATE": "AVD_IMAGE_TEMPLATE",
+                "ExcludeMdeAutoProvisioning": "true",
+                "BusinessUnit": "shared",
+                "env": "prod"
+            },
+            "identity": {
+                "type": "UserAssigned",
+                "userAssignedIdentities": {
+                    "/subscriptions/f0d9e471-1f50-415d-97c1-856e26753202/resourcegroups/rg-avd-prd-002/providers/Microsoft.ManagedIdentity/userAssignedIdentities/aibIdentity1722341849": {}
+                }
+            },
+            "properties": {
+                "buildTimeoutInMinutes": 0,
+                "customize": [
+                    {
+                        "inline": [
+                            "Start-Sleep -s 60",
+                            "while ((Get-Service RdAgent).Status -ne 'Running') { Start-Sleep -s 15 }",
+                            "while ((Get-Service WindowsAzureGuestAgent).Status -ne 'Running') { Start-Sleep -s 15 }"
+                        ],
+                        "name": "checkRdAgentAndWindowsAzureGuestAgentOnStart",
+                        "runAsSystem": true,
+                        "runElevated": true,
+                        "type": "PowerShell"
+                    },
+                    {
+                        "destination": "C:\\AVDImage\\installLanguagePacks.ps1",
+                        "name": "avdBuiltInScript_installLanguagePacks",
+                        "sha256Checksum": "519f1dcb41c15dc1726f28c51c11fb60876304ab9eb9535e70015cdb704a61b2",
+                        "sourceUri": "https://raw.githubusercontent.com/Azure/RDS-Templates/master/CustomImageTemplateScripts/CustomImageTemplateScripts_2024-03-27/InstallLanguagePacks.ps1",
+                        "type": "File"
+                    },
+                    {
+                        "inline": [
+                            "C:\\AVDImage\\installLanguagePacks.ps1 -LanguageList \"Portuguese (Brazil)\""
+                        ],
+                        "name": "avdBuiltInScript_installLanguagePacks-parameter",
+                        "runAsSystem": true,
+                        "runElevated": true,
+                        "type": "PowerShell"
+                    },
+                    {
+                        "name": "avdBuiltInScript_installLanguagePacks-windowsUpdate",
+                        "type": "WindowsUpdate",
+                        "updateLimit": 0
+                    },
+                    {
+                        "name": "avdBuiltInScript_installLanguagePacks-windowsRestart",
+                        "restartTimeout": "10m",
+                        "type": "WindowsRestart"
+                    },
+                    // {
+                    //     "name": "Set default OS language",
+                    //     "runAsSystem": true,
+                    //     "runElevated": true,
+                    //     "scriptUri": "https://raw.githubusercontent.com/ilandtechnology/AVDToolset/main/SetDefaultLang.ps1",
+                    //     "type": "PowerShell"
+                    // },
+                    {
+                        "name": "avdBuiltInScript_timeZoneRedirection",
+                        "runAsSystem": true,
+                        "runElevated": true,
+                        "scriptUri": "https://raw.githubusercontent.com/Azure/RDS-Templates/master/CustomImageTemplateScripts/CustomImageTemplateScripts_2024-03-27/TimezoneRedirection.ps1",
+                        "sha256Checksum": "b8dbc50b02f64cc7a99f6eeb7ada676673c9e431255e69f3e7a97a027becd8d5",
+                        "type": "PowerShell"
+                    },
+                    {
+                        "name": "Disable Storage Sense",
+                        "runAsSystem": true,
+                        "runElevated": true,
+                        "scriptUri": "https://raw.githubusercontent.com/ilandtechnology/AVDToolset/main/DisableStorageSense.ps1",
+                        "type": "PowerShell"
+                    },
+                    {
+                        "name": "avdBuiltInScript_fsLogixKerberos",
+                        "runAsSystem": true,
+                        "runElevated": true,
+                        "scriptUri": "https://raw.githubusercontent.com/Azure/RDS-Templates/master/CustomImageTemplateScripts/CustomImageTemplateScripts_2024-03-27/FSLogixKerberos.ps1",
+                        "sha256Checksum": "ce83bbcbb2f64f8255bc9f678ab6dba92896b8b1861dd094368c483525541703",
+                        "type": "PowerShell"
+                    },
+                    {
+                        "name": "avdBuiltInScript_configureRdpShortpath",
+                        "runAsSystem": true,
+                        "runElevated": true,
+                        "scriptUri": "https://raw.githubusercontent.com/Azure/RDS-Templates/master/CustomImageTemplateScripts/CustomImageTemplateScripts_2024-03-27/RDPShortpath.ps1",
+                        "sha256Checksum": "24e9821ddcc63aceba2682286d03cd7042bcadcf08a74fb0a30a1a1cd0cbf910",
+                        "type": "PowerShell"
+                    },
+                    {
+                        "destination": "C:\\AVDImage\\screenCaptureProtection.ps1",
+                        "name": "avdBuiltInScript_screenCaptureProtection",
+                        "sha256Checksum": "d8f55ce805123e3519ab373a5fc2c02bf85635717f320a4dfcabab46fb1ecb5e",
+                        "sourceUri": "https://raw.githubusercontent.com/Azure/RDS-Templates/master/CustomImageTemplateScripts/CustomImageTemplateScripts_2024-03-27/ScreenCaptureProtection.ps1",
+                        "type": "File"
+                    },
+                    {
+                        "inline": [
+                            "C:\\AVDImage\\screenCaptureProtection.ps1 -block \"BlockBoth\""
+                        ],
+                        "name": "avdBuiltInScript_removeOfficeApps-parameter",
+                        "runAsSystem": true,
+                        "runElevated": true,
+                        "type": "PowerShell"
+                    },
+                    {
+                        "destination": "C:\\AVDImage\\configureSessionTimeouts.ps1",
+                        "name": "avdBuiltInScript_configureSessionTimeouts",
+                        "sha256Checksum": "abb1d5ba922013864c94d7a92a5d0aae7ae50805563af2b3777ba9b74ca6ccc4",
+                        "sourceUri": "https://raw.githubusercontent.com/Azure/RDS-Templates/master/CustomImageTemplateScripts/CustomImageTemplateScripts_2024-03-27/ConfigureSessionTimeoutsV2.ps1",
+                        "type": "File"
+                    },
+                    {
+                        "inline": [
+                            "C:\\AVDImage\\configureSessionTimeouts.ps1 -MaxDisconnectionTime \"60\" -MaxIdleTime \"60\" -MaxConnectionTime \"30\" -RemoteAppLogoffTimeLimit \"30\""
+                        ],
+                        "name": "avdBuiltInScript_configureSessionTimeouts-parameter",
+                        "runAsSystem": true,
+                        "runElevated": true,
+                        "type": "PowerShell"
+                    },
+                    {
+                        "destination": "C:\\AVDImage\\windowsOptimization.ps1",
+                        "name": "avdBuiltInScript_windowsOptimization",
+                        "sha256Checksum": "3a84266be0a3fcba89f2adf284f3cc6cc2ac41242921010139d6e9514ead126f",
+                        "sourceUri": "https://raw.githubusercontent.com/Azure/RDS-Templates/master/CustomImageTemplateScripts/CustomImageTemplateScripts_2024-03-27/WindowsOptimization.ps1",
+                        "type": "File"
+                    },
+                    {
+                        "inline": [
+                            "C:\\AVDImage\\windowsOptimization.ps1 -Optimizations \"WindowsMediaPlayer\",\"ScheduledTasks\",\"DefaultUserSettings\",\"Autologgers\",\"NetworkOptimizations\",\"LGPO\",\"DiskCleanup\",\"Edge\",\"RemoveLegacyIE\",\"RemoveOneDrive\""
+                        ],
+                        "name": "avdBuiltInScript_windowsOptimization-parameter",
+                        "runAsSystem": true,
+                        "runElevated": true,
+                        "type": "PowerShell"
+                    },
+                    {
+                        "name": "avdBuiltInScript_windowsOptimization-windowsUpdate",
+                        "type": "WindowsUpdate",
+                        "updateLimit": 0
+                    },
+                    {
+                        "name": "avdBuiltInScript_windowsOptimization-windowsRestart",
+                        "type": "WindowsRestart"
+                    },
+                    {
+                        "name": "avdBuiltInScript_disableAutoUpdates",
+                        "runAsSystem": true,
+                        "runElevated": true,
+                        "scriptUri": "https://raw.githubusercontent.com/Azure/RDS-Templates/master/CustomImageTemplateScripts/CustomImageTemplateScripts_2024-03-27/DisableAutoUpdates.ps1",
+                        "sha256Checksum": "eafd5e46c628b685f2061146550287255d75b7cea63f1e9dd29827c4ff7c3cb4",
+                        "type": "PowerShell"
+                    },
+                    {
+                        "destination": "C:\\AVDImage\\removeAppxPackages.ps1",
+                        "name": "avdBuiltInScript_removeAppxPackages",
+                        "sha256Checksum": "422b4c7b961f4d8b4216f126d8f38b00da583748b2d65b835504c1e9a07b0ece",
+                        "sourceUri": "https://raw.githubusercontent.com/Azure/RDS-Templates/master/CustomImageTemplateScripts/CustomImageTemplateScripts_2024-03-27/RemoveAppxPackages.ps1",
+                        "type": "File"
+                    },
+                    {
+                        "inline": [
+                            "C:\\AVDImage\\removeAppxPackages.ps1 -AppxPackages \"Clipchamp.Clipchamp\",\"Microsoft.BingNews\",\"Microsoft.BingWeather\",\"Microsoft.GamingApp\",\"Microsoft.GetHelp\",\"Microsoft.Getstarted\",\"Microsoft.MicrosoftOfficeHub\",\"Microsoft.Office.OneNote\",\"Microsoft.MicrosoftSolitaireCollection\",\"Microsoft.MicrosoftStickyNotes\",\"Microsoft.MSPaint\",\"Microsoft.People\",\"Microsoft.PowerAutomateDesktop\",\"Microsoft.ScreenSketch\",\"Microsoft.SkypeApp\",\"Microsoft.Todos\",\"Microsoft.Windows.Photos\",\"Microsoft.WindowsAlarms\",\"Microsoft.WindowsCalculator\",\"Microsoft.WindowsCamera\",\"Microsoft.windowscommunicationsapps\",\"Microsoft.WindowsFeedbackHub\",\"Microsoft.WindowsMaps\",\"Microsoft.WindowsNotepad\",\"Microsoft.WindowsSoundRecorder\",\"Microsoft.WindowsTerminal\",\"Microsoft.Xbox.TCUI\",\"Microsoft.XboxGameOverlay\",\"Microsoft.XboxGamingOverlay\",\"Microsoft.XboxIdentityProvider\",\"Microsoft.XboxSpeechToTextOverlay\",\"Microsoft.YourPhone\",\"Microsoft.ZuneMusic\",\"Microsoft.ZuneVideo\",\"Microsoft.XboxApp\""
+                        ],
+                        "name": "avdBuiltInScript_removeAppxPackages-parameter",
+                        "runAsSystem": true,
+                        "runElevated": true,
+                        "type": "PowerShell"
+                    },
+                    {
+                        "destination": "C:\\AVDImage\\OfficeApps.ps1",
+                        "name": "avdBuiltInScript_removeOfficeApps",
+                        "sha256Checksum": "5d80ed2122fcb163d7778735c2101b11fce0f960fd8dd25aec38479212214cf4",
+                        "sourceUri": "https://raw.githubusercontent.com/Azure/RDS-Templates/master/CustomImageTemplateScripts/CustomImageTemplateScripts_2024-03-27/ConfigureOfficeApps.ps1",
+                        "type": "File"
+                    },
+                    {
+                        "inline": [
+                            "C:\\AVDImage\\OfficeApps.ps1 -Type \"Remove\" -Applications \"Access\",\"OneNote\",\"Outlook\",\"Publisher\" -Version \"64\""
+                        ],
+                        "name": "avdBuiltInScript_removeOfficeApps-parameter",
+                        "runAsSystem": true,
+                        "runElevated": true,
+                        "type": "PowerShell"
+                    },
+                    {
+                        "name": "Install PostgreSQL ODBC",
+                        "runAsSystem": true,
+                        "runElevated": true,
+                        "scriptUri": "https://raw.githubusercontent.com/ilandtechnology/AVDToolset/main/deploy-pgodbc.ps1",
+                        "type": "PowerShell"
+                    },
+                    {
+                        "name": "avdBuiltInScript_windowsUpdate",
+                        "type": "WindowsUpdate",
+                        "searchCriteria": "IsInstalled=0",
+                        "filters": [
+                            "exclude:$_.Title -like '*Preview*'",
+                            "include:$true"
+                        ],
+                        "updateLimit": 0
+                    },
+                    {
+                        "name": "avdBuiltInScript_windowsUpdate-windowsRestart",
+                        "type": "WindowsRestart"
+                    },
+                    {
+                        "destination": "C:\\AVDImage\\multiMediaRedirection.ps1",
+                        "name": "avdBuiltInScript_multiMediaRedirection",
+                        "sha256Checksum": "f577c9079aaa7da399121879213825a3f263f7b067951a234509e72f8b59a7fd",
+                        "sourceUri": "https://raw.githubusercontent.com/Azure/RDS-Templates/master/CustomImageTemplateScripts/CustomImageTemplateScripts_2024-03-27/MultiMediaRedirection.ps1",
+                        "type": "File"
+                    },
+                    {
+                        "inline": [
+                            "C:\\AVDImage\\multiMediaRedirection.ps1 -VCRedistributableLink \"https://aka.ms/vs/17/release/vc_redist.x64.exe\" -EnableEdge \"true\" -EnableChrome \"false\""
+                        ],
+                        "name": "avdBuiltInScript_multiMediaRedirection-parameter",
+                        "runAsSystem": true,
+                        "runElevated": true,
+                        "type": "PowerShell"
+                    },
+                    {
+                        "destination": "C:\\AVDImage\\enableFslogix.ps1",
+                        "name": "avdBuiltInScript_enableFsLogix",
+                        "sha256Checksum": "027ecbc0bccd42c6e7f8fc35027c55691fba7645d141c9f89da760fea667ea51",
+                        "sourceUri": "https://raw.githubusercontent.com/Azure/RDS-Templates/master/CustomImageTemplateScripts/CustomImageTemplateScripts_2024-03-27/FSLogix.ps1",
+                        "type": "File"
+                    },
+                    {
+                        "inline": [
+                            "C:\\AVDImage\\enableFslogix.ps1 -FSLogixInstaller \"https://aka.ms/fslogix_download\" -VHDSize \"512\" -ProfilePath \"\\\\blob\\fslogix\""
+                        ],
+                        "name": "avdBuiltInScript_enableFsLogix-parameter",
+                        "runAsSystem": true,
+                        "runElevated": true,
+                        "type": "PowerShell"
+                    },
+                    {
+                        "name": "avdBuiltInScript_windowsRestart",
+                        "restartTimeout": "5m",
+                        "type": "WindowsRestart"
+                    },
+                    {
+                        "inline": [
+                            "Start-Sleep -s 180",
+                            "while ((Get-Service RdAgent).Status -ne 'Running') { Start-Sleep -s 15 }",
+                            "while ((Get-Service WindowsAzureGuestAgent).Status -ne 'Running') { Start-Sleep -s 15 }"
+                        ],
+                        "name": "checkRdAgentAndWindowsAzureGuestAgentOnEnd",
+                        "runAsSystem": true,
+                        "runElevated": true,
+                        "type": "PowerShell"
+                    },
+                    {
+                        "inline": [
+                            "Enable-WindowsOptionalFeature -Online -FeatureName NetFx3",
+                        ],
+                        "name": "avdBuiltInScript_installDotNetFx35",
+                        "runAsSystem": true,
+                        "runElevated": true,
+                        "type": "PowerShell"
+                    },
+                    {
+                        "name": "avdBuiltInScript_adminSysPrep",
+                        "runAsSystem": true,
+                        "runElevated": true,
+                        "scriptUri": "https://raw.githubusercontent.com/Azure/RDS-Templates/master/CustomImageTemplateScripts/CustomImageTemplateScripts_2024-03-27/AdminSysPrep.ps1",
+                        "sha256Checksum": "1dcaba4823f9963c9e51c5ce0adce5f546f65ef6034c364ef7325a0451bd9de9",
+                        "type": "PowerShell"
+                    }
+                ],
+                "distribute": [
+                    {
+                        "artifactTags": {},
+                        "excludeFromLatest": false,
+                        "galleryImageId": "[concat(parameters('galleries_avdimagegallery_externalid'), '/images/avdwin11imagegen2/versions/1.0.0')]",
+                        "replicationRegions": [
+                            "westus2"
+                        ],
+                        "runOutputName": "Win11-AVD-Custom",
+                        "type": "SharedImage"
+                    }
+                ],
+                "source": {
+                    "offer": "office-365",
+                    "publisher": "microsoftwindowsdesktop",
+                    "sku": "win11-23h2-avd-m365",
+                    "type": "PlatformImage",
+                    "version": "latest"
+                },
+                "stagingResourceGroup": "/subscriptions/f0d9e471-1f50-415d-97c1-856e26753202/resourceGroups/rg-avd-prd-003",
+                "vmProfile": {
+                    "osDiskSizeGB": 127,
+                    "vmSize": "Standard_D2s_v4",
+                    "vnetConfig": {
+                        "subnetId": "[concat(parameters('virtualNetworks_vnet_prd_wus2_001_externalid'), '/subnets/snet-prd-wus2-003')]"
+                    }
+                }
+            }
+        }
+    ]
+}

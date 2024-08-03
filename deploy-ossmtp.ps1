@@ -26,7 +26,7 @@ else {
 # Download the OstroSoft SMTP Component package
 Write-Host "AVD AIB Customization - Install OstroSoft SMTP Component : Downloading OstroSoft SMTP Component installer from URI: $Uri."
 [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
-Invoke-WebRequest -Uri $Uri -OutFile $(Join-Path $LocalWVDpath $packageFile)
+Invoke-WebRequest -Uri $Uri -Headers @{"Accept-Encoding"="gzip,deflate"} -OutFile $(Join-Path $LocalWVDpath $packageFile)
 
 # Check if the file was downloaded successfully
 if (Test-Path -Path $(Join-Path $LocalWVDpath $packageFile)) {
@@ -40,15 +40,14 @@ if (Test-Path -Path $(Join-Path $LocalWVDpath $packageFile)) {
 Write-Host "AVD AIB Customization - Install OstroSoft SMTP Component : Installing the OstroSoft SMTP Component..."
 Start-Process -FilePath "msiexec.exe" -ArgumentList "/package $(Join-Path $LocalWVDpath "ossmtp.msi") /qb /norestart" -Wait -PassThru | Out-Null
 
-$stopwatch.Stop()
-$elapsedTime = $stopwatch.Elapsed
-
 # Check the exit code of the installation and cleanup
 if ($LASTEXITCODE -eq 0) {
     #Cleanup
     if ((Test-Path -Path $LocalWVDpath -ErrorAction SilentlyContinue)) {
         Remove-Item -Path $LocalWVDpath -Force -Recurse -ErrorAction Continue | Out-Null
     }
+    $stopwatch.Stop()
+    $elapsedTime = $stopwatch.Elapsed
     Write-Host "AVD AIB Customization - Install OstroSoft SMTP Component : Installed successfully."
     Write-Host "*** AIB Customization - Install OstroSoft SMTP Component - Time taken: $elapsedTime ***"
 } else {
@@ -56,6 +55,8 @@ if ($LASTEXITCODE -eq 0) {
     if ((Test-Path -Path $LocalWVDpath -ErrorAction SilentlyContinue)) {
         Remove-Item -Path $LocalWVDpath -Force -Recurse -ErrorAction Continue | Out-Null
     }
+    $stopwatch.Stop()
+    $elapsedTime = $stopwatch.Elapsed
     Write-Host "AVD AIB Customization - Install OstroSoft SMTP Component : Installation failed with exit code $LASTEXITCODE."
     Write-Host "*** AIB Customization - Install OstroSoft SMTP Component - Time taken: $elapsedTime ***"
     exit $LASTEXITCODE

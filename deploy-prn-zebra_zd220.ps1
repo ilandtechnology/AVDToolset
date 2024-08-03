@@ -26,7 +26,7 @@ else {
 # Download the Zebra ZD220 Driver package
 Write-Host "AVD AIB Customization - Install Zebra ZD220 Driver : Downloading Zebra ZD220 Driver installer from URI: $Uri."
 [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
-Invoke-WebRequest -Uri $Uri -OutFile $(Join-Path $LocalWVDpath $packageFile)
+Invoke-WebRequest -Uri $Uri -Headers @{"Accept-Encoding"="gzip,deflate"} -OutFile $(Join-Path $LocalWVDpath $packageFile)
 
 # Check if the file was downloaded successfully
 if (Test-Path -Path $(Join-Path $LocalWVDpath $packageFile)) {
@@ -49,15 +49,14 @@ Write-Host "AVD AIB Customization - Install Zebra ZD220 Driver : Installing the 
 Start-Process -FilePath "pnputil.exe" -ArgumentList "/a $(Join-Path $LocalWVDpath '\ZEBRA\ZBRN.inf')" -Wait -PassThru | Out-Null
 Add-PrinterDriver -Name "ZDesigner ZD220-203dpi ZPL"
 
-$stopwatch.Stop()
-$elapsedTime = $stopwatch.Elapsed
-
 # Check the exit code of the installation and cleanup
 if ($LASTEXITCODE -eq 0) {
     #Cleanup
     if ((Test-Path -Path $LocalWVDpath -ErrorAction SilentlyContinue)) {
         Remove-Item -Path $LocalWVDpath -Force -Recurse -ErrorAction Continue | Out-Null
     }
+    $stopwatch.Stop()
+    $elapsedTime = $stopwatch.Elapsed
     Write-Host "AVD AIB Customization - Install Zebra ZD220 Driver : Installed successfully."
     Write-Host "*** AIB Customization - Install Zebra ZD220 Driver - Time taken: $elapsedTime ***"
 } else {
@@ -65,6 +64,8 @@ if ($LASTEXITCODE -eq 0) {
     if ((Test-Path -Path $LocalWVDpath -ErrorAction SilentlyContinue)) {
         Remove-Item -Path $LocalWVDpath -Force -Recurse -ErrorAction Continue | Out-Null
     }
+    $stopwatch.Stop()
+    $elapsedTime = $stopwatch.Elapsed
     Write-Host "AVD AIB Customization - Install Zebra ZD220 Driver : Installation failed with exit code $LASTEXITCODE."
     Write-Host "*** AIB Customization - Install Zebra ZD220 Driver - Time taken: $elapsedTime ***"
     exit $LASTEXITCODE
