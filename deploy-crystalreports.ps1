@@ -15,11 +15,10 @@ if (-not (Test-Path -Path $destinationFolder)) {
 } else {
     Write-Host "AVD AIB Customization - Install Cristal Reports XI : Temp directory already exists."
 }
-if( -not (Test-Path -Path $LocalWVDpath)) {
+if (-not (Test-Path -Path $LocalWVDpath)) {
     Write-Host "AVD AIB Customization - Install Cristal Reports XI : Creating directory: $LocalWVDpath."
     New-Item -ItemType Directory -Path $LocalWVDpath | Out-Null
-}
-else {
+} else {
     Write-Host "AVD AIB Customization - Install Cristal Reports XI : $LocalWVDpath already exists."
 }
 
@@ -38,7 +37,7 @@ if (Test-Path -Path $(Join-Path $LocalWVDpath $packageFile)) {
 
 # Install the Cristal Reports XI package
 Write-Host "AVD AIB Customization - Install Cristal Reports XI : Installing the Cristal Reports XI..."
-Start-Process -FilePath "msiexec.exe" -ArgumentList "/package $(Join-Path $LocalWVDpath "crystalreports_xi-sss.msi") /qb /norestart" -Wait -PassThru | Out-Null
+Start-Process -FilePath "msiexec.exe" -ArgumentList "/package $(Join-Path $LocalWVDpath $packageFile) /qn /norestart" -Wait -PassThru | Out-Null
 
 # Check the exit code of the installation and cleanup
 if ($LASTEXITCODE -eq 0) {

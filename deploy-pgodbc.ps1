@@ -15,11 +15,10 @@ if (-not (Test-Path -Path $destinationFolder)) {
 } else {
     Write-Host "AVD AIB Customization - Install PostgreSQL ODBC : Temp directory already exists."
 }
-if( -not (Test-Path -Path $LocalWVDpath)) {
+if (-not (Test-Path -Path $LocalWVDpath)) {
     Write-Host "AVD AIB Customization - Install PostgreSQL ODBC : Creating directory: $LocalWVDpath."
     New-Item -ItemType Directory -Path $LocalWVDpath | Out-Null
-}
-else {
+} else {
     Write-Host "AVD AIB Customization - Install PostgreSQL ODBC : $LocalWVDpath already exists."
 }
 
@@ -46,7 +45,7 @@ Write-Host "AVD AIB Customization - Install PostgreSQL ODBC : Expanded PostgreSQ
 
 # Install the PostgreSQL ODBC package
 Write-Host "AVD AIB Customization - Install PostgreSQL ODBC : Installing the PostgreSQL ODBC..."
-Start-Process -FilePath "msiexec.exe" -ArgumentList "/package $(Join-Path $LocalWVDpath "pgsqlodbc\psqlodbc_x64.msi") /qb /norestart" -Wait -PassThru | Out-Null
+Start-Process -FilePath "msiexec.exe" -ArgumentList "/package $(Join-Path $LocalWVDpath "pgsqlodbc\psqlodbc_x64.msi") /qn /norestart" -Wait -PassThru | Out-Null
 
 # Check the exit code of the installation and cleanup
 if ($LASTEXITCODE -eq 0) {

@@ -15,11 +15,10 @@ if (-not (Test-Path -Path $destinationFolder)) {
 } else {
     Write-Host "AVD AIB Customization - Install Interface Plus : Temp directory already exists."
 }
-if( -not (Test-Path -Path $LocalWVDpath)) {
+if (-not (Test-Path -Path $LocalWVDpath)) {
     Write-Host "AVD AIB Customization - Install Interface Plus : Creating directory: $LocalWVDpath."
     New-Item -ItemType Directory -Path $LocalWVDpath | Out-Null
-}
-else {
+} else {
     Write-Host "AVD AIB Customization - Install Interface Plus : $LocalWVDpath already exists."
 }
 
@@ -38,7 +37,7 @@ if (Test-Path -Path $(Join-Path $LocalWVDpath $packageFile)) {
 
 # Install the Interface Plus package
 Write-Host "AVD AIB Customization - Install Interface Plus : Installing the Interface Plus..."
-Start-Process -FilePath "msiexec.exe" -ArgumentList "/package $(Join-Path $LocalWVDpath "interfaceplus.msi") /qb /norestart" -Wait -PassThru | Out-Null
+Start-Process -FilePath "msiexec.exe" -ArgumentList "/package $(Join-Path $LocalWVDpath $packageFile) /qn /norestart" -Wait -PassThru | Out-Null
 
 # Check the exit code of the installation and cleanup
 if ($LASTEXITCODE -eq 0) {

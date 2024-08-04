@@ -1,5 +1,5 @@
 # Define variables
-$Uri = "https://raw.githubusercontent.com/ilandtechnology/AVDToolset/main/interfaceplus.msi"
+$Uri = "https://raw.githubusercontent.com/ilandtechnology/AVDToolset/main/ossmtp.msi"
 $packageFile = "ossmtp.msi"
 $destinationFolder = "C:\Temp"
 $LocalWVDpath = "C:\Temp\wvd\"
@@ -15,11 +15,10 @@ if (-not (Test-Path -Path $destinationFolder)) {
 } else {
     Write-Host "AVD AIB Customization - Install OstroSoft SMTP Component : Temp directory already exists."
 }
-if( -not (Test-Path -Path $LocalWVDpath)) {
+if (-not (Test-Path -Path $LocalWVDpath)) {
     Write-Host "AVD AIB Customization - Install OstroSoft SMTP Component : Creating directory: $LocalWVDpath."
     New-Item -ItemType Directory -Path $LocalWVDpath | Out-Null
-}
-else {
+} else {
     Write-Host "AVD AIB Customization - Install OstroSoft SMTP Component : $LocalWVDpath already exists."
 }
 
@@ -38,7 +37,7 @@ if (Test-Path -Path $(Join-Path $LocalWVDpath $packageFile)) {
 
 # Install the OstroSoft SMTP Component package
 Write-Host "AVD AIB Customization - Install OstroSoft SMTP Component : Installing the OstroSoft SMTP Component..."
-Start-Process -FilePath "msiexec.exe" -ArgumentList "/package $(Join-Path $LocalWVDpath "ossmtp.msi") /qb /norestart" -Wait -PassThru | Out-Null
+Start-Process -FilePath "msiexec.exe" -ArgumentList "/package $(Join-Path $LocalWVDpath $packageFile) /qn /norestart" -Wait -PassThru | Out-Null
 
 # Check the exit code of the installation and cleanup
 if ($LASTEXITCODE -eq 0) {

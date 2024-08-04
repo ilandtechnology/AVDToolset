@@ -15,11 +15,10 @@ if (-not (Test-Path -Path $destinationFolder)) {
 } else {
     Write-Host "AVD AIB Customization - Install Epson TM-T20X Driver : Temp directory already exists."
 }
-if( -not (Test-Path -Path $LocalWVDpath)) {
+if (-not (Test-Path -Path $LocalWVDpath)) {
     Write-Host "AVD AIB Customization - Install Epson TM-T20X Driver : Creating directory: $LocalWVDpath."
     New-Item -ItemType Directory -Path $LocalWVDpath | Out-Null
-}
-else {
+} else {
     Write-Host "AVD AIB Customization - Install Epson TM-T20X Driver : $LocalWVDpath already exists."
 }
 

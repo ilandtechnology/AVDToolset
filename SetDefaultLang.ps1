@@ -9,9 +9,9 @@
 
 [CmdletBinding()]
   Param (
-#        [Parameter(Mandatory)]
-        [ValidateSet("Arabic (Saudi Arabia)","Bulgarian (Bulgaria)","Chinese (Simplified, China)","Chinese (Traditional, Taiwan)","Croatian (Croatia)","Czech (Czech Republic)","Danish (Denmark)","Dutch (Netherlands)", "English (United Kingdom)", "Estonian (Estonia)", "Finnish (Finland)", "French (Canada)", "French (France)", "German (Germany)", "Greek (Greece)", "Hebrew (Israel)", "Hungarian (Hungary)", "Italian (Italy)", "Japanese (Japan)", "Korean (Korea)", "Latvian (Latvia)", "Lithuanian (Lithuania)", "Norwegian, Bokmål (Norway)", "Polish (Poland)", "Portuguese (Brazil)", "Portuguese (Portugal)", "Romanian (Romania)", "Russian (Russia)", "Serbian (Latin, Serbia)", "Slovak (Slovakia)", "Slovenian (Slovenia)", "Spanish (Mexico)", "Spanish (Spain)", "Swedish (Sweden)", "Thai (Thailand)", "Turkish (Turkey)", "Ukrainian (Ukraine)", "English (Australia)", "English (United States)")]
-        [string]$Language="Portuguese (Brazil)"
+    # [Parameter(Mandatory)]
+    [ValidateSet("Arabic (Saudi Arabia)","Bulgarian (Bulgaria)","Chinese (Simplified, China)","Chinese (Traditional, Taiwan)","Croatian (Croatia)","Czech (Czech Republic)","Danish (Denmark)","Dutch (Netherlands)", "English (United Kingdom)", "Estonian (Estonia)", "Finnish (Finland)", "French (Canada)", "French (France)", "German (Germany)", "Greek (Greece)", "Hebrew (Israel)", "Hungarian (Hungary)", "Italian (Italy)", "Japanese (Japan)", "Korean (Korea)", "Latvian (Latvia)", "Lithuanian (Lithuania)", "Norwegian, BokmÃ¥l (Norway)", "Polish (Poland)", "Portuguese (Brazil)", "Portuguese (Portugal)", "Romanian (Romania)", "Russian (Russia)", "Serbian (Latin, Serbia)", "Slovak (Slovakia)", "Slovenian (Slovenia)", "Spanish (Mexico)", "Spanish (Spain)", "Swedish (Sweden)", "Thai (Thailand)", "Turkish (Turkey)", "Ukrainian (Ukraine)", "English (Australia)", "English (United States)")]
+    [string]$Language="Portuguese (Brazil)"
 )
 
 function Get-RegionInfo($Name='*')
@@ -28,13 +28,12 @@ function Get-RegionInfo($Name='*')
     }
 
     if($null -eq $languageTag) {
-        return
+      return
     } else {
-        $region = [System.Globalization.RegionInfo]$culture.Name
-        return @($languageTag, $region.GeoId)
+      $region = [System.Globalization.RegionInfo]$languageTag
+      return @($languageTag, $region.GeoId)
     }
-  }
-  catch {
+  } catch {
     Write-Host "*** AVD AIB CUSTOMIZER PHASE: Set default Language - Exception occurred while getting region information***"
     Write-Host $PSItem.Exception
     return
@@ -73,7 +72,7 @@ $LanguagesDictionary.Add("Japanese (Japan)",	"ja-JP")
 $LanguagesDictionary.Add("Korean (Korea)",	"ko-KR")
 $LanguagesDictionary.Add("Latvian (Latvia)",	"lv-LV")
 $LanguagesDictionary.Add("Lithuanian (Lithuania)",	"lt-LT")
-$LanguagesDictionary.Add("Norwegian, Bokmål (Norway)",	"nb-NO")
+$LanguagesDictionary.Add("Norwegian, BokmÃ¥l (Norway)",	"nb-NO")
 $LanguagesDictionary.Add("Polish (Poland)",	"pl-PL")
 $LanguagesDictionary.Add("Portuguese (Brazil)",	"pt-BR")
 $LanguagesDictionary.Add("Portuguese (Portugal)",	"pt-PT")
@@ -91,8 +90,6 @@ $LanguagesDictionary.Add("Ukrainian (Ukraine)",	"uk-UA")
 $LanguagesDictionary.Add("English (Australia)",	"en-AU")
 
 try {
-
-
   # Disable LanguageComponentsInstaller while installing language packs
   # See Bug 45044965: Installing language pack fails with error: ERROR_SHARING_VIOLATION for more details
   Disable-ScheduledTask -TaskName "\Microsoft\Windows\LanguageComponentsInstaller\Installation" -ErrorAction SilentlyContinue
@@ -101,7 +98,7 @@ try {
   $languageDetails = Get-RegionInfo -Name $Language
 
   if($null -eq $languageDetails) {
-    $LanguageTag = $LanguagesDictionary.$Language 
+    $LanguageTag = $LanguagesDictionary.$Language
   } else {
     $languageTag = $languageDetails[0]
     $GeoID = $languageDetails[1]
@@ -119,8 +116,7 @@ try {
         break
       }
     }
-  }
-  catch {
+  } catch {
     Write-Host "*** AVD AIB CUSTOMIZER PHASE: Set default Language - Exception occurred while installing language packs***"
     Write-Host $PSItem.Exception
   }
@@ -128,25 +124,19 @@ try {
   if(-Not $foundLanguage) {
     # retry in case we hit transient errors
     for($i=1; $i -le 5; $i++) {
-        try {
-            Write-Host "*** AVD AIB CUSTOMIZER PHASE : Set default language - Install language packs -  Attempt: $i ***"
-            Install-Language -Language $LanguageTag -ErrorAction Stop
-            Write-Host "*** AVD AIB CUSTOMIZER PHASE : Set default lanhguage - Install language packs -  Installed language $LanguageTag ***"
-            break
-        }
-        catch {
-            Write-Host "*** AVD AIB CUSTOMIZER PHASE : Set default language - Install language packs - Exception occurred***"
-            Write-Host $PSItem.Exception
-            continue
-        }
+      try {
+        Write-Host "*** AVD AIB CUSTOMIZER PHASE : Set default language - Install language packs -  Attempt: $i ***"
+        Install-Language -Language $LanguageTag -ErrorAction Stop
+        Write-Host "*** AVD AIB CUSTOMIZER PHASE : Set default lanhguage - Install language packs -  Installed language $LanguageTag ***"
+        break
+      } catch {
+        Write-Host "*** AVD AIB CUSTOMIZER PHASE : Set default language - Install language packs - Exception occurred***"
+        Write-Host $PSItem.Exception
+        continue
+      }
     }
-  }
-  else {
-     Write-Host "*** AVD AIB CUSTOMIZER PHASE : Set default language - Language pack for $LanguageTag is installed already***"
-  }
-  if($null -ne $GeoID) {
-    Set-WinHomeLocation -GeoID $GeoID
-    Write-Host "*** AVD AIB CUSTOMIZER PHASE: Set default Language - $Language with $LanguageTag has been set as the default region***"
+  } else {
+    Write-Host "*** AVD AIB CUSTOMIZER PHASE : Set default language - Language pack for $LanguageTag is installed already***"
   }
 
   Set-SystemPreferredUILanguage -Language $LanguageTag
@@ -160,21 +150,24 @@ try {
 
   foreach($language in $installedUserLanguagesList)
   {
-       $userLanguageList.Add($language.LanguageTag)
+    $userLanguageList.Add($language.LanguageTag)
   }
 
   Set-WinUserLanguageList -LanguageList $userLanguageList -Force
 
   Write-Host "*** AVD AIB CUSTOMIZER PHASE: Set default Language - $Language with $LanguageTag has been set as the default System Preferred UI Language***"
 
-}
-catch {
+  if($null -ne $GeoID) {
+    Set-WinHomeLocation -GeoID $GeoID
+    Write-Host "*** AVD AIB CUSTOMIZER PHASE: Set default Language - $Language with $LanguageTag has been set as the default region***"
+  }
+} catch {
     Write-Host "*** AVD AIB CUSTOMIZER PHASE: Set default Language - Exception occurred***"
     Write-Host $PSItem.Exception
 }
 
 if ((Test-Path -Path $templateFilePathFolder -ErrorAction SilentlyContinue)) {
-    Remove-Item -Path $templateFilePathFolder -Force -Recurse -ErrorAction Continue
+  Remove-Item -Path $templateFilePathFolder -Force -Recurse -ErrorAction Continue
 }
 
 # Enable LanguageComponentsInstaller after language packs are installed
