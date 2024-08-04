@@ -45,6 +45,7 @@ Write-Host "AVD AIB Customization - Install Epson TM-T20X Driver : Expanded Epso
 
 # Install the Epson TM-T20X Driver package
 Write-Host "AVD AIB Customization - Install Epson TM-T20X Driver : Installing the Epson TM-T20X Driver..."
+$LASTEXITCODE = 0
 Start-Process -FilePath "pnputil.exe" -ArgumentList "/a $(Join-Path $LocalWVDpath '\EPSON\EA6INSTMT.INF')" -Wait -PassThru | Out-Null
 Add-PrinterDriver -Name "EPSON TM-T(203dpi) Receipt6"
 

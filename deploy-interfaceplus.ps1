@@ -37,6 +37,7 @@ if (Test-Path -Path $(Join-Path $LocalWVDpath $packageFile)) {
 
 # Install the Interface Plus package
 Write-Host "AVD AIB Customization - Install Interface Plus : Installing the Interface Plus..."
+$LASTEXITCODE = 0
 Start-Process -FilePath "msiexec.exe" -ArgumentList "/package $(Join-Path $LocalWVDpath $packageFile) /qn /norestart" -Wait -PassThru | Out-Null
 
 # Check the exit code of the installation and cleanup

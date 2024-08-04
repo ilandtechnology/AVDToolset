@@ -45,6 +45,7 @@ Write-Host "AVD AIB Customization - Install Zebra ZD220 Driver : Expanded Zebra 
 
 # Install the Zebra ZD220 Driver package
 Write-Host "AVD AIB Customization - Install Zebra ZD220 Driver : Installing the Zebra ZD220 Driver..."
+$LASTEXITCODE = 0
 Start-Process -FilePath "pnputil.exe" -ArgumentList "/a $(Join-Path $LocalWVDpath '\ZEBRA\ZBRN.inf')" -Wait -PassThru | Out-Null
 Add-PrinterDriver -Name "ZDesigner ZD220-203dpi ZPL"
 

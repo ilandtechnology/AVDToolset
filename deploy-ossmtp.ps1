@@ -37,6 +37,7 @@ if (Test-Path -Path $(Join-Path $LocalWVDpath $packageFile)) {
 
 # Install the OstroSoft SMTP Component package
 Write-Host "AVD AIB Customization - Install OstroSoft SMTP Component : Installing the OstroSoft SMTP Component..."
+$LASTEXITCODE = 0
 Start-Process -FilePath "msiexec.exe" -ArgumentList "/package $(Join-Path $LocalWVDpath $packageFile) /qn /norestart" -Wait -PassThru | Out-Null
 
 # Check the exit code of the installation and cleanup

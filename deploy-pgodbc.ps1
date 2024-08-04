@@ -45,6 +45,7 @@ Write-Host "AVD AIB Customization - Install PostgreSQL ODBC : Expanded PostgreSQ
 
 # Install the PostgreSQL ODBC package
 Write-Host "AVD AIB Customization - Install PostgreSQL ODBC : Installing the PostgreSQL ODBC..."
+$LASTEXITCODE = 0
 Start-Process -FilePath "msiexec.exe" -ArgumentList "/package $(Join-Path $LocalWVDpath "pgsqlodbc\psqlodbc_x64.msi") /qn /norestart" -Wait -PassThru | Out-Null
 
 # Check the exit code of the installation and cleanup
