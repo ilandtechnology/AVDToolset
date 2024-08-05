@@ -37,11 +37,11 @@ if (Test-Path -Path $(Join-Path $LocalWVDpath $packageFile)) {
 
 # Install the OstroSoft SMTP Component package
 Write-Host "AVD AIB Customization - Install OstroSoft SMTP Component : Installing the OstroSoft SMTP Component..."
-$LASTEXITCODE = 0
-Start-Process -FilePath "msiexec.exe" -ArgumentList "/package $(Join-Path $LocalWVDpath $packageFile) /qn /norestart" -Wait -PassThru | Out-Null
+($process = Start-Process -FilePath "msiexec.exe" -ArgumentList "/package $(Join-Path $LocalWVDpath $packageFile) /qn /norestart" -PassThru).PriorityClass = [System.Diagnostics.ProcessPriorityClass]::AboveNormal
+$process.WaitForExit()
 
 # Check the exit code of the installation and cleanup
-if ($LASTEXITCODE -eq 0) {
+if ($process.ExitCode -eq 0) {
     #Cleanup
     if ((Test-Path -Path $LocalWVDpath -ErrorAction SilentlyContinue)) {
         Remove-Item -Path $LocalWVDpath -Force -Recurse -ErrorAction Continue | Out-Null
@@ -57,7 +57,7 @@ if ($LASTEXITCODE -eq 0) {
     }
     $stopwatch.Stop()
     $elapsedTime = $stopwatch.Elapsed
-    Write-Host "AVD AIB Customization - Install OstroSoft SMTP Component : Installation failed with exit code $LASTEXITCODE."
+    Write-Host "AVD AIB Customization - Install OstroSoft SMTP Component : Installation failed with exit code $($process.ExitCode)."
     Write-Host "*** AIB Customization - Install OstroSoft SMTP Component - Time taken: $elapsedTime ***"
-    exit $LASTEXITCODE
+    exit $process.ExitCode
 }

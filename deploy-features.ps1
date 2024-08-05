@@ -2,8 +2,8 @@ $stopwatch = [System.Diagnostics.Stopwatch]::StartNew()
 Write-Host "*** Starting AIB Customization - Install Windows Features ***"
 
 # Install the .NET Framework 3.5
-Write-Host "AVD AIB Customization - Install Windows Features : Installing the NET Framework 3.5..."
 $enableResult = 0
+Write-Host "AVD AIB Customization - Install Windows Features : Installing the NET Framework 3.5..."
 Enable-WindowsOptionalFeature -Online -FeatureName NetFx3 -NoRestart
 if( -not $? ) { $enableResult = 1 }
 

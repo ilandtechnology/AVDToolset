@@ -45,11 +45,11 @@ Write-Host "AVD AIB Customization - Install PostgreSQL ODBC : Expanded PostgreSQ
 
 # Install the PostgreSQL ODBC package
 Write-Host "AVD AIB Customization - Install PostgreSQL ODBC : Installing the PostgreSQL ODBC..."
-$LASTEXITCODE = 0
-Start-Process -FilePath "msiexec.exe" -ArgumentList "/package $(Join-Path $LocalWVDpath "pgsqlodbc\psqlodbc_x64.msi") /qn /norestart" -Wait -PassThru | Out-Null
+($process = Start-Process -FilePath "msiexec.exe" -ArgumentList "/package $(Join-Path $LocalWVDpath "pgsqlodbc\psqlodbc_x64.msi") /qn /norestart" -PassThru).PriorityClass = [System.Diagnostics.ProcessPriorityClass]::AboveNormal
+$process.WaitForExit()
 
 # Check the exit code of the installation and cleanup
-if ($LASTEXITCODE -eq 0) {
+if ($process.ExitCode -eq 0) {
     #Cleanup
     if ((Test-Path -Path $LocalWVDpath -ErrorAction SilentlyContinue)) {
         Remove-Item -Path $LocalWVDpath -Force -Recurse -ErrorAction Continue | Out-Null
@@ -65,7 +65,7 @@ if ($LASTEXITCODE -eq 0) {
     }
     $stopwatch.Stop()
     $elapsedTime = $stopwatch.Elapsed
-    Write-Host "AVD AIB Customization - Install PostgreSQL ODBC : Installation failed with exit code $LASTEXITCODE."
+    Write-Host "AVD AIB Customization - Install PostgreSQL ODBC : Installation failed with exit code $($process.ExitCode)."
     Write-Host "*** AIB Customization - Install PostgreSQL ODBC - Time taken: $elapsedTime ***"
-    exit $LASTEXITCODE
+    exit $process.ExitCode
 }

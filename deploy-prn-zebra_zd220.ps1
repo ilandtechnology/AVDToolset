@@ -45,12 +45,12 @@ Write-Host "AVD AIB Customization - Install Zebra ZD220 Driver : Expanded Zebra 
 
 # Install the Zebra ZD220 Driver package
 Write-Host "AVD AIB Customization - Install Zebra ZD220 Driver : Installing the Zebra ZD220 Driver..."
-$LASTEXITCODE = 0
-Start-Process -FilePath "pnputil.exe" -ArgumentList "/a $(Join-Path $LocalWVDpath '\ZEBRA\ZBRN.inf')" -Wait -PassThru | Out-Null
+($process = Start-Process -FilePath "pnputil.exe" -ArgumentList "/a $(Join-Path $LocalWVDpath '\ZEBRA\ZBRN.inf')" -PassThru).PriorityClass = [System.Diagnostics.ProcessPriorityClass]::AboveNormal
+$process.WaitForExit()
 Add-PrinterDriver -Name "ZDesigner ZD220-203dpi ZPL"
 
 # Check the exit code of the installation and cleanup
-if ($LASTEXITCODE -eq 0) {
+if ($process.ExitCode -eq 0) {
     #Cleanup
     if ((Test-Path -Path $LocalWVDpath -ErrorAction SilentlyContinue)) {
         Remove-Item -Path $LocalWVDpath -Force -Recurse -ErrorAction Continue | Out-Null
@@ -66,7 +66,7 @@ if ($LASTEXITCODE -eq 0) {
     }
     $stopwatch.Stop()
     $elapsedTime = $stopwatch.Elapsed
-    Write-Host "AVD AIB Customization - Install Zebra ZD220 Driver : Installation failed with exit code $LASTEXITCODE."
+    Write-Host "AVD AIB Customization - Install Zebra ZD220 Driver : Installation failed with exit code $($process.ExitCode)."
     Write-Host "*** AIB Customization - Install Zebra ZD220 Driver - Time taken: $elapsedTime ***"
-    exit $LASTEXITCODE
+    exit $process.ExitCode
 }

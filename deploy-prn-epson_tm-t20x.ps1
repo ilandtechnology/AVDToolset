@@ -45,12 +45,12 @@ Write-Host "AVD AIB Customization - Install Epson TM-T20X Driver : Expanded Epso
 
 # Install the Epson TM-T20X Driver package
 Write-Host "AVD AIB Customization - Install Epson TM-T20X Driver : Installing the Epson TM-T20X Driver..."
-$LASTEXITCODE = 0
-Start-Process -FilePath "pnputil.exe" -ArgumentList "/a $(Join-Path $LocalWVDpath '\EPSON\EA6INSTMT.INF')" -Wait -PassThru | Out-Null
+($process = Start-Process -FilePath "pnputil.exe" -ArgumentList "/a $(Join-Path $LocalWVDpath '\EPSON\EA6INSTMT.INF')" -PassThru).PriorityClass = [System.Diagnostics.ProcessPriorityClass]::AboveNormal
+$process.WaitForExit()
 Add-PrinterDriver -Name "EPSON TM-T(203dpi) Receipt6"
 
 # Check the exit code of the installation and cleanup
-if ($LASTEXITCODE -eq 0) {
+if ($process.ExitCode -eq 0) {
     #Cleanup
     if ((Test-Path -Path $LocalWVDpath -ErrorAction SilentlyContinue)) {
         Remove-Item -Path $LocalWVDpath -Force -Recurse -ErrorAction Continue | Out-Null
@@ -66,7 +66,7 @@ if ($LASTEXITCODE -eq 0) {
     }
     $stopwatch.Stop()
     $elapsedTime = $stopwatch.Elapsed
-    Write-Host "AVD AIB Customization - Install Epson TM-T20X Driver : Installation failed with exit code $LASTEXITCODE."
+    Write-Host "AVD AIB Customization - Install Epson TM-T20X Driver : Installation failed with exit code $($process.ExitCode)."
     Write-Host "*** AIB Customization - Install Epson TM-T20X Driver - Time taken: $elapsedTime ***"
-    exit $LASTEXITCODE
+    exit $process.ExitCode
 }

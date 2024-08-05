@@ -2,10 +2,11 @@ $stopwatch = [System.Diagnostics.Stopwatch]::StartNew()
 Write-Host "*** Starting AIB Customization - Uninstall Windows Features ***"
 
 # Uninstall the WorkFolders-Client feature
-Write-Host "AVD AIB Customization - Uninstall Windows Features : Uninstalling the WorkFolders-Client..."
 $enableResult = 0
+Write-Host "AVD AIB Customization - Uninstall Windows Features : Uninstalling the WorkFolders-Client..."
 Disable-WindowsOptionalFeature -Online -FeatureName WorkFolders-Client -NoRestart
 if( -not $? ) { $enableResult = 1 }
+Write-Host "AVD AIB Customization - Uninstall Windows Features : Uninstalling the Windows Media Player..."
 Disable-WindowsOptionalFeature -Online -FeatureName WindowsMediaPlayer -NoRestart
 if( -not $? ) { $enableResult = 1 }
 
