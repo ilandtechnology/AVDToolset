@@ -145,15 +145,15 @@ try {
   Set-WinUILanguageOverride -Language $LanguageTag
 
   # Enable language Keyboard for Windows.
-  $userLanguageList = New-WinUserLanguageList -Language $LanguageTag
-  $installedUserLanguagesList = Get-WinUserLanguageList
+  # $userLanguageList = New-WinUserLanguageList -Language $LanguageTag
+  # $installedUserLanguagesList = Get-WinUserLanguageList
 
-  foreach($language in $installedUserLanguagesList)
-  {
-    $userLanguageList.Add($language.LanguageTag)
-  }
+  # foreach($language in $installedUserLanguagesList)
+  # {
+  #   $userLanguageList.Add($language.LanguageTag)
+  # }
 
-  Set-WinUserLanguageList -LanguageList $userLanguageList -Force
+  # Set-WinUserLanguageList -LanguageList $userLanguageList -Force
 
   Write-Host "*** AVD AIB CUSTOMIZER PHASE: Set default Language - $Language with $LanguageTag has been set as the default System Preferred UI Language***"
 

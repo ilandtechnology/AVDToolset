@@ -18,7 +18,7 @@ if ( $enableResult -eq 0 ) {
 } else {
     $stopwatch.Stop()
     $elapsedTime = $stopwatch.Elapsed
-    Write-Host "AVD AIB Customization - Uninstall Windows Features : Uninstall failed with exit code $($enableResult)."
+    Write-Host "AVD AIB Customization - Uninstall Windows Features : Uninstall failed with exit code $enableResult."
     Write-Host "*** AIB Customization - Uninstall Windows Features - Time taken: $elapsedTime ***"
     exit $enableResult
 }

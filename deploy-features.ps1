@@ -16,7 +16,7 @@ if( $enableResult -eq 0 ) {
 } else {
     $stopwatch.Stop()
     $elapsedTime = $stopwatch.Elapsed
-    Write-Host "AVD AIB Customization - Install Windows Features : Install failed with exit code $($enableResult)."
+    Write-Host "AVD AIB Customization - Install Windows Features : Install failed with exit code $enableResult."
     Write-Host "*** AIB Customization - Install Windows Features - Time taken: $elapsedTime ***"
     exit $enableResult
 }
