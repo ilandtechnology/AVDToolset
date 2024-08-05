@@ -10,8 +10,8 @@
 [CmdletBinding()]
   Param (
     # [Parameter(Mandatory)]
-    [ValidateSet("Arabic (Saudi Arabia)","Bulgarian (Bulgaria)","Chinese (Simplified, China)","Chinese (Traditional, Taiwan)","Croatian (Croatia)","Czech (Czech Republic)","Danish (Denmark)","Dutch (Netherlands)", "English (United Kingdom)", "Estonian (Estonia)", "Finnish (Finland)", "French (Canada)", "French (France)", "German (Germany)", "Greek (Greece)", "Hebrew (Israel)", "Hungarian (Hungary)", "Italian (Italy)", "Japanese (Japan)", "Korean (Korea)", "Latvian (Latvia)", "Lithuanian (Lithuania)", "Norwegian, BokmÃ¥l (Norway)", "Polish (Poland)", "Portuguese (Brazil)", "Portuguese (Portugal)", "Romanian (Romania)", "Russian (Russia)", "Serbian (Latin, Serbia)", "Slovak (Slovakia)", "Slovenian (Slovenia)", "Spanish (Mexico)", "Spanish (Spain)", "Swedish (Sweden)", "Thai (Thailand)", "Turkish (Turkey)", "Ukrainian (Ukraine)", "English (Australia)", "English (United States)")]
-    [string]$Language="Português (Brasil)"
+    [ValidateSet("Arabic (Saudi Arabia)","Bulgarian (Bulgaria)","Chinese (Simplified, China)","Chinese (Traditional, Taiwan)","Croatian (Croatia)","Czech (Czech Republic)","Danish (Denmark)","Dutch (Netherlands)", "English (United Kingdom)", "Estonian (Estonia)", "Finnish (Finland)", "French (Canada)", "French (France)", "German (Germany)", "Greek (Greece)", "Hebrew (Israel)", "Hungarian (Hungary)", "Italian (Italy)", "Japanese (Japan)", "Korean (Korea)", "Latvian (Latvia)", "Lithuanian (Lithuania)", "Norwegian, Bokmål (Norway)", "Polish (Poland)", "Portugu�s (Brasil)", "Portuguese (Brazil)", "Portuguese (Portugal)", "Romanian (Romania)", "Russian (Russia)", "Serbian (Latin, Serbia)", "Slovak (Slovakia)", "Slovenian (Slovenia)", "Spanish (Mexico)", "Spanish (Spain)", "Swedish (Sweden)", "Thai (Thailand)", "Turkish (Turkey)", "Ukrainian (Ukraine)", "English (Australia)", "English (United States)")]
+    [string]$Language="Portugu�s (Brasil)"
 )
 
 function Get-RegionInfo($Name='*')
@@ -72,9 +72,10 @@ $LanguagesDictionary.Add("Japanese (Japan)",	"ja-JP")
 $LanguagesDictionary.Add("Korean (Korea)",	"ko-KR")
 $LanguagesDictionary.Add("Latvian (Latvia)",	"lv-LV")
 $LanguagesDictionary.Add("Lithuanian (Lithuania)",	"lt-LT")
-$LanguagesDictionary.Add("Norwegian, BokmÃ¥l (Norway)",	"nb-NO")
+$LanguagesDictionary.Add("Norwegian, Bokmål (Norway)",	"nb-NO")
 $LanguagesDictionary.Add("Polish (Poland)",	"pl-PL")
 $LanguagesDictionary.Add("Portuguese (Brazil)",	"pt-BR")
+$LanguagesDictionary.Add("Portugu�s (Brasil)",	"pt-BR")
 $LanguagesDictionary.Add("Portuguese (Portugal)",	"pt-PT")
 $LanguagesDictionary.Add("Romanian (Romania)",	"ro-RO")
 $LanguagesDictionary.Add("Russian (Russia)",	"ru-RU")
