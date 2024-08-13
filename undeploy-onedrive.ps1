@@ -12,7 +12,7 @@ if ([Environment]::OSVersion.Version -ge (New-Object 'Version' 10.0.22000)) {
 }
 
 # Check the exit code of the installation and cleanup
-if ($null -eq $process.ExitCode -or $process.ExitCode -eq 0) {
+if ($process.ExitCode -eq 0) {
     $stopwatch.Stop()
     $elapsedTime = $stopwatch.Elapsed
     Write-Host "AVD AIB Customization - Uninstall OneDrive : Uninstall successfully."

@@ -66,13 +66,13 @@
                     {
                         "name": "avdBuiltInScript_installLanguagePacks-windowsUpdate",
                         "type": "WindowsUpdate",
-                        "searchCriteria": "IsInstalled=0",
-                        "filters": [
-                            "exclude:$_.Title -like '*KB890830*'",
-                            "exclude:$_.Title -like '*KB2267602*'",
-                            "exclude:$_.Title -like '*Preview*'",
-                            "include:$true"
-                        ],
+                        // "searchCriteria": "IsInstalled=0",
+                        // "filters": [
+                        //     "exclude:$_.Title -like '*KB890830*'",
+                        //     "exclude:$_.Title -like '*KB2267602*'",
+                        //     "exclude:$_.Title -like '*Preview*'",
+                        //     "include:$true"
+                        // ],
                         "updateLimit": 0
                     },
                     {
@@ -239,22 +239,22 @@
                         "runElevated": true,
                         "type": "PowerShell"
                     },
-                    {
-                        "destination": "C:\\AVDImage\\OfficeApps.ps1",
-                        "name": "avdBuiltInScript_removeOfficeApps",
-                        "sha256Checksum": "5d80ed2122fcb163d7778735c2101b11fce0f960fd8dd25aec38479212214cf4",
-                        "sourceUri": "https://raw.githubusercontent.com/Azure/RDS-Templates/master/CustomImageTemplateScripts/CustomImageTemplateScripts_2024-03-27/ConfigureOfficeApps.ps1",
-                        "type": "File"
-                    },
-                    {
-                        "inline": [
-                            "C:\\AVDImage\\OfficeApps.ps1 -Type \"Remove\" -Applications \"Access\",\"OneNote\",\"Outlook\",\"Publisher\" -Version \"64\""
-                        ],
-                        "name": "avdBuiltInScript_removeOfficeApps-parameter",
-                        "runAsSystem": true,
-                        "runElevated": true,
-                        "type": "PowerShell"
-                    },
+                    // {
+                    //     "destination": "C:\\AVDImage\\OfficeApps.ps1",
+                    //     "name": "avdBuiltInScript_removeOfficeApps",
+                    //     "sha256Checksum": "5d80ed2122fcb163d7778735c2101b11fce0f960fd8dd25aec38479212214cf4",
+                    //     "sourceUri": "https://raw.githubusercontent.com/Azure/RDS-Templates/master/CustomImageTemplateScripts/CustomImageTemplateScripts_2024-03-27/ConfigureOfficeApps.ps1",
+                    //     "type": "File"
+                    // },
+                    // {
+                    //     "inline": [
+                    //         "C:\\AVDImage\\OfficeApps.ps1 -Type \"Remove\" -Applications \"Access\",\"OneNote\",\"Outlook\",\"Publisher\" -Version \"64\""
+                    //     ],
+                    //     "name": "avdBuiltInScript_removeOfficeApps-parameter",
+                    //     "runAsSystem": true,
+                    //     "runElevated": true,
+                    //     "type": "PowerShell"
+                    // },
                     {
                         "name": "Install PostgreSQL ODBC component",
                         "runAsSystem": true,
