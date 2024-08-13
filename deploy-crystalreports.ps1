@@ -37,8 +37,9 @@ if (Test-Path -Path $(Join-Path $LocalWVDpath $packageFile)) {
 
 # Install the Crystal Reports package
 Write-Host "AVD AIB Customization - Install Crystal Reports : Installing the Crystal Reports..."
-($process = Start-Process -FilePath "msiexec.exe" -ArgumentList "/package $(Join-Path $LocalWVDpath $packageFile) /qn /norestart" -PassThru).PriorityClass = [System.Diagnostics.ProcessPriorityClass]::AboveNormal
+($process = Start-Process -FilePath "msiexec.exe" -ArgumentList "/i $(Join-Path $LocalWVDpath $packageFile) /qn /l*v C:\CRInstall.log ADDLOCAL=ALL REBOOT=ReallySuppress" -PassThru).PriorityClass = [System.Diagnostics.ProcessPriorityClass]::AboveNormal
 $process.WaitForExit()
+Write-Host "ExitCode: $($process.ExitCode)"
 
 # Check the exit code of the installation and cleanup
 if ($process.ExitCode -eq 0) {
