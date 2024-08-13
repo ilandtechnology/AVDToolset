@@ -1,18 +1,18 @@
-// AVDWin10ImgG2v3wM365
+// AVDWin10ImgG1v1
 {
     "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
-        "imageTemplates_AVDWin11ImageGen2v3_name": {
-            "defaultValue": "AVDWin11ImageGen2v3",
+        "imageTemplates_AVDWin10ImgG1v1_name": {
+            "defaultValue": "AVDWin10ImgG1v1",
             "type": "String"
         },
         "galleries_avdimagegallery_externalid": {
             "defaultValue": "/subscriptions/f0d9e471-1f50-415d-97c1-856e26753202/resourceGroups/rg-avd-prd-002/providers/microsoft.compute/galleries/avdimagegallery",
             "type": "String"
         },
-        "virtualNetworks_vnet_prd_wus2_001_externalid": {
-            "defaultValue": "/subscriptions/f0d9e471-1f50-415d-97c1-856e26753202/resourceGroups/rg-shared-prd-001/providers/Microsoft.Network/virtualNetworks/vnet-prd-wus2-001",
+        "virtualNetworks_vnet_prd_eus2_001_externalid": {
+            "defaultValue": "/subscriptions/f0d9e471-1f50-415d-97c1-856e26753202/resourceGroups/rg-shared-prd-001/providers/Microsoft.Network/virtualNetworks/vnet-prd-eus2-001",
             "type": "String"
         }
     },
@@ -21,8 +21,8 @@
         {
             "type": "Microsoft.VirtualMachineImages/imageTemplates",
             "apiVersion": "2024-02-01",
-            "name": "[parameters('imageTemplates_AVDWin11ImageGen2v3_name')]",
-            "location": "westus2",
+            "name": "[parameters('imageTemplates_AVDWin10ImgG1v1_name')]",
+            "location": "eastus2",
             "tags": {
                 "AVD_IMAGE_TEMPLATE": "AVD_IMAGE_TEMPLATE",
                 "BusinessUnit": "shared",
@@ -397,15 +397,15 @@
                 "distribute": [
                     {
                         "type": "SharedImage",
-                        "galleryImageId": "[concat(parameters('galleries_avdimagegallery_externalid'), '/images/avdwin11imagegen2')]",
-                        "runOutputName": "win10-22h2-avd-m365-g2-custom", // Win10: win10-22h2-avd-m365-g2-custom / Win11: win11-23h2-avd-m365-g2-custom
+                        "galleryImageId": "[concat(parameters('galleries_avdimagegallery_externalid'), '/images/avdwin10imgg1')]",
+                        "runOutputName": "win10-22h2-avd-gold", // Win10: win10-22h2-avd-m365-g2-custom / Win11: win11-23h2-avd-m365-g2-custom
                         "artifactTags": {
                             "env": "prod",
                             "BusinessUnit": "shared"
                         },
                         "targetRegions": [
                             {
-                            "name": "westus2",
+                            "name": "eastus2",
                             "replicaCount": 1,
                             "storageAccountType": "Standard_LRS"
                             }
@@ -423,18 +423,18 @@
                     }
                 },
                 "source": {
-                    "offer": "office-365",
+                    "offer": "windows-10",
                     "publisher": "microsoftwindowsdesktop",
-                    "sku": "win10-22h2-avd-m365-g2", // win10-22h2-avd-m365 / win10-22h2-avd-m365-g2 / win11-23h2-avd-m365 /// Get-AzVMImageSku -Location westus2 -PublisherName MicrosoftWindowsDesktop -Offer office-365/Windows-10/Windows-11
+                    "sku": "win10-22h2-avd", // win10-22h2-avd-m365 / win10-22h2-avd-m365-g2 / win11-23h2-avd-m365 /// Get-AzVMImageSku -Location eastus2 -PublisherName MicrosoftWindowsDesktop -Offer office-365/Windows-10/Windows-11
                     "type": "PlatformImage",
                     "version": "latest"
                 },
                 "stagingResourceGroup": "/subscriptions/f0d9e471-1f50-415d-97c1-856e26753202/resourceGroups/rg-avd-prd-005",
                 "vmProfile": {
-                    "osDiskSizeGB": 127, // g1: 64 / g2: 127
+                    "osDiskSizeGB": 64, // g1: 64 / g2: 127
                     "vmSize": "Standard_D2as_v5",
                     "vnetConfig": {
-                        "subnetId": "[concat(parameters('virtualNetworks_vnet_prd_wus2_001_externalid'), '/subnets/snet-prd-wus2-003')]"
+                        "subnetId": "[concat(parameters('virtualNetworks_vnet_prd_eus2_001_externalid'), '/subnets/snet-prd-eus2-003')]"
                     }
                 }
             }
@@ -443,4 +443,4 @@
 }
 
 // New-AzResourceGroupDeployment -ResourceGroupName rg-avd-prd-002 -TemplateFile C:\GitHub\AVDToolset\avd.json
-// Start-AzImageBuilderTemplate -ResourceGroupName rg-avd-prd-002 -Name AVDWin11ImageGen2v3
+// Start-AzImageBuilderTemplate -ResourceGroupName rg-avd-prd-002 -Name AVDWin10ImgG1v1
