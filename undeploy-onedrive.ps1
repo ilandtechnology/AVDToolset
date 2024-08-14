@@ -3,12 +3,21 @@ Write-Host "*** Starting AIB Customization - Uninstall OneDrive ***"
 
 # Install the update
 Write-Host "AVD AIB Customization - Uninstall OneDrive : Uninstalling the OneDrive..."
-if ([Environment]::OSVersion.Version -ge (New-Object 'Version' 10.0.22000)) {
-    ($process = Start-Process -FilePath $(Get-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\OneDriveSetup.exe -Name UninstallString -ErrorAction SilentlyContinue).UninstallString.Split("""")[1] -ArgumentList "/uninstall /allusers" -PassThru).PriorityClass = [System.Diagnostics.ProcessPriorityClass]::AboveNormal
+
+if (Test-Path -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\OneDriveSetup.exe) {
+    Write-Host "AVD AIB Customization - Uninstall OneDrive : OneDrive is installed."
+    ($process = Start-Process -FilePath $(Get-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\OneDriveSetup.exe -Name UninstallString -ErrorAction SilentlyContinue).UninstallString.Split("/")[0] -ArgumentList "/uninstall /allusers" -PassThru).PriorityClass = [System.Diagnostics.ProcessPriorityClass]::AboveNormal
     $process.WaitForExit()
-} else {
+} elseif (Test-Path -Path HKLM:\SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVersion\Uninstall\OneDriveSetup.exe) {
+    Write-Host "AVD AIB Customization - Uninstall OneDrive : OneDrive is installed."
     ($process = Start-Process -FilePath $(Get-ItemProperty -Path HKLM:\SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVersion\Uninstall\OneDriveSetup.exe -Name UninstallString -ErrorAction SilentlyContinue).UninstallString.Split("/")[0] -ArgumentList "/uninstall /allusers" -PassThru).PriorityClass = [System.Diagnostics.ProcessPriorityClass]::AboveNormal
     $process.WaitForExit()
+} else {
+    Write-Host "AVD AIB Customization - Uninstall OneDrive : OneDrive is not installed."
+    $stopwatch.Stop()
+    $elapsedTime = $stopwatch.Elapsed
+    Write-Host "*** AIB Customization - Uninstall OneDrive - Time taken: $elapsedTime ***"
+    exit 0
 }
 
 # Check the exit code of the installation and cleanup

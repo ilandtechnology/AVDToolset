@@ -273,7 +273,7 @@
                     },
                     {
                         "name": "Install Crystal Reports XI component",
-                        "runAsSystem": true,
+                        // "runAsSystem": true,
                         "runElevated": true,
                         "scriptUri": "https://raw.githubusercontent.com/ilandtechnology/AVDToolset/main/deploy-crystalreports.ps1",
                         // "sha256Checksum": "c39a3ccfe33f57875496916cf4ce104e0849d51c251c32016726fb9bd6f95778",
