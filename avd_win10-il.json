@@ -66,13 +66,13 @@
                     {
                         "name": "avdBuiltInScript_installLanguagePacks-windowsUpdate",
                         "type": "WindowsUpdate",
-                        // "searchCriteria": "IsInstalled=0",
-                        // "filters": [
-                        //     "exclude:$_.Title -like '*KB890830*'",
-                        //     "exclude:$_.Title -like '*KB2267602*'",
-                        //     "exclude:$_.Title -like '*Preview*'",
-                        //     "include:$true"
-                        // ],
+                        "searchCriteria": "IsInstalled=0",
+                        "filters": [
+                            "exclude:$_.Title -like '*KB890830*'",
+                            "exclude:$_.Title -like '*KB2267602*'",
+                            "exclude:$_.Title -like '*Preview*'",
+                            "include:$true"
+                        ],
                         "updateLimit": 0
                     },
                     {
