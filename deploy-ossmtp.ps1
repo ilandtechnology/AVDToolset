@@ -24,7 +24,7 @@ if (-not (Test-Path -Path $LocalWVDpath)) {
 
 # Download the OstroSoft SMTP Component package
 Write-Host "AVD AIB Customization - Install OstroSoft SMTP Component : Downloading OstroSoft SMTP Component installer from URI: $Uri."
-[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
+[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::TLS12
 Invoke-WebRequest -Uri $Uri -Headers @{"Accept-Encoding"="gzip,deflate"} -OutFile $(Join-Path $LocalWVDpath $packageFile)
 
 # Check if the file was downloaded successfully

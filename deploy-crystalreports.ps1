@@ -4,60 +4,60 @@ $packageFile = "crystalreports_xi-sss.msi"
 $destinationFolder = "C:\Temp"
 $LocalWVDpath = "C:\Temp\wvd\"
 
-
 $stopwatch = [System.Diagnostics.Stopwatch]::StartNew()
 Write-Host "*** Starting AIB Customization - Install Crystal Reports ***"
 
-# Create the destination folder if it doesn't exist
-if (-not (Test-Path -Path $destinationFolder)) {
-    Write-Host "AVD AIB Customization - Install Crystal Reports : Creating temp directory."
-    New-Item -ItemType Directory -Path $destinationFolder | Out-Null
-} else {
-    Write-Host "AVD AIB Customization - Install Crystal Reports : Temp directory already exists."
+# Function to create directory if it doesn't exist
+function New-Directory {
+    param (
+        [string]$path
+    )
+    if (-not (Test-Path -Path $path)) {
+        Write-Host "AVD AIB Customization - Install Crystal Reports: Creating directory: $path."
+        New-Item -ItemType Directory -Path $path | Out-Null
+    } else {
+        Write-Host "AVD AIB Customization - Install Crystal Reports: Directory already exists: $path."
+    }
 }
-if (-not (Test-Path -Path $LocalWVDpath)) {
-    Write-Host "AVD AIB Customization - Install Crystal Reports : Creating directory: $LocalWVDpath."
-    New-Item -ItemType Directory -Path $LocalWVDpath | Out-Null
-} else {
-    Write-Host "AVD AIB Customization - Install Crystal Reports : $LocalWVDpath already exists."
-}
+
+# Ensure destination and local WVD paths exist
+New-Directory -path $destinationFolder
+New-Directory -path $LocalWVDpath
 
 # Download the Crystal Reports package
-Write-Host "AVD AIB Customization - Install Crystal Reports : Downloading Crystal Reports installer from URI: $Uri."
-[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
-Invoke-WebRequest -Uri $Uri -Headers @{"Accept-Encoding"="gzip,deflate"} -OutFile $(Join-Path $LocalWVDpath $packageFile)
-
-# Check if the file was downloaded successfully
-if (Test-Path -Path $(Join-Path $LocalWVDpath $packageFile)) {
-    Write-Host "AVD AIB Customization - Install Crystal Reports : Package downloaded successfully."
-} else {
-    Write-Host "AVD AIB Customization - Install Crystal Reports : Package failed to download."
+Write-Host "AVD AIB Customization - Install Crystal Reports: Downloading Crystal Reports installer from URI: $Uri."
+try {
+    [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::TLS12
+    Invoke-WebRequest -Uri $Uri -Headers @{"Accept-Encoding"="gzip,deflate"} -OutFile $(Join-Path $LocalWVDpath $packageFile)
+    Write-Host "AVD AIB Customization - Install Crystal Reports: Package downloaded successfully."
+} catch {
+    $stopwatch.Stop()
+    $elapsedTime = $stopwatch.Elapsed
+    Write-Host "AVD AIB Customization - Install Crystal Reports: Failed to download package: $($_.Exception.Message)"
+    Write-Host "*** AIB Customization - Install Crystal Reports: Time taken: $elapsedTime ***"
     exit 1
 }
 
 # Install the Crystal Reports package
-Write-Host "AVD AIB Customization - Install Crystal Reports : Installing the Crystal Reports..."
+Write-Host "AVD AIB Customization - Install Crystal Reports: Installing the Crystal Reports..."
 ($process = Start-Process -FilePath "msiexec.exe" -ArgumentList "/i $(Join-Path $LocalWVDpath $packageFile) /qn /l*v C:\Temp\CRInstall.log ADDLOCAL=ALL ALLUSERS=1 REBOOT=ReallySuppress" -PassThru).PriorityClass = [System.Diagnostics.ProcessPriorityClass]::AboveNormal
 $process.WaitForExit()
 
+# Cleanup
+if ((Test-Path -Path $LocalWVDpath -ErrorAction SilentlyContinue)) {
+    Remove-Item -Path $LocalWVDpath -Force -Recurse -ErrorAction Continue | Out-Null
+}
+
 # Check the exit code of the installation and cleanup
+$stopwatch.Stop()
+$elapsedTime = $stopwatch.Elapsed
+pause
 if ($process.ExitCode -eq 0) {
-    #Cleanup
-    if ((Test-Path -Path $LocalWVDpath -ErrorAction SilentlyContinue)) {
-        Remove-Item -Path $LocalWVDpath -Force -Recurse -ErrorAction Continue | Out-Null
-    }
-    $stopwatch.Stop()
-    $elapsedTime = $stopwatch.Elapsed
-    Write-Host "AVD AIB Customization - Install Crystal Reports : Installed successfully."
-    Write-Host "*** AIB Customization - Install Crystal Reports - Time taken: $elapsedTime ***"
+    Write-Host "AVD AIB Customization - Install Crystal Reports: Installed successfully."
+    Write-Host "*** AIB Customization - Install Crystal Reports: Time taken: $elapsedTime ***"
+    exit $process.ExitCode
 } else {
-    #Cleanup
-    if ((Test-Path -Path $LocalWVDpath -ErrorAction SilentlyContinue)) {
-        Remove-Item -Path $LocalWVDpath -Force -Recurse -ErrorAction Continue | Out-Null
-    }
-    $stopwatch.Stop()
-    $elapsedTime = $stopwatch.Elapsed
-    Write-Host "AVD AIB Customization - Install Crystal Reports : Installation failed with exit code $($process.ExitCode)."
-    Write-Host "*** AIB Customization - Install Crystal Reports - Time taken: $elapsedTime ***"
+    Write-Host "AVD AIB Customization - Install Crystal Reports: Installation failed with exit code $($process.ExitCode)."
+    Write-Host "*** AIB Customization - Install Crystal Reports: Time taken: $elapsedTime ***"
     exit $process.ExitCode
 }

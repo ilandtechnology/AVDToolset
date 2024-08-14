@@ -25,7 +25,7 @@ else {
 
 # Download the update
 Write-Host "AVD AIB Customization - Install KB5040527 : Downloading KB5040527 installer from URI: $Uri."
-[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
+[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::TLS12
 Invoke-WebRequest -Uri $Uri -OutFile $(Join-Path $LocalWVDpath $packageFile)
 
 # Check if the file was downloaded successfully

@@ -1,0 +1,16 @@
+<Configuration>
+  <vGpu>Enable</vGpu>
+  <MemoryInMB>2560</MemoryInMB>
+  <Networking>Enable</Networking>
+  <AudioInput>Disable</AudioInput>
+  <ProtectedClient>Enable</ProtectedClient>
+  <PrinterRedirection>Disable</PrinterRedirection>
+  <MappedFolders>
+    <MappedFolder>
+      <HostFolder>C:\GitHub\AVDToolset</HostFolder>
+      <SandboxFolder>C:\Users\WDAGUtilityAccount\Downloads</SandboxFolder>
+      <ReadOnly>True</ReadOnly>
+    </MappedFolder>
+  </MappedFolders>
+  <ContextMenu_MSI>True</ContextMenu_MSI>
+</Configuration>

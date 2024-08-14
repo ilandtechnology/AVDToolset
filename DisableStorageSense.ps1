@@ -6,7 +6,12 @@
 #    Disable Storage Sense            #
 #######################################
 
-function Set-RegKey($registryPath, $registryKey, $registryValue) {
+function Set-RegKey {
+    param (
+        [string]$registryPath,
+        [string]$registryKey,
+        [string]$registryValue
+    )
     try {
          Write-Host "*** AVD AIB CUSTOMIZER PHASE ***  Disable Storage Sense - Setting  $registryKey with value $registryValue ***"
          New-ItemProperty -Path $registryPath -Name $registryKey -Value $registryValue -PropertyType DWORD -Force -ErrorAction Stop
