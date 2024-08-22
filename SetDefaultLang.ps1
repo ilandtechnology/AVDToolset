@@ -7,12 +7,7 @@
 #######################################
 
 
-[CmdletBinding()]
-  Param (
-    # [Parameter(Mandatory)]
-    [ValidateSet("Arabic (Saudi Arabia)","Bulgarian (Bulgaria)","Chinese (Simplified, China)","Chinese (Traditional, Taiwan)","Croatian (Croatia)","Czech (Czech Republic)","Danish (Denmark)","Dutch (Netherlands)", "English (United Kingdom)", "Estonian (Estonia)", "Finnish (Finland)", "French (Canada)", "French (France)", "German (Germany)", "Greek (Greece)", "Hebrew (Israel)", "Hungarian (Hungary)", "Italian (Italy)", "Japanese (Japan)", "Korean (Korea)", "Latvian (Latvia)", "Lithuanian (Lithuania)", "Norwegian, Bokmål (Norway)", "Polish (Poland)", "Portugu�s (Brasil)", "Portuguese (Brazil)", "Portuguese (Portugal)", "Romanian (Romania)", "Russian (Russia)", "Serbian (Latin, Serbia)", "Slovak (Slovakia)", "Slovenian (Slovenia)", "Spanish (Mexico)", "Spanish (Spain)", "Swedish (Sweden)", "Thai (Thailand)", "Turkish (Turkey)", "Ukrainian (Ukraine)", "English (Australia)", "English (United States)")]
-    [string]$Language="Portuguese (Brazil)"
-)
+[string]$Language="Portuguese (Brazil)"
 
 function Get-RegionInfo($Name='*')
 {
@@ -147,12 +142,6 @@ try {
 
   # Enable language Keyboard for Windows.
   $userLanguageList = New-WinUserLanguageList -Language $LanguageTag
-  # $installedUserLanguagesList = Get-WinUserLanguageList
-
-  # foreach($language in $installedUserLanguagesList)
-  # {
-  #   $userLanguageList.Add($language.LanguageTag)
-  # }
 
   Set-WinUserLanguageList -LanguageList $userLanguageList -Force
 
