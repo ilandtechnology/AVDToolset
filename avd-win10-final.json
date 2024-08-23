@@ -137,7 +137,7 @@
                     },
                     {
                         "inline": [
-                            "C:\\AVDImage\\enableFslogix.ps1 -FSLogixInstaller \"https://aka.ms/fslogix_download\" -VHDSize \"512\" -ProfilePath \"\\\\stavdprdbrs02.file.core.windows.net\\profiles\""
+                            "C:\\AVDImage\\enableFslogix.ps1 -FSLogixInstaller \"https://aka.ms/fslogix_download\" -VHDSize \"512\" -ProfilePath \"\\\\stavdprdbrs02.privatelink.file.core.windows.net\\profiles\""
                         ],
                         "name": "avdBuiltInScript_enableFsLogix-parameter",
                         "runAsSystem": true,
@@ -292,6 +292,13 @@
                         "type": "PowerShell"
                     },
                     {
+                        "name": "Install SiTef component",
+                        "runAsSystem": true,
+                        "runElevated": true,
+                        "scriptUri": "https://stavdprdbrs01.blob.core.windows.net/scripts/install-pdvclisitef.ps1",
+                        "type": "PowerShell"
+                    },
+                    {
                         "name": "Install GerTec PinPad component",
                         "runAsSystem": true,
                         "runElevated": true,
@@ -364,6 +371,16 @@
                         "type": "PowerShell"
                     },
                     {
+                        "inline": [
+                            "Invoke-WebRequest -Uri \"https://stavdprdbrs01.blob.core.windows.net/progs/BackInfo.exe\" -OutFile \"C:\\Windows\\BackInfo.exe\" -UseBasicParsing",
+                            "Invoke-WebRequest -Uri \"https://stavdprdbrs01.blob.core.windows.net/progs/BackInfo.ini\" -OutFile \"C:\\Windows\\BackInfo.ini\" -UseBasicParsing",
+                            "Invoke-WebRequest -Uri \"https://stavdprdbrs01.blob.core.windows.net/progs/simulador.exe\" -OutFile \"C:\\Windows\\simulador.exe\" -UseBasicParsing",
+                            "Invoke-WebRequest -Uri \"https://stavdprdbrs01.blob.core.windows.net/progs/wallpaper.bmp\" -OutFile \"C:\\Windows\\Web\\Screen\\wallpaper.bmp\" -UseBasicParsing"
+                        ],
+                        "name": "checkAgentOnStart",
+                        "type": "PowerShell"
+                    },
+                    {
                         "name": "Disable Windows Update",
                         "runAsSystem": true,
                         "runElevated": true,
@@ -380,16 +397,32 @@
                 ],
                 "distribute": [
                     {
-                        "artifactTags": {},
-                        "excludeFromLatest": true,
+                        "type": "SharedImage",
                         "galleryImageId": "[concat(parameters('galleries_galavdprdbrs_externalid'), '/images/win10-avd-sm365-v1')]",
-                        "replicationRegions": [
-                            "brazilsouth"
-                        ],
                         "runOutputName": "win10-22h2-avd-g2-custom",
-                        "type": "SharedImage"
+                        "artifactTags": {
+                            "env": "prod",
+                            "BusinessUnit": "shared"
+                        },
+                        "targetRegions": [
+                            {
+                            "name": "brazilsouth",
+                            "replicaCount": 1,
+                            "storageAccountType": "Standard_LRS"
+                            }
+                        ],
+                        "excludeFromLatest": false,
+                        "versioning": {
+                            "scheme": "Latest",
+                            "major": 1
+                        }
                     }
                 ],
+                "optimize": {
+                    "vmBoot": {
+                        "state": "Enabled"
+                    }
+                },
                 "source": {
                     "offer": "windows-10",
                     "publisher": "microsoftwindowsdesktop",
