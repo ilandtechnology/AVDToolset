@@ -1,3 +1,6 @@
+$stopwatch = [System.Diagnostics.Stopwatch]::StartNew()
+Write-Host "*** Starting AIB Customization - Setup Microsoft Antimalware ***"
+
 $keyPath = "HKLM:\SOFTWARE\Policies\Microsoft\Windows Defender\Signature Updates"
 
 if (-not (Test-Path $keyPath)) {
@@ -30,7 +33,7 @@ if (!(Test-Path $keyPath)) {
 $currentValue = (Get-ItemProperty -Path $keyPath).$valueName
 
 if ($currentValue -ne $valueData) {
-    Set-ItemProperty -Path $keyPath -Name $valueName -Value $valueData
+    Set-ItemProperty -Path $keyPath -Name $valueName -Value $valueData -PassThru
 }
 
 
@@ -47,7 +50,7 @@ if (!(Test-Path $keyPath)) {
 $currentValue = (Get-ItemProperty -Path $keyPath).$valueName
 
 if ($currentValue -ne $valueData) {
-    Set-ItemProperty -Path $keyPath -Name $valueName -Value $valueData
+    Set-ItemProperty -Path $keyPath -Name $valueName -Value $valueData -PassThru
 }
 
 
@@ -71,14 +74,14 @@ $exclusions = @(
     "%TEMP%\*\*.VHDX",
     "%Windir%\TEMP\*\*.VHD",
     "%Windir%\TEMP\*\*.VHDX",
-    "\\server-name\share-name\*\*.VHD",
-    "\\server-name\share-name\*\*.VHD.lock",
-    "\\server-name\share-name\*\*.VHD.meta",
-    "\\server-name\share-name\*\*.VHD.metadata",
-    "\\server-name\share-name\*\*.VHDX",
-    "\\server-name\share-name\*\*.VHDX.lock",
-    "\\server-name\share-name\*\*.VHDX.meta",
-    "\\server-name\share-name\*\*.VHDX.metadata",
+    "\\stavdprdbrs02.privatelink.file.core.windows.net\profiles\*\*.VHD",
+    "\\stavdprdbrs02.privatelink.file.core.windows.net\profiles\*\*.VHD.lock",
+    "\\stavdprdbrs02.privatelink.file.core.windows.net\profiles\*\*.VHD.meta",
+    "\\stavdprdbrs02.privatelink.file.core.windows.net\profiles\*\*.VHD.metadata",
+    "\\stavdprdbrs02.privatelink.file.core.windows.net\profiles\*\*.VHDX",
+    "\\stavdprdbrs02.privatelink.file.core.windows.net\profiles\*\*.VHDX.lock",
+    "\\stavdprdbrs02.privatelink.file.core.windows.net\profiles\*\*.VHDX.meta",
+    "\\stavdprdbrs02.privatelink.file.core.windows.net\profiles\*\*.VHDX.metadata",
     "%ProgramData%\FSLogix\Cache\*",
     "%ProgramData%\FSLogix\Proxy\*"
 )
@@ -87,7 +90,7 @@ foreach ($exclusion in $exclusions) {
     $existingExclusions += ";$exclusion"
 }
 
-Set-ItemProperty -Path $registryPath -Name "Exclusions" -Value $existingExclusions
+Set-ItemProperty -Path $registryPath -Name "Exclusions" -Value $existingExclusions -PassThru
 
 
 # Scan files only on wtrite (revisado)
@@ -103,7 +106,7 @@ if (!(Test-Path $keyPath)) {
 $currentValue = (Get-ItemProperty -Path $keyPath).$valueName
 
 if ($currentValue -ne $valueData) {
-    Set-ItemProperty -Path $keyPath -Name $valueName -Value $valueData
+    Set-ItemProperty -Path $keyPath -Name $valueName -Value $valueData -PassThru
 }
 
 
@@ -120,7 +123,7 @@ if (!(Test-Path $keyPath)) {
 $currentValue = (Get-ItemProperty -Path $keyPath).$valueName
 
 if ($currentValue -ne $valueData) {
-    Set-ItemProperty -Path $keyPath -Name $valueName -Value $valueData
+    Set-ItemProperty -Path $keyPath -Name $valueName -Value $valueData -PassThru
 }
 
 # Actions for detected threats: Low threat: Clean | Moderate threat, High threat, Severe threat: DELETE
@@ -142,7 +145,7 @@ if (!(Test-Path $keyPath)) {
 foreach ($severity in $threatActions.Keys) {
     $currentValue = (Get-ItemProperty -Path $keyPath).$severity
     if ($currentValue -ne $threatActions[$severity]) {
-        Set-ItemProperty -Path $keyPath -Name $severity -Value $threatActions[$severity]
+        Set-ItemProperty -Path $keyPath -Name $severity -Value $threatActions[$severity] -PassThru
     }
 }
 
@@ -160,7 +163,7 @@ if (!(Test-Path $keyPath)) {
 $currentValue = (Get-ItemProperty -Path $keyPath).$valueName
 
 if ($currentValue -ne $valueData) {
-    Set-ItemProperty -Path $keyPath -Name $valueName -Value $valueData
+    Set-ItemProperty -Path $keyPath -Name $valueName -Value $valueData -PassThru
 }
 
 
@@ -177,7 +180,7 @@ if (!(Test-Path $keyPath)) {
 $currentValue = (Get-ItemProperty -Path $keyPath).$valueName
 
 if ($currentValue -ne $valueData) {
-    Set-ItemProperty -Path $keyPath -Name $valueName -Value $valueData
+    Set-ItemProperty -Path $keyPath -Name $valueName -Value $valueData -PassThru
 }
 
 
@@ -194,7 +197,7 @@ if (!(Test-Path $keyPath)) {
 $currentValue = (Get-ItemProperty -Path $keyPath).$valueName
 
 if ($currentValue -ne $valueData) {
-    Set-ItemProperty -Path $keyPath -Name $valueName -Value $valueData
+    Set-ItemProperty -Path $keyPath -Name $valueName -Value $valueData -PassThru
 }
 
 
@@ -211,7 +214,7 @@ if (!(Test-Path $keyPath)) {
 $currentValue = (Get-ItemProperty -Path $keyPath).$valueName
 
 if ($currentValue -ne $valueData) {
-    Set-ItemProperty -Path $keyPath -Name $valueName -Value $valueData
+    Set-ItemProperty -Path $keyPath -Name $valueName -Value $valueData -PassThru
 }
 
 
@@ -228,5 +231,10 @@ if (!(Test-Path $keyPath)) {
 $currentValue = (Get-ItemProperty -Path $keyPath).$valueName
 
 if ($currentValue -ne $valueData) {
-    Set-ItemProperty -Path $keyPath -Name $valueName -Value $valueData
+    Set-ItemProperty -Path $keyPath -Name $valueName -Value $valueData -PassThru
 }
+
+$stopwatch.Stop()
+$elapsedTime = $stopwatch.Elapsed
+Write-Host "AVD AIB Customization - Setup Microsoft Antimalware: Setup successfully."
+Write-Host "*** AIB Customization - Setup Microsoft Antimalware: Time taken: $elapsedTime ***"

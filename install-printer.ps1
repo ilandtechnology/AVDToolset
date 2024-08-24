@@ -1,3 +1,6 @@
+$stopwatch = [System.Diagnostics.Stopwatch]::StartNew()
+Write-Host "*** Starting AIB Customization - Install Printer ***"
+
 $hostname = [System.Net.Dns]::GetHostName()
 
 function Install-Printer {
@@ -18,12 +21,12 @@ function Install-Printer {
     }
     if (-not($null -ne $Queue)) {
         Write-Host "Registring: " $Name", "$IPAddress", "$Model
-        Add-PrinterPort -Name $("LAN_"+$TAG+$IPADDRESS) -LprHostAddress $IPADDRESS -LprQueueName $Queue -LprByteCounting
-        Add-Printer -Name $NAME -DriverName $MODEL -PortName $("LAN_"+$TAG+$IPADDRESS)
+        Add-PrinterPort -Name $("LAN_"+$TAG+"_"+$IPADDRESS) -LprHostAddress $IPADDRESS -LprQueueName $Queue -LprByteCounting
+        Add-Printer -Name $NAME -DriverName $MODEL -PortName $("LAN_"+$TAG+"_"+$IPADDRESS)
     } else {
         Write-Host "Registring: " $Name", "$IPAddress", "$Model
         Add-PrinterPort -Name $("LAN_"+$TAG+$IPADDRESS) -PrinterHostAddress $IPADDRESS -PortNumber 9100
-        Add-Printer -Name $NAME -DriverName $MODEL -PortName $("LAN_"+$TAG+$IPADDRESS)
+        Add-Printer -Name $NAME -DriverName $MODEL -PortName $("LAN_"+$TAG+"_"+$IPADDRESS)
     }
 }
 
@@ -66,3 +69,8 @@ if ($hostname -match "^vm-apvd") {
 
     Install-Printer -Name "HP Neverstop Laser 100x PCLm-S" -IPAddress "192.168.50.190" -Queue $null -Model "HP Neverstop Laser 100x PCLm-S"
 }
+
+$stopwatch.Stop()
+$elapsedTime = $stopwatch.Elapsed
+Write-Host "AVD AIB Customization - Install Printer: Setup successfully."
+Write-Host "*** AIB Customization - Install Printer: Time taken: $elapsedTime ***"
