@@ -350,6 +350,13 @@
                         "type": "PowerShell"
                     },
                     {
+                        "name": "Install Bematech Printer driver",
+                        "runAsSystem": true,
+                        "runElevated": true,
+                        "scriptUri": "https://stavdprdbrs01.blob.core.windows.net/scripts/install-printer-bematech_mp4200hs.ps1",
+                        "type": "PowerShell"
+                    },
+                    {
                         "name": "Uninstall OneDrive",
                         "runAsSystem": true,
                         "runElevated": true,

@@ -36,7 +36,7 @@ function Install-Printer {
 
 if ($hostname -match "^vm-apvd") {
     Install-Printer -Name "CX01LJ01" -IPAddress "192.168.50.147" -Queue "CX01LJ01" -Model "EPSON TM-T(203dpi) Receipt6"
-    Install-Printer -Name "CX02LJ01" -IPAddress "192.168.50.247" -Queue "CX02LJ01" -Model "EPSON TM-T(203dpi) Receipt6"
+    Install-Printer -Name "CX02LJ01" -IPAddress "192.168.50.247" -Queue "CX02LJ01" -Model "Bematech MP-4200 HS"
     Install-Printer -Name "CX01LJ03" -IPAddress "192.168.100.108" -Queue "CX01LJ03" -Model "EPSON TM-T(203dpi) Receipt6"
     Install-Printer -Name "CX02LJ03" -IPAddress "192.168.100.115" -Queue "CX02LJ03" -Model "EPSON TM-T(203dpi) Receipt6"
     Install-Printer -Name "CX01LJ04" -IPAddress "192.168.0.188" -Queue "CX01LJ04" -Model "EPSON TM-T(203dpi) Receipt6"
@@ -50,7 +50,7 @@ if ($hostname -match "^vm-apvd") {
     Install-Printer -Name "A4LJ05" -IPAddress "192.168.10.182" -Queue $null -Model "EPSON M2120 Series"
 
  } elseif ($hostname -match "^vm-asvd") {
-    Install-Printer -Name "SEPLJ01" -IPAddress "192.168.50.157" -Queue "SEPLJ01" -Model "EPSON TM-T(203dpi) Receipt6"
+    Install-Printer -Name "SEPLJ01" -IPAddress "192.168.50.157" -Queue "SEPLJ01" -Model "Bematech MP-4200 HS"
     Install-Printer -Name "SEPLJ02" -IPAddress "192.168.50.170" -Queue "SEPLJ02" -Model "EPSON TM-T(203dpi) Receipt6"
     Install-Printer -Name "SEPLJ03" -IPAddress "192.168.100.175" -Queue "SEPLJ03" -Model "EPSON TM-T(203dpi) Receipt6"
     Install-Printer -Name "SEPLJ04" -IPAddress "192.168.0.199" -Queue "SEPLJ04" -Model "EPSON TM-T(203dpi) Receipt6"
