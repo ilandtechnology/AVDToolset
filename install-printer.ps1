@@ -26,17 +26,19 @@ function Install-Printer {
     if (-not(Get-Printer -Name $Name -ErrorAction SilentlyContinue)) {
         if (-not([string]::IsNullOrEmpty($Queue))) {
             Write-Host "Registring LPR printer: " $Name", "$IPAddress", "$Model
-            #Add-PrinterPort -Name $("LAN_"+$TAG+"_"+$IPAddress) -LprHostAddress $IPAddress -LprQueueName $Queue -LprByteCounting
-            #Add-Printer -Name $Name -DriverName $MODEL -PortName $("LAN_"+$TAG+"_"+$IPAddress)
+            Get-PrinterPort -Name $("LAN_"+$TAG+"_"+$IPAddress) -ErrorAction SilentlyContinue | Remove-PrinterPort -ErrorAction SilentlyContinue
+            Add-PrinterPort -Name $("LAN_"+$TAG+"_"+$IPAddress) -LprHostAddress $IPAddress -LprQueueName $Queue -LprByteCounting
+            Add-Printer -Name $Name -DriverName $MODEL -PortName $("LAN_"+$TAG+"_"+$IPAddress)
         } else {
             Write-Host "Registring RAW printer: " $Name", "$IPAddress", "$Model
-            #Add-PrinterPort -Name $("LAN_"+$TAG+$IPAddress) -PrinterHostAddress $IPAddress -PortNumber 9100
-            #Add-Printer -Name $Name -DriverName $MODEL -PortName $("LAN_"+$TAG+"_"+$IPAddress)
+            Get-PrinterPort -Name $("LAN_"+$TAG+"_"+$IPAddress) -ErrorAction SilentlyContinue | Remove-PrinterPort -ErrorAction SilentlyContinue
+            Add-PrinterPort -Name $("LAN_"+$TAG+"_"+$IPAddress) -PrinterHostAddress $IPAddress -PortNumber 9100
+            Add-Printer -Name $Name -DriverName $MODEL -PortName $("LAN_"+$TAG+"_"+$IPAddress)
         }
     }
 }
 
-if ($hostname -match "^vm-apvd" -or $hostname -match "^IL" ) {
+if ($hostname -match "^vm-apvd") {
     Install-Printer -Name "CX01LJ01" -IPAddress "192.168.50.147" -Queue "CX01LJ01" -Model "EPSON TM-T(203dpi) Receipt6"
     Install-Printer -Name "CX02LJ01" -IPAddress "192.168.50.247" -Queue "CX02LJ01" -Model "Bematech MP-4200 HS"
     Install-Printer -Name "CX01LJ03" -IPAddress "192.168.100.108" -Queue "CX01LJ03" -Model "EPSON TM-T(203dpi) Receipt6"

@@ -174,21 +174,21 @@
                         "scriptUri": "https://raw.githubusercontent.com/Azure/RDS-Templates/master/CustomImageTemplateScripts/CustomImageTemplateScripts_2024-03-27/RDPShortpath.ps1",
                         "type": "PowerShell"
                     },
-                    {
-                        "destination": "C:\\AVDImage\\screenCaptureProtection.ps1",
-                        "name": "avdBuiltInScript_screenCaptureProtection",
-                        "sourceUri": "https://raw.githubusercontent.com/Azure/RDS-Templates/master/CustomImageTemplateScripts/CustomImageTemplateScripts_2024-03-27/ScreenCaptureProtection.ps1",
-                        "type": "File"
-                    },
-                    {
-                        "inline": [
-                            "C:\\AVDImage\\screenCaptureProtection.ps1 -block \"BlockClient\""
-                        ],
-                        "name": "avdBuiltInScript_removeOfficeApps-parameter",
-                        "runAsSystem": true,
-                        "runElevated": true,
-                        "type": "PowerShell"
-                    },
+                    // {
+                    //     "destination": "C:\\AVDImage\\screenCaptureProtection.ps1",
+                    //     "name": "avdBuiltInScript_screenCaptureProtection",
+                    //     "sourceUri": "https://raw.githubusercontent.com/Azure/RDS-Templates/master/CustomImageTemplateScripts/CustomImageTemplateScripts_2024-03-27/ScreenCaptureProtection.ps1",
+                    //     "type": "File"
+                    // },
+                    // {
+                    //     "inline": [
+                    //         "C:\\AVDImage\\screenCaptureProtection.ps1 -block \"BlockClient\""
+                    //     ],
+                    //     "name": "avdBuiltInScript_removeOfficeApps-parameter",
+                    //     "runAsSystem": true,
+                    //     "runElevated": true,
+                    //     "type": "PowerShell"
+                    // },
                     {
                         "destination": "C:\\AVDImage\\configureSessionTimeouts.ps1",
                         "name": "avdBuiltInScript_configureSessionTimeouts",
@@ -396,6 +396,7 @@
                     {
                         "inline": [
                             "Invoke-WebRequest -Uri \"https://stavdprdbrs01.blob.core.windows.net/scripts/SetupComplete.cmd?sp=r&st=2024-08-26T13:49:12Z&se=2029-12-31T15:00:00Z&spr=https&sv=2022-11-02&sr=b&sig=rUlI669ggznknB2ZLcqH13YzazOqjN6Gg1tvwf6W97k%3D\" -Headers @{\"Accept-Encoding\"=\"gzip,deflate\"} -OutFile \"C:\\Windows\\Setup\\Scripts\\SetupComplete.cmd\" -UseBasicParsing",
+                            "Invoke-WebRequest -Uri \"https://stavdprdbrs01.blob.core.windows.net/scripts/install-printer.ps1?sp=r&st=2024-11-11T03:26:28Z&se=2029-12-31T03:00:00Z&spr=https&sv=2022-11-02&sr=b&sig=y6pzsrbroGoRIpITfEFYjmadVgYJsE2K0cyTIWV6Bf4%3D\" -Headers @{\"Accept-Encoding\"=\"gzip,deflate\"} -OutFile \"C:\\Windows\\Setup\\Scripts\\install-printer.ps1\" -UseBasicParsing",
                             "Invoke-WebRequest -Uri \"https://stavdprdbrs01.blob.core.windows.net/progs/simulador.exe?sp=r&st=2024-08-23T17:48:37Z&se=2029-12-31T15:00:00Z&spr=https&sv=2022-11-02&sr=b&sig=0zeN4vXYYM3rKBxon3Q%2FeRq%2BJkXo82citHDRpVs4Lqw%3D\" -Headers @{\"Accept-Encoding\"=\"gzip,deflate\"} -OutFile \"C:\\Windows\\simulador.exe\" -UseBasicParsing",
                             "Invoke-WebRequest -Uri \"https://stavdprdbrs01.blob.core.windows.net/progs/BackInfo.exe?sp=r&st=2024-08-23T04:15:54Z&se=2029-12-31T03:00:00Z&spr=https&sv=2022-11-02&sr=b&sig=JiLTYx7maXY9jEuBK7y82QflEM6JT8TjG4PBkR2vzVM%3D\" -Headers @{\"Accept-Encoding\"=\"gzip,deflate\"} -OutFile \"C:\\Windows\\BackInfo.exe\" -UseBasicParsing",
                             "Invoke-WebRequest -Uri \"https://stavdprdbrs01.blob.core.windows.net/progs/BackInfo.ini?sp=r&st=2024-08-23T15:07:25Z&se=2029-12-31T23:07:25Z&spr=https&sv=2022-11-02&sr=b&sig=Qvwt0P5rF60ykuUjkReb6OgYDiKwJoZA4PoP2rMSv5A%3D\" -Headers @{\"Accept-Encoding\"=\"gzip,deflate\"} -OutFile \"C:\\Windows\\BackInfo.ini\" -UseBasicParsing",
