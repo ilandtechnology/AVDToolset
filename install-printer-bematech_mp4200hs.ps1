@@ -51,10 +51,8 @@ Write-Host "AVD AIB Customization - Install Bematech MP4200HS Driver: Expanded B
 
 # Install the Bematech MP4200HS Driver package
 Write-Host "AVD AIB Customization - Install Bematech MP4200HS Driver: Installing the Bematech MP4200HS Driver..."
-$process = Start-Process -FilePath "certutil" -ArgumentList " -addstore Root $(Join-Path $LocalWVDpath '\ELGIN\OEM.CER')"
-$process.WaitForExit()
-$process = Start-Process -FilePath "certutil" -ArgumentList " -addstore TrustedPublisher $(Join-Path $LocalWVDpath '\ELGIN\OEM.CER')"
-$process.WaitForExit()
+Start-Process -FilePath "certutil" -ArgumentList " -addstore Root $(Join-Path $LocalWVDpath '\ELGIN\OEM.CER')"
+Start-Process -FilePath "certutil" -ArgumentList " -addstore TrustedPublisher $(Join-Path $LocalWVDpath '\ELGIN\OEM.CER')"
 $process = Start-Process -FilePath "pnputil.exe" -ArgumentList " /a $(Join-Path $LocalWVDpath '\ELGIN\ELGIN.INF')" -PassThru
 $process.PriorityClass = [System.Diagnostics.ProcessPriorityClass]::AboveNormal
 $process.WaitForExit()
