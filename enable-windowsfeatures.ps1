@@ -4,7 +4,7 @@ Write-Host "*** Starting AIB Customization - Install Windows Features ***"
 # Install the .NET Framework 3.5
 $enableResult = 0
 Write-Host "AVD AIB Customization - Install Windows Features: Installing the NET Framework 3.5..."
-Enable-WindowsOptionalFeature -Online -FeatureName NetFx3 -NoRestart -ErrorAction Stop
+Enable-WindowsOptionalFeature -Online -FeatureName NetFx3 -All -NoRestart -ErrorAction Stop
 if( -not $? ) { $enableResult = 1 }
 
 # Check the exit code of the installation and cleanup
