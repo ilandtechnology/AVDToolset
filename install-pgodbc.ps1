@@ -1,6 +1,6 @@
 # Define variables
-$Uri = "https://ftp.postgresql.org/pub/odbc/versions.old/msi/psqlodbc_13_02_0000-x64.zip"
-$packageFile = "psqlodbc_13_02_0000-x64.zip"
+$Uri = "https://ftp.postgresql.org/pub/odbc/versions.old/msi/psqlodbc_13_02_0000-x86-1.zip"
+$packageFile = "psqlodbc_13_02_0000-x86.zip"
 $destinationFolder = "C:\Temp"
 $LocalWVDpath = "C:\Temp\wvd\"
 
@@ -51,7 +51,7 @@ Write-Host "AVD AIB Customization - Install PostgreSQL ODBC: Expanded PostgreSQL
 
 # Install the PostgreSQL ODBC package
 Write-Host "AVD AIB Customization - Install PostgreSQL ODBC: Installing the PostgreSQL ODBC..."
-$process = Start-Process -FilePath "msiexec.exe" -ArgumentList "/package $(Join-Path $LocalWVDpath "pgsqlodbc\psqlodbc_x64.msi") /qn /norestart" -PassThru
+$process = Start-Process -FilePath "msiexec.exe" -ArgumentList "/package $(Join-Path $LocalWVDpath "pgsqlodbc\psqlodbc_x86.msi") /qn /norestart" -PassThru
 $process.PriorityClass = [System.Diagnostics.ProcessPriorityClass]::AboveNormal
 $process.WaitForExit()
 
