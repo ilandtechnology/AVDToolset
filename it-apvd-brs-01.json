@@ -37,7 +37,7 @@
                 }
             },
             "properties": {
-                "buildTimeoutInMinutes": 0,
+                "buildTimeoutInMinutes": 300,
                 "customize": [
                     {
                         "inline": [
@@ -91,7 +91,7 @@
                     },
                     {
                         "name": "avdBuiltInScript_installLanguagePacks-windowsRestart",
-                        "restartTimeout": "10m",
+                        "restartTimeout": "15m",
                         "type": "WindowsRestart"
                     },
                     {
@@ -121,7 +121,7 @@
                     },
                     {
                         "name": "avdBuiltInScript_windowsRestart",
-                        "restartTimeout": "7m",
+                        "restartTimeout": "25m",
                         "type": "WindowsRestart"
                     },
                     {
@@ -233,6 +233,7 @@
                     },
                     {
                         "name": "avdBuiltInScript_windowsOptimization-windowsRestart",
+                        "restartTimeout": "25m",
                         "type": "WindowsRestart"
                     },
                     {
@@ -369,6 +370,7 @@
                     },
                     {
                         "name": "avdBuiltInScript_windowsUpdate-windowsRestart",
+                        "restartTimeout": "25m",
                         "type": "WindowsRestart"
                     },
                     {

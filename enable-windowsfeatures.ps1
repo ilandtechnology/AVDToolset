@@ -4,7 +4,19 @@ Write-Host "*** Starting AIB Customization - Install Windows Features ***"
 # Install the .NET Framework 3.5
 $enableResult = 0
 Write-Host "AVD AIB Customization - Install Windows Features: Installing the NET Framework 3.5..."
-Enable-WindowsOptionalFeature -Online -FeatureName NetFx3 -All -NoRestart -ErrorAction Stop
+for($i=1; $i -le 5; $i++) {
+    try {
+       Write-Host "*** AVD AIB CUSTOMIZER PHASE : Install NET Framework 3.5 - Attempt: $i ***"
+       Enable-WindowsOptionalFeature -Online -FeatureName NetFx3 -All -NoRestart -ErrorAction Stop
+       Write-Host "*** AVD AIB CUSTOMIZER PHASE : Install NET Framework 3.5 - Installed NET Framework 3.5 ***"
+       break
+   }
+   catch {
+       Write-Host "*** AVD AIB CUSTOMIZER PHASE : Install NET Framework 3.5 - Exception occurred***"
+       Write-Host $PSItem.Exception
+       continue
+   }
+}
 if( -not $? ) { $enableResult = 1 }
 
 # Check the exit code of the installation and cleanup
