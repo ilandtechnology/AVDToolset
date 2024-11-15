@@ -8,6 +8,7 @@ for($i=1; $i -le 5; $i++) {
     try {
        Write-Host "*** AVD AIB CUSTOMIZER PHASE : Install NET Framework 3.5 - Attempt: $i ***"
        Enable-WindowsOptionalFeature -Online -FeatureName NetFx3 -All -NoRestart -ErrorAction Stop
+       if( -not $? ) { $enableResult = 1 }
        Write-Host "*** AVD AIB CUSTOMIZER PHASE : Install NET Framework 3.5 - Installed NET Framework 3.5 ***"
        break
    }
@@ -17,7 +18,6 @@ for($i=1; $i -le 5; $i++) {
        continue
    }
 }
-if( -not $? ) { $enableResult = 1 }
 
 # Check the exit code of the installation and cleanup
 $stopwatch.Stop()
