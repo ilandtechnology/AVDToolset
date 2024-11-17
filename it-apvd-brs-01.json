@@ -58,6 +58,13 @@
                         "type": "PowerShell"
                     },
                     {
+                        "name": "Enable Windows Features",
+                        "runAsSystem": true,
+                        "runElevated": true,
+                        "scriptUri": "https://stavdprdbrs01.blob.core.windows.net/scripts/enable-windowsfeatures.ps1",
+                        "type": "PowerShell"
+                    },
+                    {
                         "destination": "C:\\AVDImage\\installLanguagePacks.ps1",
                         "name": "avdBuiltInScript_installLanguagePacks",
                         "sourceUri": "https://raw.githubusercontent.com/Azure/RDS-Templates/master/CustomImageTemplateScripts/CustomImageTemplateScripts_2024-03-27/InstallLanguagePacks.ps1",
@@ -103,13 +110,6 @@
                         "name": "checkAgentOnStart",
                         "runAsSystem": false,
                         "runElevated": false,
-                        "type": "PowerShell"
-                    },
-                    {
-                        "name": "Enable Windows Features",
-                        "runAsSystem": true,
-                        "runElevated": true,
-                        "scriptUri": "https://stavdprdbrs01.blob.core.windows.net/scripts/enable-windowsfeatures.ps1",
                         "type": "PowerShell"
                     },
                     {

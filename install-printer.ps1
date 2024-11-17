@@ -23,18 +23,22 @@ function Install-Printer {
         $Tag = "BEMATECH"
     }
 
-    if (-not(Get-Printer -Name $Name -ErrorAction SilentlyContinue)) {
-        if (-not([string]::IsNullOrEmpty($Queue))) {
-            Write-Host "Registring LPR printer: " $Name", "$IPAddress", "$Model
-            Get-PrinterPort -Name $("LAN_"+$TAG+"_"+$IPAddress) -ErrorAction SilentlyContinue | Remove-PrinterPort -ErrorAction SilentlyContinue
-            Add-PrinterPort -Name $("LAN_"+$TAG+"_"+$IPAddress) -LprHostAddress $IPAddress -LprQueueName $Queue -LprByteCounting
-            Add-Printer -Name $Name -DriverName $MODEL -PortName $("LAN_"+$TAG+"_"+$IPAddress)
-        } else {
-            Write-Host "Registring RAW printer: " $Name", "$IPAddress", "$Model
-            Get-PrinterPort -Name $("LAN_"+$TAG+"_"+$IPAddress) -ErrorAction SilentlyContinue | Remove-PrinterPort -ErrorAction SilentlyContinue
-            Add-PrinterPort -Name $("LAN_"+$TAG+"_"+$IPAddress) -PrinterHostAddress $IPAddress -PortNumber 9100
-            Add-Printer -Name $Name -DriverName $MODEL -PortName $("LAN_"+$TAG+"_"+$IPAddress)
+    if (Get-PrinterDriver -Name $Model -ErrorAction SilentlyContinue) {
+        if (-not(Get-Printer -Name $Name -ErrorAction SilentlyContinue)) {
+            if (-not([string]::IsNullOrEmpty($Queue))) {
+                Write-Host "Registring LPR printer: " $Name", "$IPAddress", "$Model
+                Get-PrinterPort -Name $("LAN_"+$TAG+"_"+$IPAddress) -ErrorAction SilentlyContinue | Remove-PrinterPort -ErrorAction SilentlyContinue
+                Add-PrinterPort -Name $("LAN_"+$TAG+"_"+$IPAddress) -LprHostAddress $IPAddress -LprQueueName $Queue -LprByteCounting
+                Add-Printer -Name $Name -DriverName $MODEL -PortName $("LAN_"+$TAG+"_"+$IPAddress)
+            } else {
+                Write-Host "Registring RAW printer: " $Name", "$IPAddress", "$Model
+                Get-PrinterPort -Name $("LAN_"+$TAG+"_"+$IPAddress) -ErrorAction SilentlyContinue | Remove-PrinterPort -ErrorAction SilentlyContinue
+                Add-PrinterPort -Name $("LAN_"+$TAG+"_"+$IPAddress) -PrinterHostAddress $IPAddress -PortNumber 9100
+                Add-Printer -Name $Name -DriverName $MODEL -PortName $("LAN_"+$TAG+"_"+$IPAddress)
+            }
         }
+    } else {
+        Write-Host "Printer driver not found: " $Model
     }
 }
 

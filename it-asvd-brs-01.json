@@ -3,7 +3,7 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "imageTemplates_it_asvd_brs_01_name": {
-            "defaultValue": "it-asvd-brs-01",
+            "defaultValue": "it-asvd-brs-01_2024-11-17",
             "type": "String"
         },
         "galleries_galavdprdbrs_externalid": {
@@ -67,7 +67,7 @@
                     {
                         "destination": "C:\\AVDImage\\installLanguagePacks.ps1",
                         "name": "avdBuiltInScript_installLanguagePacks",
-                        "sourceUri": "https://raw.githubusercontent.com/Azure/RDS-Templates/master/CustomImageTemplateScripts/CustomImageTemplateScripts_2024-03-27/InstallLanguagePacks.ps1",
+                        "sourceUri": "https://raw.githubusercontent.com/ilandtechnology/AVDToolset/refs/heads/main/InstallLanguagePacks.ps1",
                         "type": "File"
                     },
                     {
@@ -112,13 +112,13 @@
                         "runElevated": false,
                         "type": "PowerShell"
                     },
-                    // {
-                    //     "name": "Set Default language",
-                    //     "runAsSystem": true,
-                    //     "runElevated": true,
-                    //     "scriptUri": "https://stavdprdbrs01.blob.core.windows.net/scripts/SetDefaultLang.ps1",
-                    //     "type": "PowerShell"
-                    // },
+                    {
+                        "name": "Set Default language",
+                        "runAsSystem": true,
+                        "runElevated": true,
+                        "scriptUri": "https://stavdprdbrs01.blob.core.windows.net/scripts/SetDefaultLang.ps1",
+                        "type": "PowerShell"
+                    },
                     {
                         "name": "avdBuiltInScript_windowsRestart",
                         "restartTimeout": "25m",
@@ -289,7 +289,7 @@
                         "type": "PowerShell"
                     },
                     {
-                        "name": "Install Epson Printer driver ",
+                        "name": "Install Epson Printer driver",
                         "runAsSystem": true,
                         "runElevated": true,
                         "scriptUri": "https://stavdprdbrs01.blob.core.windows.net/scripts/install-printer-epson_m2120.ps1",
@@ -457,7 +457,7 @@
                 "source": {
                     "offer": "office-365",
                     "publisher": "microsoftwindowsdesktop",
-                    "sku": "win11-24h2-avd-m365",
+                    "sku": "win11-23h2-avd-m365",
                     "type": "PlatformImage",
                     "version": "latest"
                 },
