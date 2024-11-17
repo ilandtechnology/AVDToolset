@@ -52,7 +52,14 @@ Write-Host "AVD AIB Customization - Install Bematech MP4200HS Driver: Expanded B
 # Install the Bematech MP4200HS Driver package
 Write-Host "AVD AIB Customization - Install Bematech MP4200HS Driver: Installing the Bematech MP4200HS Driver..."
 Import-Certificate -FilePath $(Join-Path $LocalWVDpath '\ELGIN\OEM.CER') -CertStoreLocation 'Cert:\LocalMachine\Root' -Confirm:$false
-Import-Certificate -FilePath $(Join-Path $LocalWVDpath '\ELGIN\OEM.CER') -CertStoreLocation 'Cert:\LocalMachine\TrustedPublisher' -Confirm:$false
+# Import-Certificate -FilePath $(Join-Path $LocalWVDpath '\ELGIN\OEM.CER') -CertStoreLocation 'Cert:\LocalMachine\TrustedPublisher' -Confirm:$false
+
+$Certificate = Get-Item $(Join-Path $LocalWVDpath '\ELGIN\OEM.CER')
+$CertStore = Get-Item "Cert:\LocalMachine\TrustedPublisher"
+$CertStore.Open([System.Security.Cryptography.X509Certificates.OpenFlags]"ReadWrite")
+$CertStore.Add($Certificate.FullName)
+$CertStore.Close()
+
 $process = Start-Process -FilePath "pnputil.exe" -ArgumentList "/add-driver $(Join-Path $LocalWVDpath '\ELGIN\ELGIN.INF') /install" -PassThru
 $process.PriorityClass = [System.Diagnostics.ProcessPriorityClass]::AboveNormal
 $process.WaitForExit()

@@ -3,7 +3,7 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "imageTemplates_it_asvd_brs_01_name": {
-            "defaultValue": "it-asvd-brs-01_2024-11-17",
+            "defaultValue": "it-asvd-brs-01",
             "type": "String"
         },
         "galleries_galavdprdbrs_externalid": {
