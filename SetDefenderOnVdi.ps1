@@ -252,6 +252,40 @@ if ($currentValue -ne $valueData) {
     Set-ItemProperty -Path $keyPath -Name $valueName -Value $valueData -PassThru
 }
 
+
+# Define registry key path
+$keyPath = "HKLM:SOFTWARE\Policies\Microsoft\Windows Defender"
+
+# Ensure the registry key exists
+if (!(Test-Path $keyPath)) {
+    New-Item -Path $keyPath -Force
+}
+
+# Set DisableEmailScanning to false (0)
+$valueName = "DisableEmailScanning"
+$valueData = 0
+$currentValue = (Get-ItemProperty -Path $keyPath -ErrorAction SilentlyContinue).$valueName
+if ($currentValue -ne $valueData) {
+    Set-ItemProperty -Path $keyPath -Name $valueName -Value $valueData
+}
+
+# Set DisableNetworkProtectionPerfTelemetry to true (1)
+$valueName = "DisableNetworkProtectionPerfTelemetry"
+$valueData = 1
+$currentValue = (Get-ItemProperty -Path $keyPath -ErrorAction SilentlyContinue).$valueName
+if ($currentValue -ne $valueData) {
+    Set-ItemProperty -Path $keyPath -Name $valueName -Value $valueData
+}
+
+# Set DisableRdpParsing to true (1)
+$valueName = "DisableRdpParsing"
+$valueData = 1
+$currentValue = (Get-ItemProperty -Path $keyPath -ErrorAction SilentlyContinue).$valueName
+if ($currentValue -ne $valueData) {
+    Set-ItemProperty -Path $keyPath -Name $valueName -Value $valueData
+}
+
+
 $stopwatch.Stop()
 $elapsedTime = $stopwatch.Elapsed
 Write-Host "AVD AIB Customization - Setup Microsoft Antimalware: Setup successfully."
