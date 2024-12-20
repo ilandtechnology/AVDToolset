@@ -1,5 +1,5 @@
 # Define variables
-$Uri = "https://raw.githubusercontent.com/ilandtechnology/AVDToolset/main/crystalreports_xi-sss.msi"
+$Uri = "https://stavdprdbrs01.blob.core.windows.net/progs/crystalreports_xi-sss.msi?sv=2023-01-03&st=2024-12-17T13%3A44%3A10Z&se=2030-01-01T02%3A59%3A00Z&sr=b&sp=r&sig=aTBedZPpI2FE%2BA3HU48jfXxmEV7VmsxS5kIgxRs9XsA%3D"
 $packageFile = "crystalreports_xi-sss.msi"
 $destinationFolder = "C:\Temp"
 $LocalWVDpath = "C:\Temp\wvd\"

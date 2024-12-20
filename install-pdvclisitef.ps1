@@ -1,5 +1,5 @@
 # Define variables
-$Uri = "https://raw.githubusercontent.com/ilandtechnology/AVDToolset/main/PDVCliSiTef.zip"
+$Uri = "https://stavdprdbrs01.blob.core.windows.net/progs/PDVCliSiTef.zip?sv=2023-01-03&st=2024-12-17T13%3A27%3A36Z&se=2030-01-01T02%3A59%3A00Z&sr=b&sp=r&sig=Mg4YJ4eiA6I%2FHTlnJUEp1N0b3P5Iht%2FLsdzBH3Z993g%3D"
 $packageFile = "PDVCliSiTef.zip"
 $destinationFolder = "C:\Temp"
 $LocalWVDpath = "C:\Temp\wvd\"
@@ -51,7 +51,7 @@ Write-Host "AVD AIB Customization - Install Install PDV CliSiTef: Expanded Insta
 
 # Install the Install PDV CliSiTef package
 Write-Host "AVD AIB Customization - Install Install PDV CliSiTef: Installing the Install PDV CliSiTef..."
-$process = Start-Process -FilePath "msiexec.exe" -ArgumentList "/package $(Join-Path $LocalWVDpath "PDVCliSiTef\PDVCliSiTef.msi") /qn /norestart" -PassThru
+$process = Start-Process -FilePath "msiexec.exe" -ArgumentList "/package $(Join-Path $LocalWVDpath "PDVCliSiTef\PDVCliSiTef.msi") REINSTALLMODE=amus INSTALLDIR='C:\PDVCliSiTef' /qn /norestart" -PassThru
 $process.PriorityClass = [System.Diagnostics.ProcessPriorityClass]::AboveNormal
 $process.WaitForExit()
 

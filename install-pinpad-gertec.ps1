@@ -1,5 +1,5 @@
 # Define variables
-$Uri = "https://raw.githubusercontent.com/ilandtechnology/AVDToolset/main/SAGAT_Test_PPC.exe"
+$Uri = "https://stavdprdbrs01.blob.core.windows.net/progs/SAGAT_Test_PPC.exe?sv=2023-01-03&st=2024-12-17T13%3A29%3A57Z&se=2030-01-01T02%3A59%3A00Z&sr=b&sp=r&sig=OjVI354nnTxnrak5V%2FC%2Feml%2BHDVpNFlWvou%2FXdpcXP0%3D"
 $packageFile = "SAGAT_Test_PPC.exe"
 $destinationFolder = "C:\Temp"
 $LocalWVDpath = "C:\Temp\wvd\"

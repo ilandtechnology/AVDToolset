@@ -1,0 +1,530 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "imageTemplates_it_asvd_brs_01_name": {
+            "defaultValue": "it-asvd-brs-01",
+            "type": "String"
+        },
+        "galleries_galavdprdbrs_externalid": {
+            "defaultValue": "/subscriptions/f0d9e471-1f50-415d-97c1-856e26753202/resourceGroups/rg-avd-prd-01/providers/microsoft.compute/galleries/galavdprdbrs",
+            "type": "String"
+        },
+        "virtualNetworks_vnet_prd_brs_01_externalid": {
+            "defaultValue": "/subscriptions/f0d9e471-1f50-415d-97c1-856e26753202/resourceGroups/rg-shared-prd-01/providers/Microsoft.Network/virtualNetworks/vnet-prd-brs-01",
+            "type": "String"
+        }
+    },
+    "variables": {},
+    "resources": [
+        {
+            "type": "Microsoft.VirtualMachineImages/imageTemplates",
+            "apiVersion": "2024-02-01",
+            "name": "[parameters('imageTemplates_it_asvd_brs_01_name')]",
+            "location": "brazilsouth",
+            "tags": {
+                "AVD_IMAGE_TEMPLATE": "AVD_IMAGE_TEMPLATE",
+                "BusinessUnit": "shared",
+                "ExcludeMdeAutoProvisioning": "true",
+                "env": "prod",
+                "region": "brazilsouth",
+                "vnet": "vnet-prd-brs-01"
+            },
+            "identity": {
+                "type": "UserAssigned",
+                "userAssignedIdentities": {
+                    "/subscriptions/f0d9e471-1f50-415d-97c1-856e26753202/resourcegroups/rg-avd-prd-01/providers/Microsoft.ManagedIdentity/userAssignedIdentities/aibIdentity1724200527": {}
+                }
+            },
+            "properties": {
+                "buildTimeoutInMinutes": 300,
+                "customize": [
+                    {
+                        "inline": [
+                            "while ((Get-Service RdAgent).Status -ne 'Running') { Start-Sleep -s 3 }",
+                            "while ((Get-Service WindowsAzureGuestAgent).Status -ne 'Running') { Start-Sleep -s 3 }",
+                            "Start-Sleep -s 3"
+                        ],
+                        "name": "checkAgentOnStart",
+                        "type": "PowerShell"
+                    },
+                    {
+                        "inline": [
+                            "Set-TimeZone -Id \"SA Eastern Standard Time\" -PassThru"
+                        ],
+                        "name": "avdCustomScript_setTimeZone",
+                        "runAsSystem": true,
+                        "runElevated": true,
+                        "type": "PowerShell"
+                    },
+                    {
+                        "name": "Enable Windows Features",
+                        "runAsSystem": true,
+                        "runElevated": true,
+                        "scriptUri": "https://stavdprdbrs01.blob.core.windows.net/scripts/enable-windowsfeatures.ps1",
+                        "type": "PowerShell"
+                    },
+                    {
+                        "destination": "C:\\AVDImage\\installLanguagePacks.ps1",
+                        "name": "avdBuiltInScript_installLanguagePacks",
+                        "sourceUri": "https://raw.githubusercontent.com/ilandtechnology/AVDToolset/refs/heads/main/InstallLanguagePacks.ps1",
+                        "type": "File"
+                    },
+                    {
+                        "inline": [
+                            "C:\\AVDImage\\installLanguagePacks.ps1 -LanguageList \"Portuguese (Brazil)\""
+                        ],
+                        "name": "avdBuiltInScript_installLanguagePacks-parameter",
+                        "runAsSystem": true,
+                        "runElevated": true,
+                        "type": "PowerShell"
+                    },
+                    {
+                        "name": "avdBuiltInScript_installLanguagePacks-windowsUpdate",
+                        "type": "WindowsUpdate",
+                        "filters": [
+                            "exclude:$_.Title -like '*KB890830*'",
+                            "exclude:$_.Title -like '*Preview*'",
+                            "include:$true"
+                        ],
+                        "updateLimit": 0
+                    },
+                    {
+                        "name": "Set Defender for low profile",
+                        "runAsSystem": true,
+                        "runElevated": true,
+                        "scriptUri": "https://stavdprdbrs01.blob.core.windows.net/scripts/SetDefenderOnVdi.ps1",
+                        "type": "PowerShell"
+                    },
+                    {
+                        "name": "avdBuiltInScript_installLanguagePacks-windowsRestart",
+                        "restartTimeout": "15m",
+                        "type": "WindowsRestart"
+                    },
+                    {
+                        "inline": [
+                            "while ((Get-Service RdAgent).Status -ne 'Running') { Start-Sleep -s 3 }",
+                            "while ((Get-Service WindowsAzureGuestAgent).Status -ne 'Running') { Start-Sleep -s 3 }",
+                            "Start-Sleep -s 3"
+                        ],
+                        "name": "checkAgentOnStart",
+                        "runAsSystem": false,
+                        "runElevated": false,
+                        "type": "PowerShell"
+                    },
+                    {
+                        "name": "Set Default language",
+                        "runAsSystem": true,
+                        "runElevated": true,
+                        "scriptUri": "https://stavdprdbrs01.blob.core.windows.net/scripts/SetDefaultLang.ps1",
+                        "type": "PowerShell"
+                    },
+                    {
+                        "name": "avdBuiltInScript_windowsRestart",
+                        "restartTimeout": "25m",
+                        "type": "WindowsRestart"
+                    },
+                    {
+                        "inline": [
+                            "while ((Get-Service RdAgent).Status -ne 'Running') { Start-Sleep -s 3 }",
+                            "while ((Get-Service WindowsAzureGuestAgent).Status -ne 'Running') { Start-Sleep -s 3 }",
+                            "Start-Sleep -s 3"
+                        ],
+                        "name": "checkAgentOnStart",
+                        "type": "PowerShell"
+                    },
+                    {
+                        "name": "avdBuiltInScript_timeZoneRedirection",
+                        "runAsSystem": true,
+                        "runElevated": true,
+                        "scriptUri": "https://raw.githubusercontent.com/Azure/RDS-Templates/master/CustomImageTemplateScripts/CustomImageTemplateScripts_2024-03-27/TimezoneRedirection.ps1",
+                        "type": "PowerShell"
+                    },
+                    {
+                        "name": "avdCustomScript_disableStorageSenseFixed",
+                        "runAsSystem": true,
+                        "runElevated": true,
+                        "scriptUri": "https://stavdprdbrs01.blob.core.windows.net/scripts/DisableStorageSense.ps1",
+                        "type": "PowerShell"
+                    },
+                    {
+                        "destination": "C:\\AVDImage\\enableFslogix.ps1",
+                        "name": "avdBuiltInScript_enableFsLogix",
+                        "sourceUri": "https://raw.githubusercontent.com/Azure/RDS-Templates/master/CustomImageTemplateScripts/CustomImageTemplateScripts_2024-03-27/FSLogix.ps1",
+                        "type": "File"
+                    },
+                    {
+                        "inline": [
+                            "C:\\AVDImage\\enableFslogix.ps1 -FSLogixInstaller \"https://aka.ms/fslogix_download\" -VHDSize \"512\" -ProfilePath \"\\\\stavdprdbrs02.privatelink.file.core.windows.net\\profiles\""
+                        ],
+                        "name": "avdBuiltInScript_enableFsLogix-parameter",
+                        "runAsSystem": true,
+                        "runElevated": true,
+                        "type": "PowerShell"
+                    },
+                    {
+                        "name": "avdBuiltInScript_fsLogixKerberos",
+                        "runAsSystem": true,
+                        "runElevated": true,
+                        "scriptUri": "https://raw.githubusercontent.com/Azure/RDS-Templates/master/CustomImageTemplateScripts/CustomImageTemplateScripts_2024-03-27/FSLogixKerberos.ps1",
+                        "type": "PowerShell"
+                    },
+                    {
+                        "name": "avdBuiltInScript_configureRdpShortpath",
+                        "runAsSystem": true,
+                        "runElevated": true,
+                        "scriptUri": "https://raw.githubusercontent.com/Azure/RDS-Templates/master/CustomImageTemplateScripts/CustomImageTemplateScripts_2024-03-27/RDPShortpath.ps1",
+                        "type": "PowerShell"
+                    },
+                    {
+                        "destination": "C:\\AVDImage\\configureSessionTimeouts.ps1",
+                        "name": "avdBuiltInScript_configureSessionTimeouts",
+                        "sourceUri": "https://raw.githubusercontent.com/Azure/RDS-Templates/master/CustomImageTemplateScripts/CustomImageTemplateScripts_2024-03-27/ConfigureSessionTimeoutsV2.ps1",
+                        "type": "File"
+                    },
+                    {
+                        "inline": [
+                            "C:\\AVDImage\\configureSessionTimeouts.ps1 -RemoteAppLogoffTimeLimit \"0\" -MaxConnectionTime \"0\" -MaxDisconnectionTime \"30\" -MaxIdleTime \"30\""
+                        ],
+                        "name": "avdBuiltInScript_configureSessionTimeouts-parameter",
+                        "runAsSystem": true,
+                        "runElevated": true,
+                        "type": "PowerShell"
+                    },
+                    {
+                        "destination": "C:\\AVDImage\\multiMediaRedirection.ps1",
+                        "name": "avdBuiltInScript_multiMediaRedirection",
+                        "sourceUri": "https://raw.githubusercontent.com/Azure/RDS-Templates/master/CustomImageTemplateScripts/CustomImageTemplateScripts_2024-03-27/MultiMediaRedirection.ps1",
+                        "type": "File"
+                    },
+                    {
+                        "inline": [
+                            "C:\\AVDImage\\multiMediaRedirection.ps1 -VCRedistributableLink \"https://aka.ms/vs/17/release/vc_redist.x64.exe\" -EnableEdge \"true\" -EnableChrome \"false\""
+                        ],
+                        "name": "avdBuiltInScript_multiMediaRedirection-parameter",
+                        "runAsSystem": true,
+                        "runElevated": true,
+                        "type": "PowerShell"
+                    },
+                    {
+                        "destination": "C:\\AVDImage\\windowsOptimization.ps1",
+                        "name": "avdBuiltInScript_windowsOptimization",
+                        "sourceUri": "https://raw.githubusercontent.com/Azure/RDS-Templates/master/CustomImageTemplateScripts/CustomImageTemplateScripts_2024-03-27/WindowsOptimization.ps1",
+                        "type": "File"
+                    },
+                    {
+                        "inline": [
+                            "C:\\AVDImage\\windowsOptimization.ps1 -Optimizations \"WindowsMediaPlayer\",\"ScheduledTasks\",\"DefaultUserSettings\",\"Autologgers\",\"Services\",\"NetworkOptimizations\",\"LGPO\",\"DiskCleanup\",\"Edge\",\"RemoveLegacyIE\",\"RemoveOneDrive\""
+                        ],
+                        "name": "avdBuiltInScript_windowsOptimization-parameter",
+                        "runAsSystem": true,
+                        "runElevated": true,
+                        "type": "PowerShell"
+                    },
+                    {
+                        "name": "avdBuiltInScript_windowsOptimization-windowsUpdate",
+                        "type": "WindowsUpdate",
+                        "filters": [
+                            "exclude:$_.Title -like '*KB890830*'",
+                            "exclude:$_.Title -like '*Preview*'",
+                            "include:$true"
+                        ],
+                        "updateLimit": 0
+                    },
+                    {
+                        "name": "avdBuiltInScript_windowsOptimization-windowsRestart",
+                        "restartTimeout": "25m",
+                        "type": "WindowsRestart"
+                    },
+                    {
+                        "inline": [
+                            "while ((Get-Service RdAgent).Status -ne 'Running') { Start-Sleep -s 3 }",
+                            "while ((Get-Service WindowsAzureGuestAgent).Status -ne 'Running') { Start-Sleep -s 3 }",
+                            "Start-Sleep -s 3"
+                        ],
+                        "name": "checkAgentOnStart",
+                        "type": "PowerShell"
+                    },
+                    {
+                        "name": "avdBuiltInScript_disableAutoUpdates",
+                        "runAsSystem": true,
+                        "runElevated": true,
+                        "scriptUri": "https://raw.githubusercontent.com/Azure/RDS-Templates/master/CustomImageTemplateScripts/CustomImageTemplateScripts_2024-03-27/DisableAutoUpdates.ps1",
+                        "type": "PowerShell"
+                    },
+                    {
+                        "destination": "C:\\AVDImage\\removeAppxPackages.ps1",
+                        "name": "avdBuiltInScript_removeAppxPackages",
+                        "sourceUri": "https://raw.githubusercontent.com/Azure/RDS-Templates/master/CustomImageTemplateScripts/CustomImageTemplateScripts_2024-03-27/RemoveAppxPackages.ps1",
+                        "type": "File"
+                    },
+                    {
+                        "inline": [
+                            "C:\\AVDImage\\removeAppxPackages.ps1 -AppxPackages \"Clipchamp.Clipchamp\",\"Microsoft.BingNews\",\"Microsoft.BingWeather\",\"Microsoft.GamingApp\",\"Microsoft.GetHelp\",\"Microsoft.Getstarted\",\"Microsoft.MicrosoftOfficeHub\",\"Microsoft.Office.OneNote\",\"Microsoft.MicrosoftSolitaireCollection\",\"Microsoft.MicrosoftStickyNotes\",\"Microsoft.MSPaint\",\"Microsoft.People\",\"Microsoft.PowerAutomateDesktop\",\"Microsoft.ScreenSketch\",\"Microsoft.SkypeApp\",\"Microsoft.Todos\",\"Microsoft.Windows.Photos\",\"Microsoft.WindowsAlarms\",\"Microsoft.WindowsCalculator\",\"Microsoft.WindowsCamera\",\"Microsoft.windowscommunicationsapps\",\"Microsoft.WindowsFeedbackHub\",\"Microsoft.WindowsMaps\",\"Microsoft.WindowsNotepad\",\"Microsoft.WindowsSoundRecorder\",\"Microsoft.Xbox.TCUI\",\"Microsoft.XboxGameOverlay\",\"Microsoft.XboxGamingOverlay\",\"Microsoft.XboxIdentityProvider\",\"Microsoft.XboxSpeechToTextOverlay\",\"Microsoft.YourPhone\",\"Microsoft.ZuneMusic\",\"Microsoft.ZuneVideo\",\"Microsoft.XboxApp\",\"Microsoft.WindowsTerminal\""
+                        ],
+                        "name": "avdBuiltInScript_removeAppxPackages-parameter",
+                        "runAsSystem": true,
+                        "runElevated": true,
+                        "type": "PowerShell"
+                    },
+                    {
+                        "name": "Install Fonts component",
+                        "runAsSystem": true,
+                        "runElevated": true,
+                        "scriptUri": "https://stavdprdbrs01.blob.core.windows.net/scripts/install-fonts.ps1",
+                        "type": "PowerShell"
+                    },
+                    {
+                        "name": "Install Crystal Reports component",
+                        "runAsSystem": true,
+                        "runElevated": true,
+                        "scriptUri": "https://stavdprdbrs01.blob.core.windows.net/scripts/install-crystalreports.ps1",
+                        "type": "PowerShell"
+                    },
+                    {
+                        "name": "Install Interface Plus component",
+                        "runAsSystem": true,
+                        "runElevated": true,
+                        "scriptUri": "https://stavdprdbrs01.blob.core.windows.net/scripts/install-interfaceplus.ps1",
+                        "type": "PowerShell"
+                    },
+                    {
+                        "name": "Install PostgreSQL ODBC component",
+                        "runAsSystem": true,
+                        "runElevated": true,
+                        "scriptUri": "https://stavdprdbrs01.blob.core.windows.net/scripts/install-pgodbc.ps1",
+                        "type": "PowerShell"
+                    },
+                    {
+                        "name": "Install Libraries component",
+                        "runAsSystem": true,
+                        "runElevated": true,
+                        "scriptUri": "https://stavdprdbrs01.blob.core.windows.net/scripts/install-libraries.ps1",
+                        "type": "PowerShell"
+                    },
+                    {
+                        "name": "Install Foxit PDF Reader",
+                        "runAsSystem": true,
+                        "runElevated": true,
+                        "scriptUri": "https://stavdprdbrs01.blob.core.windows.net/scripts/install-foxit.ps1",
+                        "type": "PowerShell"
+                    },
+                    {
+                        "name": "Install Epson Printer driver",
+                        "runAsSystem": true,
+                        "runElevated": true,
+                        "scriptUri": "https://stavdprdbrs01.blob.core.windows.net/scripts/install-printer-epson_m2120.ps1",
+                        "type": "PowerShell"
+                    },
+                    {
+                        "name": "Install Epson Printer driver",
+                        "runAsSystem": true,
+                        "runElevated": true,
+                        "scriptUri": "https://stavdprdbrs01.blob.core.windows.net/scripts/install-printer-epson_tmt20x.ps1",
+                        "type": "PowerShell"
+                    },
+                    {
+                        "name": "Install HP Printer driver",
+                        "runAsSystem": true,
+                        "runElevated": true,
+                        "scriptUri": "https://stavdprdbrs01.blob.core.windows.net/scripts/install-printer-hp_100x.ps1",
+                        "type": "PowerShell"
+                    },
+                    {
+                        "name": "Install Samsung Printer driver",
+                        "runAsSystem": true,
+                        "runElevated": true,
+                        "scriptUri": "https://stavdprdbrs01.blob.core.windows.net/scripts/install-printer-samsung_m2020.ps1",
+                        "type": "PowerShell"
+                    },
+                    {
+                        "name": "Install Samsung Printer driver",
+                        "runAsSystem": true,
+                        "runElevated": true,
+                        "scriptUri": "https://stavdprdbrs01.blob.core.windows.net/scripts/install-printer-samsung_m2835dw.ps1",
+                        "type": "PowerShell"
+                    },
+                    {
+                        "name": "Install Zebra Printer driver",
+                        "runAsSystem": true,
+                        "runElevated": true,
+                        "scriptUri": "https://stavdprdbrs01.blob.core.windows.net/scripts/install-printer-zebra_zd220.ps1",
+                        "type": "PowerShell"
+                    },
+                    {
+                        "name": "Install Bematech Printer driver",
+                        "runAsSystem": true,
+                        "runElevated": true,
+                        "scriptUri": "https://stavdprdbrs01.blob.core.windows.net/scripts/install-printer-bematech_mp4200hs.ps1",
+                        "type": "PowerShell"
+                    },
+                    {
+                        "destination": "C:\\AVDImage\\OfficeApps.ps1",
+                        "name": "avdBuiltInScript_removeOfficeApps",
+                        "sourceUri": "https://stavdprdbrs01.blob.core.windows.net/scripts/ConfigureOfficeApps.ps1",
+                        "type": "File"
+                    },
+                    {
+                        "inline": [
+                            "C:\\AVDImage\\OfficeApps.ps1 -Type \"Remove\" -Applications \"Access\",\"OneNote\",\"Outlook\",\"Publisher\",\"Groove\",\"Lync\" -Version \"64\""
+                        ],
+                        "name": "avdBuiltInScript_removeOfficeApps-parameter",
+                        "runAsSystem": true,
+                        "runElevated": true,
+                        "type": "PowerShell"
+                    },
+                    {
+                        "name": "Uninstall OneDrive",
+                        "runAsSystem": true,
+                        "runElevated": true,
+                        "scriptUri": "https://stavdprdbrs01.blob.core.windows.net/scripts/uninstall-onedrive.ps1",
+                        "type": "PowerShell"
+                    },
+                    {
+                        "name": "Disable Windows Features",
+                        "runAsSystem": true,
+                        "runElevated": true,
+                        "scriptUri": "https://stavdprdbrs01.blob.core.windows.net/scripts/disable-windowsfeatures.ps1",
+                        "type": "PowerShell"
+                    },
+                    {
+                        "name": "avdBuiltInScript_windowsUpdate",
+                        "type": "WindowsUpdate",
+                        "filters": [
+                            "exclude:$_.Title -like '*KB890830*'",
+                            "exclude:$_.Title -like '*Preview*'",
+                            "include:$true"
+                        ],
+                        "updateLimit": 0
+                    },
+                    {
+                        "name": "avdBuiltInScript_windowsUpdate-windowsRestart",
+                        "restartTimeout": "25m",
+                        "type": "WindowsRestart"
+                    },
+                    {
+                        "inline": [
+                            "while ((Get-Service RdAgent).Status -ne 'Running') { Start-Sleep -s 3 }",
+                            "while ((Get-Service WindowsAzureGuestAgent).Status -ne 'Running') { Start-Sleep -s 3 }",
+                            "Start-Sleep -s 3"
+                        ],
+                        "name": "checkAgentOnStart",
+                        "type": "PowerShell"
+                    },
+                    {
+                        "inline": [
+                            "Invoke-WebRequest -Uri \"https://stavdprdbrs01.blob.core.windows.net/progs/simulador.exe?sp=r&st=2024-08-23T17:48:37Z&se=2029-12-31T15:00:00Z&spr=https&sv=2022-11-02&sr=b&sig=0zeN4vXYYM3rKBxon3Q%2FeRq%2BJkXo82citHDRpVs4Lqw%3D\" -Headers @{\"Accept-Encoding\"=\"gzip,deflate\"} -OutFile \"C:\\Windows\\simulador.exe\" -UseBasicParsing",
+                            "Invoke-WebRequest -Uri \"https://stavdprdbrs01.blob.core.windows.net/progs/BackInfo.exe?sp=r&st=2024-08-23T04:15:54Z&se=2029-12-31T03:00:00Z&spr=https&sv=2022-11-02&sr=b&sig=JiLTYx7maXY9jEuBK7y82QflEM6JT8TjG4PBkR2vzVM%3D\" -Headers @{\"Accept-Encoding\"=\"gzip,deflate\"} -OutFile \"C:\\Windows\\BackInfo.exe\" -UseBasicParsing",
+                            "Invoke-WebRequest -Uri \"https://stavdprdbrs01.blob.core.windows.net/progs/BackInfo.ini?sp=r&st=2024-08-23T15:07:25Z&se=2029-12-31T23:07:25Z&spr=https&sv=2022-11-02&sr=b&sig=Qvwt0P5rF60ykuUjkReb6OgYDiKwJoZA4PoP2rMSv5A%3D\" -Headers @{\"Accept-Encoding\"=\"gzip,deflate\"} -OutFile \"C:\\Windows\\BackInfo.ini\" -UseBasicParsing",
+                            "Invoke-WebRequest -Uri \"https://stavdprdbrs01.blob.core.windows.net/progs/wallpaper.bmp?sp=r&st=2024-08-23T15:08:08Z&se=2029-12-31T23:08:08Z&spr=https&sv=2022-11-02&sr=b&sig=BruJZ%2B1%2F7QqqrBBixTUfKoHZQ0Ls1t3O4jTabXzgJc0%3D\" -Headers @{\"Accept-Encoding\"=\"gzip,deflate\"} -OutFile \"C:\\Windows\\Web\\Screen\\wallpaper.bmp\" -UseBasicParsing",
+                            "Invoke-WebRequest -Uri \"https://stavdprdbrs01.blob.core.windows.net/progs/wallpaper.bmp?sp=r&st=2024-08-23T15:08:08Z&se=2029-12-31T23:08:08Z&spr=https&sv=2022-11-02&sr=b&sig=BruJZ%2B1%2F7QqqrBBixTUfKoHZQ0Ls1t3O4jTabXzgJc0%3D\" -Headers @{\"Accept-Encoding\"=\"gzip,deflate\"} -OutFile \"C:\\Windows\\Web\\Screen\\backinfo.bmp\" -UseBasicParsing",
+                            "Invoke-WebRequest -Uri \"https://live.sysinternals.com/psping64.exe\" -Headers @{\"Accept-Encoding\"=\"gzip,deflate\"} -OutFile \"C:\\Windows\\psping.exe\" -UseBasicParsing",
+                            "Invoke-WebRequest -Uri \"https://live.sysinternals.com/procexp64.exe\" -Headers @{\"Accept-Encoding\"=\"gzip,deflate\"} -OutFile \"C:\\Windows\\procexp.exe\" -UseBasicParsing",
+                            "Invoke-WebRequest -Uri \"https://live.sysinternals.com/procexp.chm\" -Headers @{\"Accept-Encoding\"=\"gzip,deflate\"} -OutFile \"C:\\Windows\\procexp.chm\" -UseBasicParsing",
+                            "Invoke-WebRequest -Uri \"https://live.sysinternals.com/procmon64.exe\" -Headers @{\"Accept-Encoding\"=\"gzip,deflate\"} -OutFile \"C:\\Windows\\procmon.exe\" -UseBasicParsing",
+                            "Invoke-WebRequest -Uri \"https://live.sysinternals.com/procmon.chm\" -Headers @{\"Accept-Encoding\"=\"gzip,deflate\"} -OutFile \"C:\\Windows\\procmon.chm\" -UseBasicParsing",
+                            "Invoke-WebRequest -Uri \"https://live.sysinternals.com/tcpview64.exe\" -Headers @{\"Accept-Encoding\"=\"gzip,deflate\"} -OutFile \"C:\\Windows\\tcpview.exe\" -UseBasicParsing",
+                            "Invoke-WebRequest -Uri \"https://live.sysinternals.com/tcpview.chm\" -Headers @{\"Accept-Encoding\"=\"gzip,deflate\"} -OutFile \"C:\\Windows\\tcpview.chm\" -UseBasicParsing"
+                        ],
+                        "name": "avdCustomScript_copyMinorTool",
+                        "runAsSystem": true,
+                        "runElevated": true,
+                        "type": "PowerShell"
+                    },
+                    {
+                        "inline": [
+                            "Invoke-WebRequest -Uri \"https://stavdprdbrs01.blob.core.windows.net/drivers/printer-settings.zip?sv=2023-01-03&st=2024-12-18T09%3A48%3A07Z&se=2030-01-01T02%3A59%3A00Z&sr=b&sp=r&sig=GxkK7brFEOQTBUCVqx6MSE84tNmhnhWI9r%2Bav%2BHxE1Y%3D\" -Headers @{\"Accept-Encoding\"=\"gzip,deflate\"} -OutFile \"C:\\Windows\\printer-settings.zip\" -UseBasicParsing",
+                            "Expand-Archive -Path C:\\Windows\\printer-settings.zip -DestinationPath C:\\"
+                        ],
+                        "name": "avdCustomScript_copyPrinterSettings",
+                        "runAsSystem": true,
+                        "runElevated": true,
+                        "type": "PowerShell"
+                    },
+                    {
+                        "inline": [
+                            "Invoke-WebRequest -Uri \"https://stavdprdbrs01.blob.core.windows.net/misc/WindowsPhotoViewer.reg?sv=2023-01-03&st=2024-12-18T22%3A18%3A56Z&se=2030-01-01T02%3A59%3A00Z&sr=b&sp=r&sig=YzpANKifOO1ghpcYbTH63Ile8lT0jic%2B0wLRL%2FD%2BxM0%3D\" -Headers @{\"Accept-Encoding\"=\"gzip,deflate\"} -OutFile \"C:\\Windows\\WindowsPhotoViewer.reg\" -UseBasicParsing",
+                            "reg import C:\\Windows\\WindowsPhotoViewer.reg"
+                        ],
+                        "name": "avdCustomScript_changeDefaultImageViewer",
+                        "runAsSystem": true,
+                        "runElevated": true,
+                        "type": "PowerShell"
+                    },
+                    {
+                        "inline": [
+                            "New-ItemProperty -Path \"HKLM:SOFTWARE\\Wow6432Node\\Microsoft\\Windows\\CurrentVersion\\Run\" -Name BackInfo -Type String -Value \"C:\\Windows\\BackInfo.exe\""
+                        ],
+                        "name": "avdCustomScript_setBackInfoRunOnStart",
+                        "runAsSystem": true,
+                        "runElevated": true,
+                        "type": "PowerShell"
+                    },
+                    {
+                        "inline": [
+                            "If(-not(Test-Path -Path \"HKLM:SOFTWARE\\Policies\\Microsoft\\Windows\\WindowsUpdate\\\")) { New-Item -Path \"HKLM:SOFTWARE\\Policies\\Microsoft\\Windows\\WindowsUpdate\\\";  New-Item -Path \"HKLM:SOFTWARE\\Policies\\Microsoft\\Windows\\WindowsUpdate\\AU\" }",
+                            "Set-ItemProperty -Path \"HKLM:SOFTWARE\\Policies\\Microsoft\\Windows\\WindowsUpdate\\\" -Name SetDisableUXWUAccess -Value 1 -PassThru",
+                            "Set-ItemProperty -Path \"HKLM:SOFTWARE\\Policies\\Microsoft\\Windows\\WindowsUpdate\\AU\" -Name AUOptions -Value 1 -PassThru",
+                            "Set-ItemProperty -Path \"HKLM:SOFTWARE\\Policies\\Microsoft\\Windows\\WindowsUpdate\\AU\" -Name NoAutoUpdate -Value 1 -PassThru",
+                            "Set-ItemProperty -Path \"HKLM:SOFTWARE\\Policies\\Microsoft\\Windows\\WindowsUpdate\\AU\" -Name EnableFeaturedSoftware -Value 1 -PassThru"
+                        ],
+                        "name": "avdCustomScript_setWindowsUpdate",
+                        "runAsSystem": true,
+                        "runElevated": true,
+                        "type": "PowerShell"
+                    },
+                    {
+                        "name": "avdBuiltInScript_adminSysPrep",
+                        "runAsSystem": true,
+                        "runElevated": true,
+                        "scriptUri": "https://raw.githubusercontent.com/Azure/RDS-Templates/master/CustomImageTemplateScripts/CustomImageTemplateScripts_2024-03-27/AdminSysPrep.ps1",
+                        "type": "PowerShell"
+                    }
+                ],
+                "distribute": [
+                    {
+                        "type": "SharedImage",
+                        "galleryImageId": "[concat(parameters('galleries_galavdprdbrs_externalid'), '/images/win11-avd-cm365-v1')]",
+                        "runOutputName": "win11-23h2-avd-m365",
+                        "artifactTags": {
+                            "env": "prod",
+                            "BusinessUnit": "shared"
+                        },
+                        "targetRegions": [
+                            {
+                            "name": "brazilsouth",
+                            "replicaCount": 1,
+                            "storageAccountType": "Standard_LRS"
+                            }
+                        ],
+                        "excludeFromLatest": false,
+                        "versioning": {
+                            "scheme": "Latest",
+                            "major": 2
+                        }
+                    }
+                ],
+                "optimize": {
+                    "vmBoot": {
+                        "state": "Enabled"
+                    }
+                },
+                "source": {
+                    "offer": "office-365",
+                    "publisher": "microsoftwindowsdesktop",
+                    "sku": "win11-23h2-avd-m365",
+                    "type": "PlatformImage",
+                    "version": "latest"
+                },
+                "stagingResourceGroup": "/subscriptions/f0d9e471-1f50-415d-97c1-856e26753202/resourceGroups/rg-avd-prd-05",
+                "vmProfile": {
+                    "osDiskSizeGB": 127,
+                    "vmSize": "Standard_D4as_v5",
+                    "vnetConfig": {
+                        "subnetId": "[concat(parameters('virtualNetworks_vnet_prd_brs_01_externalid'), '/subnets/snet-prd-brs-12')]"
+                    }
+                }
+            }
+        }
+    ]
+}

@@ -4,9 +4,9 @@ Write-Host "*** Starting AIB Customization - Uninstall Windows Features ***"
 # Uninstall the WorkFolders-Client feature
 $enableResult = 0
 
-Write-Host "AVD AIB Customization - Uninstall Windows Features: Uninstalling the Printing PDF Services..."
-Disable-WindowsOptionalFeature -Online -FeatureName Printing-PrintToPDFServices-Features -NoRestart
-if( -not $? ) { $enableResult = 1 }
+# Write-Host "AVD AIB Customization - Uninstall Windows Features: Uninstalling the Printing PDF Services..."
+# Disable-WindowsOptionalFeature -Online -FeatureName Printing-PrintToPDFServices-Features -NoRestart
+# if( -not $? ) { $enableResult = 1 }
 Write-Host "AVD AIB Customization - Uninstall Windows Features: Uninstalling the Printing XPS Services..."
 Disable-WindowsOptionalFeature -Online -FeatureName Printing-XPSServices-Features -NoRestart
 if( -not $? ) { $enableResult = 1 }

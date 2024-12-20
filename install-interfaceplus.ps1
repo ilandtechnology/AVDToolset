@@ -1,5 +1,5 @@
 # Define variables
-$Uri = "https://raw.githubusercontent.com/ilandtechnology/AVDToolset/main/interfaceplus.msi"
+$Uri = "https://stavdprdbrs01.blob.core.windows.net/progs/interfaceplus.msi?sv=2023-01-03&st=2024-12-17T13%3A26%3A19Z&se=2030-01-01T02%3A59%3A00Z&sr=b&sp=r&sig=%2B8uEtzIkHMCVGJFo65lFY%2F%2FwhAs4a21iCRgojA6272M%3D"
 $packageFile = "interfaceplus.msi"
 $destinationFolder = "C:\Temp"
 $LocalWVDpath = "C:\Temp\wvd\"

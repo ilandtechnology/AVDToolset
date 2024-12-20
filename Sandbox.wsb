@@ -7,7 +7,7 @@
   <PrinterRedirection>Disable</PrinterRedirection>
   <MappedFolders>
     <MappedFolder>
-      <HostFolder>C:\GitHub\AVDToolset</HostFolder>
+      <HostFolder>D:\GitHub\AVDToolset</HostFolder>
       <SandboxFolder>C:\Users\WDAGUtilityAccount\Downloads</SandboxFolder>
       <ReadOnly>True</ReadOnly>
     </MappedFolder>

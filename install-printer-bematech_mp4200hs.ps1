@@ -1,5 +1,5 @@
 # Define variables
-$Uri = "https://raw.githubusercontent.com/ilandtechnology/AVDToolset/main/BEMATECH-MP4200HS.zip"
+$Uri = "https://stavdprdbrs01.blob.core.windows.net/drivers/BEMATECH-MP4200HS.zip?sv=2023-01-03&st=2024-12-17T13%3A33%3A53Z&se=2030-01-01T02%3A59%3A00Z&sr=b&sp=r&sig=GmlpfscesZv%2FZFM0Lu9aFHeU9ga%2B2XzcuWZo%2FQShYK4%3D"
 $packageFile = "BEMATECH.zip"
 $destinationFolder = "C:\Temp"
 $LocalWVDpath = "C:\Temp\wvd\"

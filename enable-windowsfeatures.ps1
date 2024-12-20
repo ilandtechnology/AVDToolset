@@ -2,6 +2,7 @@ $stopwatch = [System.Diagnostics.Stopwatch]::StartNew()
 Write-Host "*** Starting AIB Customization - Install Windows Features ***"
 
 # Install the .NET Framework 3.5
+# https://download.visualstudio.microsoft.com/download/pr/b635098a-2d1d-4142-bef6-d237545123cb/2651b87007440a15209cac29634a4e45/dotnetfx35.exe
 $enableResult = 0
 Write-Host "AVD AIB Customization - Install Windows Features: Installing the NET Framework 3.5..."
 for($i=1; $i -le 5; $i++) {

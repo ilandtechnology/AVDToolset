@@ -1,5 +1,5 @@
 # Define variables
-$Uri = "https://raw.githubusercontent.com/ilandtechnology/AVDToolset/main/EPSON-M2120.zip"
+$Uri = "https://stavdprdbrs01.blob.core.windows.net/drivers/EPSON-M2120.zip?sv=2023-01-03&st=2024-12-17T13%3A35%3A18Z&se=2030-01-01T02%3A59%3A00Z&sr=b&sp=r&sig=Ax74Ny%2Fs4a86Li3Ajd3vLZ8%2FlkgElBYQMZVvo9OvCmg%3D"
 $packageFile = "EPSON.zip"
 $destinationFolder = "C:\Temp"
 $LocalWVDpath = "C:\Temp\wvd\"

@@ -184,7 +184,7 @@
                     },
                     {
                         "inline": [
-                            "C:\\AVDImage\\configureSessionTimeouts.ps1 -RemoteAppLogoffTimeLimit \"0\" -MaxConnectionTime \"0\" -MaxDisconnectionTime \"60\" -MaxIdleTime \"60\""
+                            "C:\\AVDImage\\configureSessionTimeouts.ps1 -RemoteAppLogoffTimeLimit \"0\" -MaxConnectionTime \"0\" -MaxDisconnectionTime \"30\" -MaxIdleTime \"30\""
                         ],
                         "name": "avdBuiltInScript_configureSessionTimeouts-parameter",
                         "runAsSystem": true,
@@ -463,7 +463,7 @@
                 "stagingResourceGroup": "/subscriptions/f0d9e471-1f50-415d-97c1-856e26753202/resourceGroups/rg-avd-prd-04",
                 "vmProfile": {
                     "osDiskSizeGB": 127,
-                    "vmSize": "Standard_D2s_v4",
+                    "vmSize": "Standard_D2_v5",
                     "vnetConfig": {
                         "subnetId": "[concat(parameters('virtualNetworks_vnet_prd_brs_01_externalid'), '/subnets/snet-prd-brs-05')]"
                     }

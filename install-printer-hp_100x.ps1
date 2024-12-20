@@ -1,5 +1,5 @@
 # Define variables
-$Uri = "https://raw.githubusercontent.com/ilandtechnology/AVDToolset/main/HP-100X.zip"
+$Uri = "https://stavdprdbrs01.blob.core.windows.net/drivers/HP-100X.zip?sv=2023-01-03&st=2024-12-17T13%3A42%3A12Z&se=2030-01-01T02%3A59%3A00Z&sr=b&sp=r&sig=O08dFqo9r%2FVKhosPiwVdxTQFK12nF%2BbZCx4Z4DnTVec%3D"
 $packageFile = "HP.zip"
 $destinationFolder = "C:\Temp"
 $LocalWVDpath = "C:\Temp\wvd\"

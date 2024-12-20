@@ -1,5 +1,5 @@
 # Define variables
-$Uri = "https://raw.githubusercontent.com/ilandtechnology/AVDToolset/main/EPSON-TMT20X.zip"
+$Uri = "https://stavdprdbrs01.blob.core.windows.net/drivers/EPSON-TMT20X.zip?sv=2023-01-03&st=2024-12-17T13%3A38%3A36Z&se=2030-01-01T02%3A59%3A00Z&sr=b&sp=r&sig=S3XkJA1Bd36BVeLW5qaKcYqkCHu3SpYCPzo6j0O0Rqw%3D"
 $packageFile = "EPSON.zip"
 $destinationFolder = "C:\Temp"
 $LocalWVDpath = "C:\Temp\wvd\"

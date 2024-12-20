@@ -83,7 +83,8 @@ $exclusions = @(
     "\\stavdprdbrs02.privatelink.file.core.windows.net\profiles\*\*.VHDX.meta",
     "\\stavdprdbrs02.privatelink.file.core.windows.net\profiles\*\*.VHDX.metadata",
     "%ProgramData%\FSLogix\Cache\*",
-    "%ProgramData%\FSLogix\Proxy\*"
+    "%ProgramData%\FSLogix\Proxy\*",
+    "%SystemDrive%\TMP\*"
 )
 
 foreach ($exclusion in $exclusions) {
@@ -205,6 +206,23 @@ if ($currentValue -ne $valueData) {
 
 $keyPath = "HKLM:SOFTWARE\Policies\Microsoft\Windows Defender\Signature Updates"
 $valueName = "SignatureUpdateInterval"
+$valueData = 1
+
+if (!(Test-Path $keyPath)) {
+    New-Item -Path $keyPath -Force
+}
+
+$currentValue = (Get-ItemProperty -Path $keyPath).$valueName
+
+if ($currentValue -ne $valueData) {
+    Set-ItemProperty -Path $keyPath -Name $valueName -Value $valueData -PassThru
+}
+
+
+# Memory Integrity
+
+$keyPath = "HKLM:\SYSTEM\CurrentControlSet\Control\DeviceGuard\Scenarios\HypervisorEnforcedCodeIntegrity"
+$valueName = "Enabled"
 $valueData = 1
 
 if (!(Test-Path $keyPath)) {

@@ -1,5 +1,5 @@
 # Define variables
-$Uri = "https://raw.githubusercontent.com/ilandtechnology/AVDToolset/main/ZEBRA-ZD220.zip"
+$Uri = "https://stavdprdbrs01.blob.core.windows.net/drivers/ZEBRA-ZD220.zip?sv=2023-01-03&st=2024-12-17T13%3A47%3A28Z&se=2030-01-01T02%3A59%3A00Z&sr=b&sp=r&sig=31dqwk%2FOrwFruNkAW7Ksb%2F6ur6SXokFkdowtBSkZqgc%3D"
 $packageFile = "ZEBRA.zip"
 $destinationFolder = "C:\Temp"
 $LocalWVDpath = "C:\Temp\wvd\"
