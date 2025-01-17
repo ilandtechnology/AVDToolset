@@ -153,7 +153,7 @@
                         "type": "PowerShell"
                     },
                     {
-                        "name": "avdBuiltInScript_disableStorageSense",
+                        "name": "avdBuiltInScript_disableStorageSenseFixed",
                         "runAsSystem": true,
                         "runElevated": true,
                         "scriptUri": "https://stavdprdbrs01.blob.core.windows.net/scripts/DisableStorageSense.ps1",
@@ -167,7 +167,7 @@
                     },
                     {
                         "inline": [
-                            "C:\\AVDImage\\enableFslogix.ps1 -FSLogixInstaller \"https://aka.ms/fslogix_download\" -VHDSize \"512\" -ProfilePath \"\\\\stavdprdbrs02.privatelink.file.core.windows.net\\profiles\""
+                            "C:\\AVDImage\\enableFslogix.ps1 -FSLogixInstaller \"https://aka.ms/fslogix_download\" -VHDSize \"768\" -ProfilePath \"\\\\stavdprdbrs02.privatelink.file.core.windows.net\\profiles\""
                         ],
                         "name": "avdBuiltInScript_enableFsLogix-parameter",
                         "runAsSystem": true,
@@ -279,6 +279,13 @@
                         "runAsSystem": true,
                         "runElevated": true,
                         "scriptUri": "https://stavdprdbrs01.blob.core.windows.net/scripts/install-printer-hp_100x.ps1",
+                        "type": "PowerShell"
+                    },
+                    {
+                        "name": "avdCustomScript_installHPPrinterDriver",
+                        "runAsSystem": true,
+                        "runElevated": true,
+                        "scriptUri": "https://stavdprdbrs01.blob.core.windows.net/scripts/install-printer-hp_120x.ps1",
                         "type": "PowerShell"
                     },
                     {

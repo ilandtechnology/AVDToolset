@@ -107,15 +107,15 @@ if ($hostname -match "^vm-apvd") {
     rundll32 printui.dll,PrintUIEntry /Sr /n "A4LJ05" /a "C:\Windows\EPSON.dat" d u g 8 r
 
     Install-Printer -Name "ZEBRA_MATRIZ" -IPAddress "192.168.50.27" -Queue "ZEBRA" -Model "ZDesigner ZD220-203dpi ZPL"
-    rundll32 printui.dll,PrintUIEntry /Sr /n "ZEBRA_MATRIZ" /a "C:\Windows\ZEBRA.dat" d u g 8 r
+    rundll32 printui.dll,PrintUIEntry /Sr /n "ZEBRA_MATRIZ" /a "C:\Windows\ZEBRA_MATRIZ.dat" d u g 8 r
     Install-Printer -Name "ZEBRA_OLINDA" -IPAddress "192.168.100.185" -Queue "ZEBRA" -Model "ZDesigner ZD220-203dpi ZPL"
-    rundll32 printui.dll,PrintUIEntry /Sr /n "ZEBRA_OLINDA" /a "C:\Windows\ZEBRA.dat" d u g 8 r
+    rundll32 printui.dll,PrintUIEntry /Sr /n "ZEBRA_OLINDA" /a "C:\Windows\ZEBRA_OLINDA.dat" d u g 8 r
     Install-Printer -Name "ZEBRA_JABOATAO" -IPAddress "192.168.0.142" -Queue "ZEBRA" -Model "ZDesigner ZD220-203dpi ZPL"
-    rundll32 printui.dll,PrintUIEntry /Sr /n "ZEBRA_JABOATAO" /a "C:\Windows\ZEBRA.dat" d u g 8 r
+    rundll32 printui.dll,PrintUIEntry /Sr /n "ZEBRA_JABOATAO" /a "C:\Windows\ZEBRA_JABOATAO.dat" d u g 8 r
     Install-Printer -Name "ZEBRA_CAMARAGIBE" -IPAddress "192.168.10.196" -Queue "ZEBRA" -Model "ZDesigner ZD220-203dpi ZPL"
-    rundll32 printui.dll,PrintUIEntry /Sr /n "ZEBRA_CAMARAGIBE" /a "C:\Windows\ZEBRA.dat" d u g 8 r
+    rundll32 printui.dll,PrintUIEntry /Sr /n "ZEBRA_CAMARAGIBE" /a "C:\Windows\ZEBRA_CAMARAGIBE.dat" d u g 8 r
 
-    Install-Printer -Name "HP Neverstop Laser 100x PCLm-S" -IPAddress "192.168.50.190" -Queue $null -Model "HP Neverstop Laser 100x PCLm-S"
+    Install-Printer -Name "HP Neverstop Laser MFP 120x PCLm-S" -IPAddress "192.168.50.180" -Queue $null -Model "HP Neverstop Laser MFP 120x PCLm-S"
 
     Install-Printer -Name "Samsung M2835DW" -IPAddress "192.168.50.193" -Queue "M2835DW" -Model "Samsung M283x Series"
 }
