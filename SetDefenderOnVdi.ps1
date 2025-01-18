@@ -240,7 +240,7 @@ if ($currentValue -ne $valueData) {
 
 $keyPath = "HKLM:SOFTWARE\Policies\Microsoft\Windows Defender"
 $valueName = "TamperProtection"
-$valueData = 1  # 1 = Enabled
+$valueData = 0  # 1 = Enabled
 
 if (!(Test-Path $keyPath)) {
     New-Item -Path $keyPath -Force

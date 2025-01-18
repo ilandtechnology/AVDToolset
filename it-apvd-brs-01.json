@@ -24,11 +24,11 @@
             "location": "brazilsouth",
             "tags": {
                 "AVD_IMAGE_TEMPLATE": "AVD_IMAGE_TEMPLATE",
-                "BusinessUnit": "shared",
-                "ExcludeMdeAutoProvisioning": "true",
                 "env": "prod",
+                "BusinessUnit": "retail",
+                "vnet": "vnet-prd-brs-01",
                 "region": "brazilsouth",
-                "vnet": "vnet-prd-brs-01"
+                "SessionType": "Personal"
             },
             "identity": {
                 "type": "UserAssigned",
@@ -39,11 +39,12 @@
             "properties": {
                 "buildTimeoutInMinutes": 300,
                 "managedResourceTags": {
-                    "BusinessUnit": "shared",
                     "env": "prod",
+                    "BusinessUnit": "retail",
                     "region": "brazilsouth",
                     "vnet": "vnet-prd-brs-01",
-                    "ExcludeMdeAutoProvisioning": "true"
+                    "ExcludeMdeAutoProvisioning": "true",
+                    "SessionType": "Personal"
                 },
                 "customize": [
                     {
@@ -499,8 +500,10 @@
                         "runOutputName": "win10-22h2-avd-g2-custom",
                         "artifactTags": {
                             "env": "prod",
-                            "BusinessUnit": "shared",
-                            "ExcludeMdeAutoProvisioning": "true"
+                            "BusinessUnit": "retail",
+                            "vnet": "vnet-prd-brs-01",
+                            "region": "brazilsouth",
+                            "SessionType": "Personal"
                         },
                         "targetRegions": [
                             {

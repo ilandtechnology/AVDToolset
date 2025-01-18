@@ -24,11 +24,11 @@
             "location": "brazilsouth",
             "tags": {
                 "AVD_IMAGE_TEMPLATE": "AVD_IMAGE_TEMPLATE",
-                "BusinessUnit": "shared",
-                "ExcludeMdeAutoProvisioning": "true",
                 "env": "prod",
+                "BusinessUnit": "shared",
+                "vnet": "vnet-prd-brs-01",
                 "region": "brazilsouth",
-                "vnet": "vnet-prd-brs-01"
+                "SessionType": "Pooled"
             },
             "identity": {
                 "type": "UserAssigned",
@@ -39,11 +39,12 @@
             "properties": {
                 "buildTimeoutInMinutes": 300,
                 "managedResourceTags": {
-                    "BusinessUnit": "shared",
                     "env": "prod",
-                    "region": "brazilsouth",
+                    "BusinessUnit": "shared",
                     "vnet": "vnet-prd-brs-01",
-                    "ExcludeMdeAutoProvisioning": "true"
+                    "region": "brazilsouth",
+                    "ExcludeMdeAutoProvisioning": "true",
+                    "SessionType": "Pooled"
                 },
                 "customize": [
                     {
@@ -501,7 +502,10 @@
                         "artifactTags": {
                             "env": "prod",
                             "BusinessUnit": "shared",
-                            "ExcludeMdeAutoProvisioning": "true"
+                            "vnet": "vnet-prd-brs-01",
+                            "region": "brazilsouth",
+                            "ExcludeMdeAutoProvisioning": "true",
+                            "SessionType": "Pooled"
                         },
                         "targetRegions": [
                             {
