@@ -21,6 +21,44 @@ function New-Directory {
     }
 }
 
+function Install-Font {  
+    param
+    (  
+        [System.IO.FileInfo]$fontFile  
+    )
+          
+    try {
+        #get font name
+        [System.Reflection.Assembly]::LoadWithPartialName("PresentationFramework").GetTypes() | Out-Null
+        $gt = [Windows.Media.GlyphTypeface]::new($fontFile.FullName)
+        $family = $gt.Win32FamilyNames['en-us']
+        if ($null -eq $family) { $family = $gt.Win32FamilyNames.Values.Item(0) }
+        $face = $gt.Win32FaceNames['en-us']
+        if ($null -eq $face) { $face = $gt.Win32FaceNames.Values.Item(0) }
+        $fontName = ("$family $face").Trim() 
+            
+        switch ($fontFile.Extension) {  
+            ".ttf" {$fontName = "$fontName (TrueType)"}  
+            ".otf" {$fontName = "$fontName (OpenType)"}  
+        }  
+
+        write-host "Installing font: $fontFile with font name '$fontName'"
+
+        If (!(Test-Path ("$($env:windir)\Fonts\" + $fontFile.Name))) {  
+            write-host "Copying font: $fontFile"
+            Copy-Item -Path $fontFile.FullName -Destination ("$($env:windir)\Fonts\" + $fontFile.Name) -Force 
+        } else {  write-host "Font already exists: $fontFile" }
+
+        If (!(Get-ItemProperty -Name $fontName -Path "HKLM:\Software\Microsoft\Windows NT\CurrentVersion\Fonts" -ErrorAction SilentlyContinue)) {  
+            write-host "Registering font: $fontFile"
+            New-ItemProperty -Name $fontName -Path "HKLM:\Software\Microsoft\Windows NT\CurrentVersion\Fonts" -PropertyType string -Value $fontFile.Name -Force -ErrorAction SilentlyContinue | Out-Null  
+        } else {  write-host "Font already registered: $fontFile" }
+
+    } catch {            
+        write-host "Error installing font: $fontFile. " $_.exception.message
+    }
+}
+     
 # Ensure destination and local WVD paths exist
 New-Directory -path $destinationFolder
 New-Directory -path $LocalWVDpath
@@ -51,15 +89,11 @@ Write-Host "AVD AIB Customization - Install Fonts: Expanded Fonts package."
 
 # Install the Fonts package
 Write-Host "AVD AIB Customization - Install Fonts: Installing the Fonts..."
-$CopyOptions = 4 + 16 + 1024 + 2048 + 4096 # 4 = Do not display a progress dialog box, 16 = Respond with "Yes to All" for any dialog box that is displayed, 1024 = Do not confirm the creation of a new directory if the operation requires one to be created, 2048 = Do not display a user interface if an error occurs, 4096 = Version 4.71. Do not copy the security attributes of the file.
-$CopyFlag = [String]::Format("{0:x}", $CopyOptions)
-$fonts = (New-Object -ComObject Shell.Application).Namespace(0x14)
-foreach ($file in Get-ChildItem $(Join-Path $LocalWVDpath "\fonts\*.ttf"))
+foreach ($file in Get-ChildItem $(Join-Path $LocalWVDpath "\fonts\*.ttf"),$(Join-Path $LocalWVDpath "\fonts\*.otf") )
 {
     $fileName = $file.Name
     if (-not(Test-Path -Path "C:\Windows\fonts\$fileName" )) {
-        Write-Output $fileName
-        $fonts.CopyHere($file.FullName, $CopyFlag)
+        Install-Font -fontFile $file.FullName  
     }
 }
 

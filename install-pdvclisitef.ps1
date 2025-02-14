@@ -51,7 +51,7 @@ Write-Host "AVD AIB Customization - Install Install PDV CliSiTef: Expanded Insta
 
 # Install the Install PDV CliSiTef package
 Write-Host "AVD AIB Customization - Install Install PDV CliSiTef: Installing the Install PDV CliSiTef..."
-$process = Start-Process -FilePath "msiexec.exe" -ArgumentList "/package $(Join-Path $LocalWVDpath "PDVCliSiTef\PDVCliSiTef.msi") REINSTALLMODE=amus INSTALLDIR='C:\PDVCliSiTef' /qn /norestart" -PassThru
+$process = Start-Process -FilePath "msiexec.exe" -ArgumentList "/package $(Join-Path $LocalWVDpath 'PDVCliSiTef\PDVCliSiTef.msi') REINSTALLMODE=amus /qn /norestart" -PassThru
 $process.PriorityClass = [System.Diagnostics.ProcessPriorityClass]::AboveNormal
 $process.WaitForExit()
 

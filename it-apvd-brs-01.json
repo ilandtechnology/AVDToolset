@@ -26,9 +26,8 @@
                 "AVD_IMAGE_TEMPLATE": "AVD_IMAGE_TEMPLATE",
                 "env": "prod",
                 "BusinessUnit": "retail",
-                "vnet": "vnet-prd-brs-01",
                 "region": "brazilsouth",
-                "SessionType": "Personal"
+                "SessionType": "PersonalDesktops"
             },
             "identity": {
                 "type": "UserAssigned",
@@ -44,7 +43,7 @@
                     "region": "brazilsouth",
                     "vnet": "vnet-prd-brs-01",
                     "ExcludeMdeAutoProvisioning": "true",
-                    "SessionType": "Personal"
+                    "SessionType": "PersonalDesktops"
                 },
                 "customize": [
                     {
@@ -318,17 +317,17 @@
                         "type": "PowerShell"
                     },
                     {
-                        "name": "Install SiTef component",
-                        "runAsSystem": true,
-                        "runElevated": true,
-                        "scriptUri": "https://stavdprdbrs01.blob.core.windows.net/scripts/install-pdvclisitef.ps1",
-                        "type": "PowerShell"
-                    },
-                    {
                         "name": "Install GerTec PinPad component",
                         "runAsSystem": true,
                         "runElevated": true,
                         "scriptUri": "https://stavdprdbrs01.blob.core.windows.net/scripts/install-pinpad-gertec.ps1",
+                        "type": "PowerShell"
+                    },
+                    {
+                        "name": "Install SiTef component",
+                        "runAsSystem": true,
+                        "runElevated": true,
+                        "scriptUri": "https://stavdprdbrs01.blob.core.windows.net/scripts/install-pdvclisitef.ps1",
                         "type": "PowerShell"
                     },
                     {
@@ -501,9 +500,8 @@
                         "artifactTags": {
                             "env": "prod",
                             "BusinessUnit": "retail",
-                            "vnet": "vnet-prd-brs-01",
                             "region": "brazilsouth",
-                            "SessionType": "Personal"
+                            "SessionType": "PersonalDesktops"
                         },
                         "targetRegions": [
                             {

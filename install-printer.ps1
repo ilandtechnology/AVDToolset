@@ -45,43 +45,43 @@ function Install-Printer {
 }
 
 if ($hostname -match "^vm-apvd") {
-    if ($hostname -match "^vm-apvd-prd-0$") {
+    if ($hostname -match "^vm-apvd-prd-0$" -or $hostname -match "^vm-apvd-prd-01$") {
         Install-Printer -Name "CX01LJ01" -IPAddress "192.168.50.147" -Queue "CX01LJ01" -Model "EPSON TM-T(203dpi) Receipt6"
     }
-    if ($hostname -match "^vm-apvd-prd-1$") {
+    if ($hostname -match "^vm-apvd-prd-1$" -or $hostname -match "^vm-apvd-prd-02$") {
         Install-Printer -Name "CX02LJ01" -IPAddress "192.168.50.247" -Queue "CX02LJ01" -Model "Bematech MP-4200 HS"
     }
-    if ($hostname -match "^vm-apvd-prd-2$") {
+    if ($hostname -match "^vm-apvd-prd-2$" -or $hostname -match "^vm-apvd-prd-03$") {
         Install-Printer -Name "CX01LJ03" -IPAddress "192.168.100.108" -Queue $null -Model "Bematech MP-4200 HS"
     }
-    if ($hostname -match "^vm-apvd-prd-3$") {
+    if ($hostname -match "^vm-apvd-prd-3$" -or $hostname -match "^vm-apvd-prd-04$") {
         Install-Printer -Name "CX02LJ03" -IPAddress "192.168.100.115" -Queue "CX02LJ03" -Model "EPSON TM-T(203dpi) Receipt6"
     }
-    if ($hostname -match "^vm-apvd-prd-4$") {
+    if ($hostname -match "^vm-apvd-prd-4$" -or $hostname -match "^vm-apvd-prd-05$") {
         Install-Printer -Name "CX01LJ04" -IPAddress "192.168.0.188" -Queue "CX01LJ04" -Model "EPSON TM-T(203dpi) Receipt6"
     }
-    if ($hostname -match "^vm-apvd-prd-5$") {
+    if ($hostname -match "^vm-apvd-prd-5$" -or $hostname -match "^vm-apvd-prd-06$") {
         Install-Printer -Name "CX02LJ04" -IPAddress "192.168.0.163" -Queue "CX02LJ04" -Model "EPSON TM-T(203dpi) Receipt6"
     }
-    if ($hostname -match "^vm-apvd-prd-6$") {
+    if ($hostname -match "^vm-apvd-prd-6$" -or $hostname -match "^vm-apvd-prd-07$") {
         Install-Printer -Name "CX01LJ05" -IPAddress "192.168.10.194" -Queue "CX01LJ05" -Model "EPSON TM-T(203dpi) Receipt6"
     }
-    if ($hostname -match "^vm-apvd-prd-7$") {
+    if ($hostname -match "^vm-apvd-prd-7$" -or $hostname -match "^vm-apvd-prd-08$") {
         Install-Printer -Name "CX02LJ05" -IPAddress "192.168.10.177" -Queue "CX02LJ05" -Model "EPSON TM-T(203dpi) Receipt6"
     }
-    if ($hostname -match "^vm-apvd-prd-0$" -or $hostname -match "^vm-apvd-prd-1$") {
+    if ($hostname -match "^vm-apvd-prd-0$" -or $hostname -match "^vm-apvd-prd-1$" -or $hostname -match "^vm-apvd-prd-01$" -or $hostname -match "^vm-apvd-prd-02$") {
         Install-Printer -Name "A4LJ01" -IPAddress "192.168.50.147" -Queue "M2020" -Model "Samsung M2020 Series"
         rundll32 printui.dll,PrintUIEntry /Sr /n "A4LJ01" /a "C:\Windows\SAMSUNG.dat" d u g 8 r
     }
-    if ($hostname -match "^vm-apvd-prd-2$" -or $hostname -match "^vm-apvd-prd-3$") {
+    if ($hostname -match "^vm-apvd-prd-2$" -or $hostname -match "^vm-apvd-prd-3$" -or $hostname -match "^vm-apvd-prd-03$" -or $hostname -match "^vm-apvd-prd-04$") {
         Install-Printer -Name "A4LJ03" -IPAddress "192.168.100.177" -Queue $null -Model "EPSON M2120 Series"
         rundll32 printui.dll,PrintUIEntry /Sr /n "A4LJ03" /a "C:\Windows\EPSON.dat" d u g 8 r
     }
-    if ($hostname -match "^vm-apvd-prd-4$" -or $hostname -match "^vm-apvd-prd-5$") {
+    if ($hostname -match "^vm-apvd-prd-4$" -or $hostname -match "^vm-apvd-prd-5$" -or $hostname -match "^vm-apvd-prd-05$" -or $hostname -match "^vm-apvd-prd-06$") {
         Install-Printer -Name "A4LJ04" -IPAddress "192.168.0.125" -Queue $null -Model "EPSON M2120 Series"
         rundll32 printui.dll,PrintUIEntry /Sr /n "A4LJ04" /a "C:\Windows\EPSON.dat" d u g 8 r
     }
-    if ($hostname -match "^vm-apvd-prd-6$" -or $hostname -match "^vm-apvd-prd-7$") {
+    if ($hostname -match "^vm-apvd-prd-6$" -or $hostname -match "^vm-apvd-prd-7$" -or $hostname -match "^vm-apvd-prd-07$" -or $hostname -match "^vm-apvd-prd-08$") {
         Install-Printer -Name "A4LJ05" -IPAddress "192.168.10.182" -Queue $null -Model "EPSON M2120 Series"
         rundll32 printui.dll,PrintUIEntry /Sr /n "A4LJ05" /a "C:\Windows\EPSON.dat" d u g 8 r
     }

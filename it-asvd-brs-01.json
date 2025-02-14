@@ -26,9 +26,8 @@
                 "AVD_IMAGE_TEMPLATE": "AVD_IMAGE_TEMPLATE",
                 "env": "prod",
                 "BusinessUnit": "shared",
-                "vnet": "vnet-prd-brs-01",
                 "region": "brazilsouth",
-                "SessionType": "Pooled"
+                "SessionType": "SharedDesktops"
             },
             "identity": {
                 "type": "UserAssigned",
@@ -41,10 +40,10 @@
                 "managedResourceTags": {
                     "env": "prod",
                     "BusinessUnit": "shared",
-                    "vnet": "vnet-prd-brs-01",
                     "region": "brazilsouth",
+                    "vnet": "vnet-prd-brs-01",
                     "ExcludeMdeAutoProvisioning": "true",
-                    "SessionType": "Pooled"
+                    "SessionType": "SharedDesktops"
                 },
                 "customize": [
                     {
@@ -502,10 +501,8 @@
                         "artifactTags": {
                             "env": "prod",
                             "BusinessUnit": "shared",
-                            "vnet": "vnet-prd-brs-01",
                             "region": "brazilsouth",
-                            "ExcludeMdeAutoProvisioning": "true",
-                            "SessionType": "Pooled"
+                            "SessionType": "SharedDesktops"
                         },
                         "targetRegions": [
                             {

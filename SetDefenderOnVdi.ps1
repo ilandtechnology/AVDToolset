@@ -236,7 +236,7 @@ if ($currentValue -ne $valueData) {
 }
 
 
-######### Enable tamper protection to prevent Microsoft Defender being disabled: Enable
+######### Disable tamper protection to prevent Microsoft Defender being disabled: Disable
 
 $keyPath = "HKLM:SOFTWARE\Policies\Microsoft\Windows Defender"
 $valueName = "TamperProtection"
@@ -251,7 +251,6 @@ $currentValue = (Get-ItemProperty -Path $keyPath).$valueName
 if ($currentValue -ne $valueData) {
     Set-ItemProperty -Path $keyPath -Name $valueName -Value $valueData -PassThru
 }
-
 
 # Define registry key path
 $keyPath = "HKLM:SOFTWARE\Policies\Microsoft\Windows Defender"
