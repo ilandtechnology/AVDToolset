@@ -1,6 +1,9 @@
 # Define variables
-$Uri = "https://stavdprdbrs01.blob.core.windows.net/drivers/ELGIN-i8.zip?sv=2023-01-03&st=2024-12-16T22%3A50%3A07Z&se=2030-01-01T02%3A59%3A00Z&sr=b&sp=r&sig=xRzynjSORXW8mAVMz4rgBHykSXNzBoq9aCgVSYkUlF0%3D"
-$packageFile = "ELGIN.zip"
+$packageFile = "ELGIN-i8.zip"
+$baseUri = "https://stgavdprdbrs01-microsoftrouting.blob.core.windows.net/drivers/"
+$sas = "sv=2022-11-02&ss=b&srt=co&sp=r&se=2028-01-01T02:59:59Z&st=2025-02-21T03:00:00Z&spr=https&sig=qkDCJAUaSucfOdDYTkmIryQOayzu3oLMGtNXYluzfwE%3D"
+$Uri = $baseUri + $packageFile + "?" + $sas
+$packageFile = $packageFile.Split("-")[0] + ".zip"
 $destinationFolder = "C:\Temp"
 $LocalWVDpath = "C:\Temp\wvd\"
 
@@ -51,12 +54,10 @@ Write-Host "AVD AIB Customization - Install ELGIN i8 Driver: Expanded ELGIN i8 D
 
 # Install the ELGIN i8 Driver package
 Write-Host "AVD AIB Customization - Install ELGIN i8 Driver: Installing the ELGIN i8 Driver..."
-pause
 $process = Start-Process -FilePath "pnputil.exe" -ArgumentList "/add-driver $(Join-Path $LocalWVDpath '\ELGIN\POSPrinterDriver_x64.inf') /install" -PassThru
 $process.PriorityClass = [System.Diagnostics.ProcessPriorityClass]::AboveNormal
 $process.WaitForExit()
 Add-PrinterDriver -Name "ELGIN i8"
-pause
 # Cleanup
 if ((Test-Path -Path $LocalWVDpath -ErrorAction SilentlyContinue)) {
     Remove-Item -Path $LocalWVDpath -Force -Recurse -ErrorAction Continue | Out-Null

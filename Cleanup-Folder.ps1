@@ -12,11 +12,11 @@ if (-Not (Test-Path -Path $FolderPath)) {
     exit 1
 }
 
-$files = Get-ChildItem -Path $FolderPath -File | Where-Object { $_.LastWriteTime -lt (Get-Date).AddDays(-$DaysOld) }
+$files = Get-ChildItem -Path $FolderPath -Recurse | Where-Object { $_.LastWriteTime -lt (Get-Date).AddDays(-$DaysOld) }
 
 foreach ($file in $files) {
     try {
-        Remove-Item -Path $file.FullName -Force
+        Remove-Item -Path $file.FullName -Recurse -Force
         Write-Host "Arquivo removido: $($file.FullName)" -ForegroundColor Green
     } catch {
         Write-Host "Erro ao remover o arquivo: $($file.FullName)" -ForegroundColor Red

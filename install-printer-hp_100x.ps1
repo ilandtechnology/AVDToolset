@@ -1,6 +1,9 @@
 # Define variables
-$Uri = "https://stavdprdbrs01.blob.core.windows.net/drivers/HP-100X.zip?sv=2023-01-03&st=2024-12-17T13%3A42%3A12Z&se=2030-01-01T02%3A59%3A00Z&sr=b&sp=r&sig=O08dFqo9r%2FVKhosPiwVdxTQFK12nF%2BbZCx4Z4DnTVec%3D"
-$packageFile = "HP.zip"
+$packageFile = "HP-100X.zip"
+$baseUri = "https://stgavdprdbrs01-microsoftrouting.blob.core.windows.net/drivers/"
+$sas = "sv=2022-11-02&ss=b&srt=co&sp=r&se=2028-01-01T02:59:59Z&st=2025-02-21T03:00:00Z&spr=https&sig=qkDCJAUaSucfOdDYTkmIryQOayzu3oLMGtNXYluzfwE%3D"
+$Uri = $baseUri + $packageFile + "?" + $sas
+$packageFile = $packageFile.Split("-")[0] + ".zip"
 $destinationFolder = "C:\Temp"
 $LocalWVDpath = "C:\Temp\wvd\"
 
@@ -31,6 +34,7 @@ try {
     $ProgressPreference = 'SilentlyContinue'
     [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::TLS12
     Invoke-WebRequest -Uri $Uri -Headers @{"Accept-Encoding"="gzip,deflate"} -OutFile $(Join-Path $LocalWVDpath $packageFile)
+    Unblock-File -Path $(Join-Path $LocalWVDpath $packageFile) -Confirm:$false
     Write-Host "AVD AIB Customization - Install HP Neverstop Laser 100x PCLm-S Driver: Package downloaded successfully."
     $ProgressPreference = 'Continue'
 } catch {

@@ -31,6 +31,7 @@ try {
     $ProgressPreference = 'SilentlyContinue'
     [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::TLS12
     Invoke-WebRequest -Uri $Uri -Headers @{"Accept-Encoding"="gzip,deflate"} -OutFile $(Join-Path $LocalWVDpath $packageFile)
+    Unblock-File -Path $(Join-Path $LocalWVDpath $packageFile) -Confirm:$false
     Write-Host "AVD AIB Customization - Install PostgreSQL ODBC: Package downloaded successfully."
     $ProgressPreference = 'Continue'
 } catch {

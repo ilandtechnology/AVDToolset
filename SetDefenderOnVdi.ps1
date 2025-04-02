@@ -41,7 +41,7 @@ if ($currentValue -ne $valueData) {
 
 $keyPath = "HKLM:SOFTWARE\Policies\Microsoft\Windows Defender\Scan"
 $valueName = "CloudExtendedTimeout"
-$valueData = 20
+$valueData = 15
 
 if (!(Test-Path $keyPath)) {
     New-Item -Path $keyPath -Force
@@ -74,14 +74,14 @@ $exclusions = @(
     "%TEMP%\*\*.VHDX",
     "%Windir%\TEMP\*\*.VHD",
     "%Windir%\TEMP\*\*.VHDX",
-    "\\stavdprdbrs02.privatelink.file.core.windows.net\profiles\*\*.VHD",
-    "\\stavdprdbrs02.privatelink.file.core.windows.net\profiles\*\*.VHD.lock",
-    "\\stavdprdbrs02.privatelink.file.core.windows.net\profiles\*\*.VHD.meta",
-    "\\stavdprdbrs02.privatelink.file.core.windows.net\profiles\*\*.VHD.metadata",
-    "\\stavdprdbrs02.privatelink.file.core.windows.net\profiles\*\*.VHDX",
-    "\\stavdprdbrs02.privatelink.file.core.windows.net\profiles\*\*.VHDX.lock",
-    "\\stavdprdbrs02.privatelink.file.core.windows.net\profiles\*\*.VHDX.meta",
-    "\\stavdprdbrs02.privatelink.file.core.windows.net\profiles\*\*.VHDX.metadata",
+    "\\stgavdprdbrs02.privatelink.file.core.windows.net\profiles\*\*.VHD",
+    "\\stgavdprdbrs02.privatelink.file.core.windows.net\profiles\*\*.VHD.lock",
+    "\\stgavdprdbrs02.privatelink.file.core.windows.net\profiles\*\*.VHD.meta",
+    "\\stgavdprdbrs02.privatelink.file.core.windows.net\profiles\*\*.VHD.metadata",
+    "\\stgavdprdbrs02.privatelink.file.core.windows.net\profiles\*\*.VHDX",
+    "\\stgavdprdbrs02.privatelink.file.core.windows.net\profiles\*\*.VHDX.lock",
+    "\\stgavdprdbrs02.privatelink.file.core.windows.net\profiles\*\*.VHDX.meta",
+    "\\stgavdprdbrs02.privatelink.file.core.windows.net\profiles\*\*.VHDX.metadata",
     "%ProgramData%\FSLogix\Cache\*",
     "%ProgramData%\FSLogix\Proxy\*",
     "%SystemDrive%\TMP\*"
@@ -172,7 +172,7 @@ if ($currentValue -ne $valueData) {
 
 $keyPath = "HKLM:SOFTWARE\Policies\Microsoft\Windows Defender\Scan"
 $valueName = "CpuThrottleDropPercent"
-$valueData = 50
+$valueData = 25
 
 if (!(Test-Path $keyPath)) {
     New-Item -Path $keyPath -Force
@@ -262,7 +262,7 @@ if (!(Test-Path $keyPath)) {
 
 # Set DisableEmailScanning to false (0)
 $valueName = "DisableEmailScanning"
-$valueData = 0
+$valueData = 1
 $currentValue = (Get-ItemProperty -Path $keyPath -ErrorAction SilentlyContinue).$valueName
 if ($currentValue -ne $valueData) {
     Set-ItemProperty -Path $keyPath -Name $valueName -Value $valueData

@@ -1,6 +1,9 @@
 # Define variables
-$Uri = "https://stavdprdbrs01.blob.core.windows.net/drivers/SAMSUNG-M2020.zip?sv=2023-01-03&st=2024-12-17T13%3A46%3A29Z&se=2030-01-01T01%3A59%3A00Z&sr=b&sp=r&sig=ZLHCJjmdDI%2BXaJxWk3EG4QB4QaQoc5tPpqLbC3YYpIg%3D"
-$packageFile = "SAMSUNG.zip"
+$packageFile = "SAMSUNG-M2020.zip"
+$baseUri = "https://stgavdprdbrs01-microsoftrouting.blob.core.windows.net/drivers/"
+$sas = "sv=2022-11-02&ss=b&srt=co&sp=r&se=2028-01-01T02:59:59Z&st=2025-02-21T03:00:00Z&spr=https&sig=qkDCJAUaSucfOdDYTkmIryQOayzu3oLMGtNXYluzfwE%3D"
+$Uri = $baseUri + $packageFile + "?" + $sas
+$packageFile = $packageFile.Split("-")[0] + ".zip"
 $destinationFolder = "C:\Temp"
 $LocalWVDpath = "C:\Temp\wvd\"
 
@@ -31,6 +34,7 @@ try {
     $ProgressPreference = 'SilentlyContinue'
     [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::TLS12
     Invoke-WebRequest -Uri $Uri -Headers @{"Accept-Encoding"="gzip,deflate"} -OutFile $(Join-Path $LocalWVDpath $packageFile)
+    Unblock-File -Path $(Join-Path $LocalWVDpath $packageFile) -Confirm:$false
     Write-Host "AVD AIB Customization - Install Samsung M2020 Driver: Package downloaded successfully."
     $ProgressPreference = 'Continue'
 } catch {

@@ -477,7 +477,7 @@
                     },
                     {
                         "inline": [
-                            "C:\\AVDImage\\removeAppxPackages.ps1 -AppxPackages \"Clipchamp.Clipchamp\",\"Microsoft.BingNews\",\"Microsoft.BingWeather\",\"Microsoft.GamingApp\",\"Microsoft.GetHelp\",\"Microsoft.Getstarted\",\"Microsoft.MicrosoftOfficeHub\",\"Microsoft.Office.OneNote\",\"Microsoft.MicrosoftSolitaireCollection\",\"Microsoft.MicrosoftStickyNotes\",\"Microsoft.MSPaint\",\"Microsoft.People\",\"Microsoft.PowerAutomateDesktop\",\"Microsoft.ScreenSketch\",\"Microsoft.SkypeApp\",\"Microsoft.Todos\",\"Microsoft.Windows.Photos\",\"Microsoft.WindowsAlarms\",\"Microsoft.WindowsCalculator\",\"Microsoft.WindowsCamera\",\"Microsoft.windowscommunicationsapps\",\"Microsoft.WindowsFeedbackHub\",\"Microsoft.WindowsMaps\",\"Microsoft.WindowsNotepad\",\"Microsoft.WindowsSoundRecorder\",\"Microsoft.Xbox.TCUI\",\"Microsoft.XboxGameOverlay\",\"Microsoft.XboxGamingOverlay\",\"Microsoft.XboxIdentityProvider\",\"Microsoft.XboxSpeechToTextOverlay\",\"Microsoft.YourPhone\",\"Microsoft.ZuneMusic\",\"Microsoft.ZuneVideo\",\"Microsoft.XboxApp\",\"Microsoft.WindowsTerminal\""
+                            "C:\\AVDImage\\removeAppxPackages.ps1 -AppxPackages \"Clipchamp.Clipchamp\",\"Microsoft.BingNews\",\"Microsoft.BingWeather\",\"Microsoft.GamingApp\",\"Microsoft.GetHelp\",\"Microsoft.Getstarted\",\"Microsoft.MicrosoftOfficeHub\",\"Microsoft.Office.OneNote\",\"Microsoft.MicrosoftSolitaireCollection\",\"Microsoft.MicrosoftStickyNotes\",\"Microsoft.MSPaint\",\"Microsoft.People\",\"Microsoft.PowerAutomateDesktop\",\"Microsoft.ScreenSketch\",\"Microsoft.SkypeApp\",\"Microsoft.Todos\",\"Microsoft.Windows.Photos\",\"Microsoft.WindowsAlarms\",\"Microsoft.WindowsCamera\",\"Microsoft.windowscommunicationsapps\",\"Microsoft.WindowsFeedbackHub\",\"Microsoft.WindowsMaps\",\"Microsoft.WindowsNotepad\",\"Microsoft.WindowsSoundRecorder\",\"Microsoft.Xbox.TCUI\",\"Microsoft.XboxGameOverlay\",\"Microsoft.XboxGamingOverlay\",\"Microsoft.XboxIdentityProvider\",\"Microsoft.XboxSpeechToTextOverlay\",\"Microsoft.YourPhone\",\"Microsoft.ZuneMusic\",\"Microsoft.ZuneVideo\",\"Microsoft.XboxApp\",\"Microsoft.WindowsTerminal\",\"Microsoft.Microsoft3DViewer\",\"Microsoft.MixedReality.Portal\",\"Microsoft.Copilot\""
                         ],
                         "name": "avdBuiltInScript_removeAppxPackages-parameter",
                         "runAsSystem": true,
@@ -506,7 +506,7 @@
                         "targetRegions": [
                             {
                             "name": "brazilsouth",
-                            "replicaCount": 1,
+                            "replicaCount": 3,
                             "storageAccountType": "Standard_LRS"
                             }
                         ],
@@ -525,7 +525,7 @@
                 "source": {
                     "offer": "windows-10",
                     "publisher": "microsoftwindowsdesktop",
-                    "sku": "win10-22h2-avd-g2",
+                    "sku": "win10-22h2-ent-g2", // win10-22h2-avd-g2
                     "type": "PlatformImage",
                     "version": "latest"
                 },

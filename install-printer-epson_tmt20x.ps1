@@ -1,6 +1,9 @@
 # Define variables
-$Uri = "https://stavdprdbrs01.blob.core.windows.net/drivers/EPSON-TMT20X.zip?sv=2023-01-03&st=2024-12-17T13%3A38%3A36Z&se=2030-01-01T02%3A59%3A00Z&sr=b&sp=r&sig=S3XkJA1Bd36BVeLW5qaKcYqkCHu3SpYCPzo6j0O0Rqw%3D"
-$packageFile = "EPSON.zip"
+$packageFile = "EPSON-TMT20X.zip"
+$baseUri = "https://stgavdprdbrs01-microsoftrouting.blob.core.windows.net/drivers/"
+$sas = "sv=2022-11-02&ss=b&srt=co&sp=r&se=2028-01-01T02:59:59Z&st=2025-02-21T03:00:00Z&spr=https&sig=qkDCJAUaSucfOdDYTkmIryQOayzu3oLMGtNXYluzfwE%3D"
+$Uri = $baseUri + $packageFile + "?" + $sas
+$packageFile = $packageFile.Split("-")[0] + ".zip"
 $destinationFolder = "C:\Temp"
 $LocalWVDpath = "C:\Temp\wvd\"
 
@@ -31,6 +34,7 @@ try {
     $ProgressPreference = 'SilentlyContinue'
     [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::TLS12
     Invoke-WebRequest -Uri $Uri -Headers @{"Accept-Encoding"="gzip,deflate"} -OutFile $(Join-Path $LocalWVDpath $packageFile)
+    Unblock-File -Path $(Join-Path $LocalWVDpath $packageFile) -Confirm:$false
     Write-Host "AVD AIB Customization - Install Epson TM-T20X Driver: Package downloaded successfully."
     $ProgressPreference = 'Continue'
 } catch {
